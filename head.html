@@ -1,9 +1,18 @@
 <!-- per https://www.aem.live/docs/csp-strict-dynamic-cached-nonce -->
-<meta
+<!-- <meta
   http-equiv="Content-Security-Policy"
   content="script-src 'nonce-aem' 'strict-dynamic' 'unsafe-inline' http: https:; base-uri 'self'; object-src 'none';"
   move-to-http-header="true"
+> -->
+<meta
+  http-equiv="Content-Security-Policy"
+  content="script-src 'unsafe-inline' https:; base-uri 'self'; object-src 'none';"
+  move-to-http-header="true"
 >
+<script 
+  src="https://assets.adobedtm.com/e1f0958460fd/6eca0e8e6204/launch-50a179f841ff-staging.min.js" 
+  async>
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <script nonce="aem" src="/scripts/aem.js" type="module"></script>
 <script nonce="aem" src="/scripts/scripts.js" type="module"></script>
