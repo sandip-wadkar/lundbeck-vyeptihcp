@@ -1,5 +1,8 @@
 // add delayed functionality here
 import { loadScript } from './aem.js';
+import { pushPageViewEvent } from './pageview.js';
+import { initLinkTracking } from './linktracking.js';
+import { initScrollDepthTracking } from './observers.js';
 
 // CookieInformation consent management platform (same CMP as www.vyepti.com)
 async function loadConsentManager() {
@@ -19,3 +22,7 @@ async function loadConsentManager() {
 }
 
 loadConsentManager();
+// Fire Page View once the page is idle and AEP Tags is ready.
+pushPageViewEvent();
+initLinkTracking();
+initScrollDepthTracking();
