@@ -1,7 +1,3 @@
-export function getPageMetadata() { 
-    return { 
-        title: getMetadata('title'), 
-        pageType: getMetadata('page-type'), 
-        language: document.documentElement.lang 
-    }; 
+export default function getPageMetadata() { 
+    return null;
 }

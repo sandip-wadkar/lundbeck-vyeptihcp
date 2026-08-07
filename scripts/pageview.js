@@ -14,7 +14,7 @@ import { pushToAdobeDataLayer, DATA_LAYER_CONFIG } from './datalayer.js';
 
 /** Converts false, undefined, null, or whitespace-only strings to null. */
 function toNullIfEmpty(value) {
-  if (value === false || value == null) return null;
+  if (value === false || value === null) return null;
   if (typeof value === 'string' && value.trim() === '') return null;
   return value;
 }
@@ -69,7 +69,7 @@ function getCampaignFromSession() {
 }
 
 /** Builds and pushes the pageView event, then fires post-pageView trackers. */
-export function pushPageViewEvent() {
+export default function pushPageViewEvent() {
   const pageDetails = getPageDetails();
   const pageUrl = pageDetails.url ? pageDetails.url.split(/[?#]/)[0] : null;
   const botScore = window.digitalData?.page?.botScore ?? null;
@@ -94,10 +94,4 @@ export function pushPageViewEvent() {
     },
     campaignInfo: getCampaignFromSession(),
   });
-
-  // Optional: fire 404 tracking if error.js has been ported. Guarded so a
-  // missing module or downstream failure never breaks pageView.
-  import('./error.js')
-    .then((m) => m.maybePushPageNotFoundError?.())
-    .catch(() => { /* error.js not present yet — ignore */ });
 }

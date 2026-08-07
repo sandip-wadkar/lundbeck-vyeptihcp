@@ -96,19 +96,6 @@ export const DATA_LAYER_CONFIG = {
   },
 };
 
-
-/** TODO Dummy pushEvent */
-export function pushEvent(eventName, data = {}) {
-    //ensure the data layer is initialized before pushing events
-    initializeDataLayer();
-    window.adobeDataLayer.push({ 
-        event: eventName, 
-        eventinfo: data,
-        timestamp: Date.now(),
-        pageURL: window.location.href
-    });
-} 
-
 /** Low-level push. Guarantees the data layer exists first. */
 export function pushToAdobeDataLayer(eventTrackingData) {
   initializeDataLayer();

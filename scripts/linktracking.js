@@ -51,7 +51,7 @@ function classifyLinkType(href) {
   try {
     const url = new URL(href, window.location.origin);
     if (url.hostname !== window.location.hostname) return 'Exit';
-  } catch (e) {
+  } catch {
     // Malformed URL treated as internal
   }
   return 'Other';
@@ -62,7 +62,7 @@ function classifyLinkType(href) {
  * Capture phase (true) so it fires before any handler that may call
  * stopImmediatePropagation (e.g. external-link interstitials).
  */
-export function initLinkTracking() {
+export default function initLinkTracking() {
   document.addEventListener('click', (event) => {
     const anchor = event.target.closest('a');
     if (!anchor) return;

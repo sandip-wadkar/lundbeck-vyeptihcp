@@ -35,15 +35,15 @@ function getScrollPercent() {
 }
 
 /** Enables scroll-depth tracking; fires each threshold once per page load. */
-export function initScrollDepthTracking() {
-  const triggered = {};
+export default function initScrollDepthTracking() {
+  const triggered = new Set();
   let throttleTimeout = null;
 
   function checkScrollDepth() {
     const percent = getScrollPercent();
     thresholds.forEach((threshold) => {
-      if (percent >= threshold && !triggered[threshold]) {
-        triggered[threshold] = true;
+      if (percent >= threshold && !triggered.has(threshold)) {
+        triggered.add(threshold);
         pushScrollDepthEventToDataLayer({ eventType: SCROLL_DEPTH_EVENT, percent: threshold });
       }
     });
