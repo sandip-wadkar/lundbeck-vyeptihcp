@@ -158,7 +158,7 @@ export default function decorate(block) {
   decorateDualPanel(block, rows);
   
   // ADCL event for hero component click
-  //pushEvent('componentClick', {
-    //componentName: 'Hero'
-  //});
+  // pushEvent('componentClick', {
+    // componentName: 'Hero'
+  // });
 }

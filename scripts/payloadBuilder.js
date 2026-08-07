@@ -1,4 +1,4 @@
-export function buildPagePayload(metadata) { 
+export default function buildPagePayload(metadata) { 
     return { 
         page: { 
             pageName: metadata.title, 
