@@ -1,26 +1,11 @@
-/* ============================================================
-   Header design tokens.
-   Customer-tunable surface for the VYEPTI HCP header. Everything the
-   header.css consumes resolves to a token here; tokens in turn reference
-   the global design tokens in styles/styles.css wherever a global exists,
-   so brand/typography changes cascade automatically. Adjust header look
-   here (not in header.css) whenever possible.
-   ============================================================ */
+/* Header design tokens — everything header.css consumes resolves to a token here. */
 :root {
-  /* nav heights (legacy — kept for header-height math in styles.css) */
-  --nav-height: 200px;
-
-  /* NOTE: --header-reserve-height-* (CLS reservation) are defined in the eager
-     styles.css :root, not here, so they apply from first paint. */
-  --header-nav-max-width-mobile: 510px;
-  --header-nav-max-width-tablet: 690px;
-  --header-nav-max-width-desktop: 930px;
-  --header-nav-max-width-max: 1110px;
+  /* Feeds --header-height (used by modal sizing) — approximates the mobile header height. */
+  --nav-height: 352px;
 
   /* ---- color roles (reference global brand/semantic tokens) ---- */
 
-  /* Brand band measured from source = #41748d = --brand-teal-muted (--brand-primary-dark).
-     NOTE: --brand-primary is #046183 (darker) — do NOT use it for the band. */
+  /* Brand band = #41748d = --brand-primary-dark, NOT the darker --brand-primary. */
   --header-brand-band-bg: var(--brand-primary-dark);
   --header-brand-band-color: var(--background-color);
 
@@ -28,21 +13,19 @@
   --header-mobile-brand-bg: var(--background-color);
   --header-mobile-hamburger-color: var(--brand-primary-dark);
   --header-mobile-hamburger-label-color: rgb(77 77 77);
-  --header-mobile-logo-height: 64px;
+  --header-mobile-logo-height: 70px;
   --header-accent-color: var(--brand-primary-dark);
-  --header-utility-bg: var(--light-color);
   --header-hcp-bg: var(--background-color);
   --header-hcp-font-size: var(--header-font-size-s);
   --header-hcp-actions-gap: 12px;
+
+  /* Desktop-only (>=870px): source widens both HCP-bar gaps to this same measured 40px. */
+  --header-hcp-gap-wide: 40px;
   --header-hcp-arrow-size: 24px;
   --header-hcp-arrow-gap: 8px;
 
-  /* Teal circle with a white right-arrow (matches source icon-right-arrow-teal). */
-  --header-hcp-arrow-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Ccircle cx="12" cy="12" r="12" fill="%2341748d"/%3E%3Cpath d="M9 6l6 6-6 6" fill="none" stroke="%23fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/%3E%3C/svg%3E');
-
-  /* Mobile variant (matches source): white fill, 2px teal ring, teal arrow.
-     Chevron is inset (x 10→14, y 8→16) so it doesn't crowd the ring. */
-  --header-hcp-arrow-image-mobile: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Ccircle cx="12" cy="12" r="11" fill="%23fff" stroke="%2341748d" stroke-width="2"/%3E%3Cpath d="M10 8l4 4-4 4" fill="none" stroke="%2341748d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/%3E%3C/svg%3E');
+  /* Matches source's icon-right-arrow-teal.png at every breakpoint (white fill, teal ring + arrow). */
+  --header-hcp-arrow-image-mobile: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Ccircle cx="12" cy="12" r="11" fill="%23fff" stroke="%2341748d" stroke-width="2"/%3E%3Cpath d="M10 7l4 5-4 5" fill="none" stroke="%2341748d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/%3E%3C/svg%3E');
   --header-text-color: var(--text-color);
   --header-white-text-color: var(--background-color);
   --header-border-color: var(--brand-primary-light);
@@ -75,7 +58,13 @@
   --header-dropdown-gap: 6px;
   --header-chevron-gap: 8px;
   --header-chevron-offset-y: -2px;
+
+  /* Thinner than the shared --header-border-width (2px) — a caret this small needs a lighter stroke. */
+  --header-chevron-border-width: 1px;
   --header-brand-gap: 24px;
+
+  /* Defaults to the shared site max-width; widened at the narrow 992-1199px tier only (see header.css). */
+  --header-container-max-width: var(--max-width-site);
 
   /* ---- primary-nav dropdown menu (matches source) ---- */
   --header-navmenu-radius: 10px;
@@ -92,22 +81,18 @@
   --header-lumi-label-line-height: 18px;
   --header-lumi-label-max-width: 80px;
 
-  /* Mobile: label hidden, avatar carries a thin teal ring (source: 50px img in a
-     52px ring, 1px #b5d9dd). Sits left of the hamburger on the white top bar. */
+  /* Mobile: label hidden, avatar carries a thin teal ring (source: 50px img in a 52px ring). */
   --header-mobile-lumi-avatar-size: 50px;
   --header-mobile-lumi-ring: 1px solid var(--header-lumi-header-bg);
 
-  /* Negative because the brand container's 24px flex gap already sits between
-     the avatar and hamburger; this trims it to the source's ~21px. */
+  /* Negative to trim the brand container's 24px flex gap down to source's ~21px. */
   --header-mobile-lumi-hamburger-gap: -3px;
 
-  /* Popup right-aligns to the container inset; its arrow sits ~84px from the
-     popup's right edge so it points up at the avatar center. */
+  /* Popup right-aligns to the container inset; arrow sits ~84px in so it points at the avatar. */
   --header-mobile-lumi-popup-right: 15px;
   --header-mobile-lumi-arrow-right: 84px;
 
-  /* Popup — matches source: teal header band (#b5d9dd) + white body, teal title
-     (#046183), pill buttons, and an upward triangle centered under the avatar. */
+  /* Popup matches source: teal header band, white body, teal title, pill buttons, arrow triangle. */
   --header-lumi-popup-offset: 12px;
   --header-lumi-popup-width: 335px;
   --header-lumi-popup-bg: var(--background-color);
@@ -129,8 +114,7 @@
   --header-lumi-btn-padding: 5px 12px;
   --header-lumi-btn-hover-bg: #002d54;
 
-  /* Triangle: 14px wide (half 7px), 12px tall; avatar center is ~110px in from
-     the popup's right edge, so offset the arrow to sit under it. */
+  /* Triangle: avatar center is ~110px in from the popup's right edge; offset the arrow to match. */
   --header-lumi-arrow-half: 7px;
   --header-lumi-arrow-height: 12px;
   --header-lumi-arrow-right: 103px;
@@ -148,8 +132,14 @@
   /* ---- pill CTA padding ---- */
   --header-cta-padding: 16px 32px;
   --header-hcp-continue-padding: 6px 22px;
+
+  /* Source shrinks the CONTINUE button's padding at the >=1200px tier only. */
+  --header-hcp-continue-padding-wide: 3px 20px;
   --header-nav-link-padding: 24px 0;
-  --header-nav-link-gap: 20px;
+
+  /* Tightened for the narrow 992-1199px tier only; --header-nav-link-gap-wide restores it at 1200px. */
+  --header-nav-link-gap: 12px;
+  --header-nav-link-gap-wide: 20px;
   --header-dropdown-link-padding: 10px 18px;
 
   /* ---- brand logo ---- */
@@ -161,22 +151,16 @@
   /* ---- hamburger (mobile) ---- */
   --header-hamburger-size: 40px;
 
-  /* Resets the global button padding (14px 25px). Tuned so the icon+label stack
-     is vertically centered on the logo and its right whitespace equals the
-     space above/below it. */
+  /* Resets the global button padding so the icon+label stack centers on the logo. */
   --header-hamburger-inset: 0;
 
-  /* The 3 bars' top bar overflows the flow box, so the stack's visual centre
-     sits a few px above the flex-centred box; nudge it down onto the logo
-     centre. */
+  /* Nudges the icon stack down onto the logo's visual center. */
   --header-hamburger-nudge-y: 4px;
 
-  /* Pulls the icon toward the edge so the whitespace right of it (container's
-     15px inset minus this) matches the ~13px above/below it once centred. */
+  /* Pulls the icon toward the edge to balance whitespace once centered. */
   --header-hamburger-space-right: -2px;
 
-  /* Bar geometry matches source hamburger.svg (34x20: ~33px wide, ~4px thick,
-     ~8px between bar centers). */
+  /* Bar geometry matches source hamburger.svg (34x20). */
   --header-hamburger-bar-width: 33px;
   --header-hamburger-bar-height: 4px;
   --header-hamburger-bar-radius: 2px;
@@ -186,13 +170,10 @@
   --header-hamburger-x-arm-length: 26px;
   --header-hamburger-x-arm-thickness: 5px;
 
-  /* The X arms are narrower than the 3 bars and absolutely positioned at left:0,
-     so the cross sits left of the bars' center; nudge it right to re-center. */
+  /* X arms are absolutely positioned at left:0; nudge right to re-center on the bars. */
   --header-hamburger-x-shift-x: 4px;
 
-  /* Gap is measured from the 3px center bar's box; the top/bottom bars are
-     absolutely positioned (out of flow), so this must clear the bottom bar
-     (~8.5px below center) plus ~5px breathing room to match the source. */
+  /* Clears the absolutely-positioned bottom bar plus breathing room, matching source. */
   --header-hamburger-label-gap: 13px;
   --header-hamburger-label-line-height: 1;
   --header-hamburger-transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease;
@@ -201,11 +182,9 @@
   --header-mobile-menu-bg: var(--background-color);
   --header-mobile-menu-padding: 16px;
 
-  /* Vertical-only panel padding: items align to the 15px container inset
-     (matches source's ~19px item inset instead of doubling to 31px). */
+  /* Vertical-only: items align to the 15px container inset instead of doubling to 31px. */
 
-  /* No trailing gap: the pop-over ends flush with the last nav item so it
-     doesn't look like there's more menu to scroll to. */
+  /* No trailing gap — the pop-over ends flush with the last nav item. */
   --header-mobile-menu-padding-block: 0;
   --header-mobile-divider-color: rgb(153 153 153);
   --header-mobile-nav-link-padding: 16px 0 12px;
@@ -213,8 +192,7 @@
   --header-mobile-sublink-line-height: 24px;
   --header-mobile-util-link-gap: 10px;
 
-  /* Mobile utility band: tagline + PI/Patient Info triggers are 12px (matches
-     source at 375px), smaller than the 14px used on wider layouts. */
+  /* Mobile utility band text is 12px (matches source at 375px), smaller than wider layouts' 14px. */
   --header-mobile-util-font-size: 12px;
   --header-mobile-util-divider-color: var(--header-accent-color);
   --header-mobile-util-band-bg: #dfe9f1;
@@ -226,7 +204,7 @@
   --header-mobile-cta-font-size: 14px;
   --header-mobile-cta-full-font-size: 16px;
 
-  /* Accordion chevron: 24x24 teal V (matches source chevron-basic.svg #41748d). */
+  /* Accordion chevron: 24x24 teal V (matches source chevron-basic.svg). */
   --header-mobile-chevron-size: 24px;
   --header-mobile-chevron-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 17" fill="none"%3E%3Cpath fill-rule="evenodd" clip-rule="evenodd" d="M2.63275 5.93451C2.94517 5.62209 3.4517 5.62209 3.76412 5.93451L7.99844 10.1688L12.2328 5.93451C12.5452 5.62209 13.0517 5.62209 13.3641 5.93451C13.6765 6.24693 13.6765 6.75346 13.3641 7.06588L8.56412 11.8659C8.2517 12.1783 7.74517 12.1783 7.43275 11.8659L2.63275 7.06588C2.32033 6.75346 2.32033 6.24693 2.63275 5.93451Z" fill="%2341748d"/%3E%3C/svg%3E');
 
@@ -234,10 +212,6 @@
   --header-mobile-menu-shadow: 0 8px 16px rgb(0 0 0 / 15%);
   --header-mobile-menu-z: 30;
 
-  /* ---- responsive breakpoint ----
-     header.css is mobile-first: base rules target ~375px, then min-width
-     overrides at 600px (tablet) and 900px (desktop). This 900px value documents
-     the desktop literal used in header.css's @media (width >= 900px) and in
-     header.js's matchMedia('(min-width: 900px)'); keep all three in sync. */
-  --header-mobile-breakpoint: 900px;
+  /* Must match header.css's @media (width >= 992px) and header.js's matchMedia call. */
+  --header-mobile-breakpoint: 992px;
 }

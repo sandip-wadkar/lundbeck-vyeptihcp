@@ -16,11 +16,13 @@
   --accordion-label-line-height: 1.1; /* @libs */
   --accordion-label-padding-right: 34px; /* @libs */
 
-  /* expand/collapse chevron */
-  --accordion-icon-size: 15px; /* @libs */
+  /* expand/collapse chevron — circle outline that fills solid on hover
+     (source: icon-red-chevron-down / -hover PNGs, exact color var(--brand-secondary)) */
+  --accordion-icon-size: 32px; /* @libs */
+  --accordion-icon-border-width: 3px; /* @libs */
   --accordion-icon-thickness: 2px; /* @libs */
-  --accordion-icon-color: var(--brand-primary); /* @libs */
-  --accordion-icon-right: 4px; /* @libs */
+  --accordion-icon-color: var(--brand-secondary); /* @libs */
+  --accordion-icon-right: 6px; /* @libs */
 
   /* body / panel */
   --accordion-body-gap: 16px; /* @libs */

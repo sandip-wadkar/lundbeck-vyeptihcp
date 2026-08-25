@@ -308,6 +308,99 @@
     ]
   },
   {
+    "id": "connect-support",
+    "fields": [
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "lead",
+        "label": "Lead sentence"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "item1Icon",
+        "label": "Item 1 icon",
+        "multi": false
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "item1Text",
+        "label": "Item 1 description"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "item2Icon",
+        "label": "Item 2 icon",
+        "multi": false
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "item2Text",
+        "label": "Item 2 description"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "item3Icon",
+        "label": "Item 3 icon",
+        "multi": false
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "item3Text",
+        "label": "Item 3 description"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "item4Icon",
+        "label": "Item 4 icon",
+        "multi": false
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "item4Text",
+        "label": "Item 4 description"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "enroll",
+        "label": "Enrollment CTA line"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "note",
+        "label": "Note copy"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "contactFax",
+        "label": "Contact column 1 (fax)"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "contactCall",
+        "label": "Contact column 2 (call)"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "finePrint",
+        "label": "Fine print"
+      }
+    ]
+  },
+  {
     "id": "coverage-finder",
     "fields": [
       {
@@ -463,6 +556,20 @@
         "label": "Author (optional)",
         "valueType": "string",
         "description": "Use italics for [cite] tag"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Headshot (optional)",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Headshot Alt",
+        "multi": false
       }
     ]
   },
@@ -739,6 +846,26 @@
         "name": "table",
         "value": "",
         "label": "Table Content"
+      }
+    ]
+  },
+  {
+    "id": "tabs-dropdown-item",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "name",
+        "value": "name",
+        "valueType": "string",
+        "label": "Tab Name",
+        "required": true
+      },
+      {
+        "component": "richtext",
+        "name": "content",
+        "value": "content",
+        "label": "Content",
+        "valueType": "string"
       }
     ]
   },

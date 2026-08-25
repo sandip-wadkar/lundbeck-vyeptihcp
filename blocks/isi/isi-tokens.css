@@ -2,15 +2,18 @@
 :root { /* @boilerplate */
   --isi-text-color: #484848; /* @boilerplate */
   --isi-body-font-size: 16px; /* @boilerplate */
-  --isi-line-height: 1.5; /* @boilerplate */
+  --isi-line-height: 1.25; /* matches vyeptihcp.com (20px at 16px base) */
+  --isi-paragraph-margin-top: 8px; /* overrides the global 0.8em (12.8px) default */
   --isi-list-line-height: 1.7; /* @boilerplate */
   --isi-list-item-margin-bottom: 10px; /* @boilerplate */
   --isi-inline-padding-bottom: 64px; /* @boilerplate */
   --isi-list-item-padding-y: 0px; /* @boilerplate */
   --isi-heading-color: var(--brand-primary-dark); /* @boilerplate */
   --isi-heading-font-size: 18px; /* @boilerplate */
+  --isi-title-font-size: 20px; /* matches vyeptihcp.com title heading (first/last h5) */
+  --isi-bar-title-padding-bottom: 14px; /* matches vyeptihcp.com; the first h5 only - the last h5 ("INDICATION") uses the regular 8px */
   --isi-heading-font-weight: 700; /* @boilerplate */
-  --isi-heading-line-height: 22px; /* @boilerplate */
+  --isi-heading-line-height: 20px; /* matches vyeptihcp.com */
   --isi-heading-margin-bottom: 0; /* @boilerplate */
   --isi-bar-z-index: 5; /* @boilerplate */
   --isi-bar-expanded-z-index: 10; /* @boilerplate */
@@ -19,16 +22,17 @@
   --isi-section-border-color: #d1d1d1; /* @boilerplate */
   --isi-bar-border-width: var(--isi-section-border-width); /* @boilerplate */
   --isi-bar-border-color: var(--isi-section-border-color); /* @boilerplate */
-  --isi-bar-height: 90px; /* @boilerplate */
-  --isi-bar-padding: 13px 13px 8px; /* @boilerplate */
+  --isi-bar-height: 142.5px; /* matches vyeptihcp.com */
+  --isi-bar-padding: 16px 13px 8px 13px; /* top matches vyeptihcp.com (16px, uniform across breakpoints); right/bottom/left unchanged */
   --isi-bar-height-transition-duration: 0.3s; /* @boilerplate */
   --isi-bar-height-transition-easing: ease-in-out; /* @boilerplate */
-  --isi-bar-expanded-max-height: 70vh; /* @boilerplate */
+  --isi-bar-expanded-max-height: 80vh; /* matches vyeptihcp.com */
   --isi-content-max-width: var(--max-width-site); /* @boilerplate */
   --isi-bar-content-gap: 0 24px; /* @boilerplate */
   --isi-bar-col-flex-basis: 45%; /* @boilerplate */
-  --isi-bar-heading-padding-bottom: 18px; /* @boilerplate */
-  --isi-bar-paragraph-line-height: 24px; /* @boilerplate */
+  --isi-bar-heading-padding-bottom: 8px; /* matches vyeptihcp.com (no breakpoint variance) */
+  --isi-bar-heading-padding-top: 6px; /* matches vyeptihcp.com; only headings that follow a paragraph - with the 8px paragraph padding-bottom, reaches the same 14px gap the inline content gets from the global heading margin-top */
+  --isi-bar-paragraph-line-height: 20px; /* matches vyeptihcp.com */
   --isi-bar-paragraph-padding-bottom: 8px; /* @boilerplate */
   --isi-bar-list-padding-left: 20px; /* @boilerplate */
   --isi-bar-list-margin-bottom: 8px; /* @boilerplate */
@@ -37,8 +41,8 @@
   --isi-toggle-top: 13px; /* @boilerplate */
   --isi-toggle-border-width: 2px; /* @boilerplate */
   --isi-toggle-size: 24px; /* @boilerplate */
-  --isi-toggle-color: var(--brand-primary-dark); /* @boilerplate */
-  --isi-toggle-hover-color: var(--link-hover-color); /* @boilerplate */
+  --isi-toggle-color: var(--brand-secondary); /* rose #c02c57, matches vyeptihcp.com icon */
+  --isi-toggle-hover-color: var(--background-color); /* white icon on hover fill */
   --isi-toggle-transition-duration: 0.2s; /* @boilerplate */
   --isi-toggle-z-index: 2; /* @boilerplate */
   --isi-toggle-icon-size: 12px; /* @boilerplate */
@@ -52,10 +56,8 @@
 
 @media (width <= 768px) { /* @boilerplate */
   :root { /* @boilerplate */
-    --isi-bar-height: 109px; /* @boilerplate */
-    --isi-bar-padding: 0; /* @boilerplate */
+    --isi-bar-height: 150px; /* matches vyeptihcp.com mobile */
     --isi-bar-heading-color: var(--brand-primary); /* @boilerplate */
-    --isi-bar-heading-padding-bottom: 8px; /* @boilerplate */
     --isi-bar-paragraph-padding-bottom: 16px; /* @boilerplate */
     --isi-toggle-right: var(--isi-toggle-right-mobile); /* @boilerplate */
   }

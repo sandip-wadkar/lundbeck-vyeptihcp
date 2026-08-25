@@ -1,0 +1,142 @@
+@import url('./banner-cta-tokens.css');
+
+/* No padding here — the JS-appended arrow band must span the full border-box edge to edge. */
+main .banner-cta > div {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  background-color: var(--background-color);
+  border: 2px solid var(--banner-cta-border-color);
+  border-radius: var(--banner-cta-border-radius);
+}
+
+main .banner-cta > div > div:not(.banner-cta-arrow) {
+  display: flex;
+  flex-direction: column;
+
+  /* Stacked (mobile) icon-to-content spacing; row layout below resets this to 0. */
+  gap: 30px;
+  padding: 20px 15px;
+
+  /* Reserves space for the arrow band; tuned per breakpoint to match source's text column width. */
+  padding-inline-end: 67px;
+}
+
+main .banner-cta-icon {
+  flex: none;
+}
+
+main .banner-cta-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+
+  /* Matches source's text gutter — asymmetric below 992px, symmetric from 992px. */
+  padding-inline: 0 10px;
+}
+
+main .banner-cta p {
+  margin: 0;
+}
+
+main .banner-cta picture {
+  display: block;
+  width: var(--banner-cta-icon-size);
+}
+
+main .banner-cta img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Body text — the paragraph that's neither the icon nor the CTA link */
+main .banner-cta p:not(:has(picture), :has(a)) {
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 700;
+  color: var(--banner-cta-text-color);
+}
+
+main .banner-cta p:has(a) {
+  margin-top: auto;
+}
+
+main .banner-cta p:has(a) a {
+  font-size: 18px;
+  color: var(--brand-rose);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* Arrow band appended by banner-cta.js; spans the full card height via the card's position: relative. */
+.banner-cta-arrow {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  width: var(--banner-cta-arrow-width);
+  background-color: var(--brand-rose);
+}
+
+.banner-cta-arrow a {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-cta-arrow a::after {
+  content: '';
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  background-color: #fff;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 11H17L11.5 6L13 4.5L21 12L13 19.5L11 18.5L17 13H3Z"/></svg>') no-repeat center / contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+}
+
+/* Tablet+: card is ~15px narrower per side than the page content; arrow band switches to its desktop size. */
+@media (width >= 768px) {
+  main .banner-cta-wrapper {
+    max-width: calc(var(--max-width-site) - 30px);
+    margin-inline: auto;
+  }
+
+  main .banner-cta > div > div:not(.banner-cta-arrow) {
+    flex-direction: row;
+    gap: 0;
+    padding-inline-end: 90px;
+  }
+
+  .banner-cta-arrow {
+    width: var(--banner-cta-arrow-width-desktop);
+  }
+}
+
+/* Desktop: card padding grows and the text gutter becomes symmetric, a step later than the 768px swap above. */
+@media (width >= 992px) {
+  main .banner-cta > div > div:not(.banner-cta-arrow) {
+    padding: 26px 20px;
+    padding-inline-end: 72px;
+  }
+
+  main .banner-cta-content {
+    padding-inline: 30px;
+  }
+
+  /* Source pushes the icon in from the card edge by 80px here (0 below 992px). */
+  main .banner-cta-icon {
+    margin-inline-start: 80px;
+  }
+}
+
+@media (width >= 1200px) {
+  main .banner-cta > div > div:not(.banner-cta-arrow) {
+    padding-inline-end: 117px;
+  }
+}

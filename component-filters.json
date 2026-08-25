@@ -92,6 +92,12 @@
     }
   },
   {
+    "id": "tabs-dropdown",
+    "components": [
+      "tabs-dropdown-item"
+    ]
+  },
+  {
     "id": "tabs",
     "components": [
       "tabs-item"

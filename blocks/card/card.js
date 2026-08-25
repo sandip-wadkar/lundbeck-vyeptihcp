@@ -12,8 +12,13 @@ export function createCard(row) {
   moveInstrumentation(row, li);
   while (row.firstElementChild) li.append(row.firstElementChild);
   [...li.children].forEach((div) => {
-    if (div.children.length === 1 && div.querySelector('picture')) div.className = 'cards-card-image';
-    else div.className = 'cards-card-body';
+    const pictureCells = [...div.children].filter(
+      (child) => child.matches('picture') || child.querySelector('picture'),
+    );
+    const isImageOnly = pictureCells.length === div.children.length
+      && pictureCells.length >= 1
+      && pictureCells.length <= 5;
+    div.className = isImageOnly ? 'cards-card-image' : 'cards-card-body';
   });
   return li;
 }

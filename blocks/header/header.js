@@ -3,10 +3,7 @@ import { loadFragment } from '../fragment/fragment.js';
 
 const SESSION_HCP_DISMISSED = 'vyepti-hcp-bar-dismissed';
 
-/**
- * Marks a link as opening in a new tab and appends the source's visually-hidden
- * "opens in a new tab" hint (a11y parity with the source header).
- */
+// Marks a link as opening in a new tab, with the source's visually-hidden a11y hint.
 function markNewTab(link) {
   link.setAttribute('target', '_blank');
   link.setAttribute('rel', 'noopener');
@@ -17,14 +14,10 @@ function markNewTab(link) {
 }
 
 function isDesktop() {
-  return window.matchMedia('(min-width: 900px)').matches;
+  return window.matchMedia('(min-width: 992px)').matches;
 }
 
-/**
- * Wires hover (desktop) + click (all) open/close behavior on a dropdown container.
- * @param {HTMLElement} item The <li>/wrapper holding the trigger + menu
- * @param {HTMLElement} menu The dropdown menu element
- */
+// Wires hover (desktop) + click (all) open/close behavior on a dropdown container.
 function wireDropdown(item, menu) {
   item.setAttribute('aria-expanded', 'false');
   const close = () => item.setAttribute('aria-expanded', 'false');
@@ -53,20 +46,13 @@ function wireDropdown(item, menu) {
   menu.setAttribute('role', 'menu');
 }
 
-/**
- * Builds a dropdown from a source <li> that contains a nested <ul>.
- * The li's leading text (before the nested ul) becomes the trigger label.
- * @returns {HTMLElement} decorated <li> dropdown
- */
+// Builds a dropdown from a source <li> with a nested <ul>; leading text becomes the trigger label.
 function buildDropdownItem(sourceLi) {
   const li = document.createElement('li');
   li.className = 'nav-dropdown';
 
   const subUl = sourceLi.querySelector(':scope > ul');
-  // Trigger label = the li's leading content before the nested <ul>. The DA/EDS
-  // pipeline wraps this in a <p> (`<li><p>Label</p><ul>…`), while the local raw
-  // fragment has bare text — so take the first non-<ul> child's text, falling
-  // back to direct text nodes.
+  // Label = the li's leading content before the nested <ul> — a <p> on DA/EDS, bare text locally.
   const labelNode = [...sourceLi.children].find((c) => c.tagName !== 'UL');
   const labelText = labelNode
     ? labelNode.textContent.trim()
@@ -101,11 +87,7 @@ function buildDropdownItem(sourceLi) {
   return li;
 }
 
-/**
- * Decorates the HCP notification bar (row 0). CONTINUE dismisses the bar for the
- * session; GO TO PATIENT SITE navigates out.
- * @returns {HTMLElement|null}
- */
+// Decorates the HCP notification bar (row 0): CONTINUE dismisses it; GO TO PATIENT SITE navigates out.
 function decorateHcpBar(section) {
   if (!section) return null;
   if (sessionStorage.getItem(SESSION_HCP_DISMISSED) === 'true') return null;
@@ -135,8 +117,7 @@ function decorateHcpBar(section) {
       btn.className = 'nav-hcp-continue';
       btn.textContent = label;
       btn.addEventListener('click', () => {
-        // Non-sensitive UI flag (a boolean marking the HCP notice as dismissed
-        // for this tab). No tokens or personal data — safe in sessionStorage.
+        // Non-sensitive UI flag (dismissed-for-this-tab boolean) — safe in sessionStorage.
         // eslint-disable-next-line browser-security/no-sensitive-localstorage
         sessionStorage.setItem(SESSION_HCP_DISMISSED, 'true');
         bar.remove();
@@ -156,11 +137,7 @@ function decorateHcpBar(section) {
   return bar;
 }
 
-/**
- * Decorates the utility bar (row 1): indication tagline + PI/Patient Info dropdowns
- * + View patient site.
- * @returns {HTMLElement|null}
- */
+// Decorates the utility bar (row 1): indication tagline + PI/Patient Info dropdowns + View patient site.
 function decorateUtilityBar(section) {
   if (!section) return null;
   const bar = document.createElement('div');
@@ -206,10 +183,7 @@ function decorateUtilityBar(section) {
   return bar;
 }
 
-/**
- * Builds the tools cluster (CTA pills) from the brand section.
- * @returns {HTMLElement} .nav-tools
- */
+// Builds the tools cluster (CTA pills) from the brand section.
 function buildTools(section) {
   const tools = document.createElement('div');
   tools.className = 'nav-tools';
@@ -225,10 +199,7 @@ function buildTools(section) {
   return tools;
 }
 
-/**
- * Builds the mobile hamburger toggle (icon + persistent "Menu" label, as source).
- * @returns {HTMLElement} button.nav-hamburger
- */
+// Builds the mobile hamburger toggle (icon + persistent "Menu" label, as source).
 function buildHamburger() {
   const hamburger = document.createElement('button');
   hamburger.type = 'button';
@@ -239,10 +210,24 @@ function buildHamburger() {
   return hamburger;
 }
 
-/**
- * Builds the primary nav links list from the nav-links section.
- * @returns {HTMLElement} ul.nav-links-list
- */
+// Normalizes a URL to a comparable pathname, so links can be matched against the current page.
+function pagePath(href) {
+  const path = new URL(href, window.location.origin).pathname;
+  return path.length > 1 ? path.replace(/\/$/, '') : path;
+}
+
+// Marks the nav item matching the current page with .nav-link-current, so CSS can underline it.
+// Source never underlines a dropdown trigger, even when the active page is one of its children.
+function markCurrentPage(list) {
+  const current = pagePath(window.location.href);
+  [...list.children].forEach((li) => {
+    const link = li.querySelector(':scope > a');
+    const isCurrent = link && pagePath(link.href) === current;
+    if (isCurrent) li.classList.add('nav-link-current');
+  });
+}
+
+// Builds the primary nav links list from the nav-links section.
 function buildNavLinksList(section) {
   const list = document.createElement('ul');
   list.className = 'nav-links-list';
@@ -265,16 +250,11 @@ function buildNavLinksList(section) {
       }
     });
   }
+  markCurrentPage(list);
   return list;
 }
 
-/**
- * Builds the LuMi AI Assistant widget: a circular avatar + label that toggles a
- * small popup ("Let LuMi help you today!" + Start chatting / Try later + close).
- * All copy/media come from the nav fragment's LuMi section (content-first).
- * @param {HTMLElement} section The LuMi fragment section
- * @returns {HTMLElement|null}
- */
+// Builds the LuMi AI Assistant widget: avatar + label toggling a popup, content-first from the fragment.
 function buildLumi(section) {
   if (!section) return null;
   const contentRoot = section.querySelector('.default-content-wrapper') || section;
@@ -339,11 +319,7 @@ function buildLumi(section) {
   return wrapper;
 }
 
-/**
- * Builds the teal brand band as it appears on source: the logo sits on the left
- * and spans two stacked right-hand rows — tool CTAs on top, primary nav below.
- * @returns {HTMLElement|null}
- */
+// Builds the teal brand band: logo on the left, spanning two stacked right-hand rows (CTAs, then nav).
 function decorateBrandBand(brandSection, navLinksSection, lumiSection) {
   if (!brandSection && !navLinksSection) return null;
   const band = document.createElement('div');
@@ -358,13 +334,8 @@ function decorateBrandBand(brandSection, navLinksSection, lumiSection) {
       const brand = document.createElement('div');
       brand.className = 'nav-brand';
       const link = logoLink.cloneNode(true);
-      // Source swaps logos by breakpoint: white logo on the teal desktop band,
-      // full-colour logo on the white mobile band. Keep the authored (white) img
-      // for desktop and add a colour variant shown on mobile. The mobile <img>
-      // must live OUTSIDE the authored <picture> — inside it the picture's
-      // <source srcset> (the white PNG) would override the img's src. The SVG is
-      // served from /icons/ (the only asset dir served on both local and EDS;
-      // /content/images is not served on published EDS).
+      // Source swaps logos by breakpoint (white desktop / colour mobile); the mobile <img>
+      // must live outside the authored <picture> or its <source srcset> would win.
       const desktopImg = link.querySelector('img');
       if (desktopImg) {
         desktopImg.classList.add('nav-brand-logo-desktop');
@@ -402,28 +373,22 @@ function decorateBrandBand(brandSection, navLinksSection, lumiSection) {
   }
 
   container.append(right);
-  // Hamburger lives on the top bar (beside the logo) on mobile; the right column
-  // (CTAs + nav links) becomes the collapsible menu it toggles.
+  // Hamburger toggles the right column (CTAs + nav links) as a collapsible menu.
   container.append(buildHamburger());
   band.append(container);
   return band;
 }
 
-/**
- * loads and decorates the header
- * @param {Element} block The header block element
- */
+// Loads and decorates the header block.
 export default async function decorate(block) {
   const navMeta = getMetadata('nav');
-  // Local (aem up) serves the nav fragment under /content; DA/EDS production serves
-  // it at /nav. Try the metadata-provided path first, then /content/nav (local),
-  // then /nav (production) — first one that loads wins.
+  // Local serves the nav fragment under /content; DA/EDS production serves it at /nav.
   const candidates = [];
   if (navMeta) candidates.push(new URL(navMeta, window.location).pathname);
   candidates.push('/content/nav', '/nav');
   let fragment = null;
   for (let i = 0; i < candidates.length && !fragment; i += 1) {
-     
+
     fragment = await loadFragment(candidates[i]);
   }
 
@@ -433,16 +398,13 @@ export default async function decorate(block) {
   nav.setAttribute('aria-label', 'Main navigation');
 
   const sections = [...fragment.children];
-  // Fragment order: [0] HCP bar, [1] utility bar, [2] brand+tools, [3] primary nav,
-  // [4] LuMi AI Assistant. Brand + primary nav combine into one teal band.
+  // Fragment order: HCP bar, utility bar, brand+tools, primary nav, LuMi — brand+nav share one band.
   const [hcpSection, utilitySection, brandSection, navLinksSection, lumiSection] = sections;
 
   const hcpBar = decorateHcpBar(hcpSection);
   if (hcpBar) nav.append(hcpBar);
   const utilityBar = decorateUtilityBar(utilitySection);
   if (utilityBar) nav.append(utilityBar);
-  // Source renders the teal band as ONE row: logo on the left spanning two
-  // stacked right-hand rows (tool CTAs over primary nav links + LuMi widget).
   const brandBand = decorateBrandBand(brandSection, navLinksSection, lumiSection);
   if (brandBand) nav.append(brandBand);
 
@@ -463,12 +425,10 @@ export default async function decorate(block) {
   window.addEventListener('keydown', (e) => { if (e.code === 'Escape') closeAll(); });
   document.addEventListener('click', (e) => { if (!nav.contains(e.target)) closeAll(); });
 
-  // LuMi lives in the primary-nav row on desktop; on mobile that row collapses
-  // into the hamburger drawer, so move the LuMi avatar onto the top bar (just
-  // left of the hamburger) as the source does. Keep a marker of its desktop home.
+  // LuMi lives beside the nav on desktop; on mobile it moves next to the hamburger instead.
   const lumi = nav.querySelector('.nav-lumi');
   const lumiDesktopHome = lumi ? lumi.parentElement : null;
-  const desktopMq = window.matchMedia('(min-width: 900px)');
+  const desktopMq = window.matchMedia('(min-width: 992px)');
   const placeLumi = (atDesktop) => {
     if (!lumi) return;
     if (atDesktop) {

@@ -1,11 +1,71 @@
 /* video design tokens */
 :root { /* @boilerplate */
-  --video-max-width: 900px; /* @boilerplate */
-  --video-margin: var(--spacing-m) auto; /* @boilerplate */
+  --video-max-width: 93%; /* @boilerplate */
+  --video-margin: 0 auto; /* @boilerplate */
   --video-aspect-ratio: 16 / 9; /* @boilerplate */
   --video-placeholder-play-size: 44px; /* @boilerplate */
-  --video-placeholder-play-outline-width: 2px; /* @boilerplate */
+  --video-placeholder-play-outline-width: 4px; /* @boilerplate */
   --video-placeholder-play-triangle-height: 24px; /* @boilerplate */
   --video-placeholder-play-triangle-width: 18px; /* @boilerplate */
   --video-placeholder-play-left-offset: 2px; /* @boilerplate */
+  --video-placeholder-overlay-gap: 50px;
+  --video-placeholder-title-color: #fff;
+  --video-placeholder-title-font-size: var(--heading-font-size-m);
+  --video-placeholder-title-text-shadow: 0 1px 3px rgb(0 0 0 / 60%);
+}
+
+.video-wrapper + .accordion-wrapper {
+  .accordion .accordion-item-label {
+    font-size: 20px;
+  }
+
+  .accordion .accordion-item-body > p {
+    font-size: 16px;
+  }
+}
+
+
+.video video-js {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--video-aspect-ratio);
+}
+
+@media (width >= 768px) {
+  :root {
+    --video-placeholder-title-font-size: 50px;
+    --video-placeholder-overlay-gap: 5%;
+    --video-placeholder-play-size: 66px;
+    --video-placeholder-play-triangle-height: 34px;
+    --video-placeholder-play-triangle-width: 24px;
+    --video-placeholder-play-outline-width: 5px;
+  }
+
+  .video-wrapper {
+    .video .video-placeholder-play button::before  {
+      border-top: 16px solid transparent;
+      border-bottom: 16px solid transparent;
+    }
+  }
+
+  .video {
+    max-width: var(--video-max-width); /* @boilerplate */
+  }
+
+  .video-wrapper + .accordion-wrapper {
+    .accordion {
+      width: unset;
+      margin-left: 8%;
+      margin-right: 8%;
+    }
+
+    .accordion .accordion-item-body > p {
+      font-size: 18px;
+  }
+
+    .accordion .accordion-item-label {
+      font-size: 25px;
+    }
+  }
 }

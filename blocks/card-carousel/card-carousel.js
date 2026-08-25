@@ -1,3 +1,5 @@
+/* eslint-disable secure-coding/no-insecure-comparison
+-- browser-side keyboard navigation; comparing public KeyboardEvent.key values, not secrets. */
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import { moveInstrumentation, getBlockId } from '../../scripts/scripts.js';
 import { createSliderControls, initSlider, showSlide } from '../../scripts/slider.js';

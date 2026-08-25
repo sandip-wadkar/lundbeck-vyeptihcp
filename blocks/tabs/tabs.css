@@ -1,20 +1,5 @@
 @import url('./tabs-tokens.css');
 
-/* =========================================================================
-   VYEPTI pivotal trial data — clinical-data tab switcher.
-   Values extracted from source computed styles at
-   https://www.vyeptihcp.com/efficacy-and-patient-outcomes
-   (block #tabs-b3c889fa96.cmp-tabs). Source uses Bootstrap-4 breakpoints
-   (576/768/992/1200). Mobile-first: base = smallest viewport.
-   The nested accordion (blocks/accordion) is styled elsewhere — this file
-   never targets .accordion internals.
-   ========================================================================= */
-
-/* ---- Tab bar ------------------------------------------------------------ */
-
-/* Source: flex row, 4 equal-width tabs (flex:1 1 0), no gap, no border.
-   Inactive tab: transparent bg, muted-teal 70% text, uppercase bold.
-   Active tab: solid teal-muted fill, white text. */
 .tabs .tabs-list {
   display: flex;
   flex-flow: row nowrap;
@@ -60,7 +45,6 @@
 
 /* ---- Panel -------------------------------------------------------------- */
 
-/* Reset boilerplate borders/padding; source panel has no box, just flow content. */
 .tabs .tabs-panel {
   margin-top: 0;
   padding: 24px 0 0;
@@ -77,9 +61,6 @@
   padding: 0;
 }
 
-/* ---- Panel typography --------------------------------------------------- */
-
-/* Subhead h2 (e.g. "CHRONIC MIGRAINE (PROMISE-2)") — teal-muted, 22px. */
 .tabs .tabs-panel h2 {
   margin: 0;
   color: var(--link-color);
@@ -97,7 +78,6 @@
   color: var(--text-color);
 }
 
-/* Chart section heading (h3) — dark body color, 22px. */
 .tabs .tabs-panel h3 {
   margin: 16px 0 8px;
   color: var(--text-color);
@@ -106,7 +86,6 @@
   line-height: 28px;
 }
 
-/* Body copy + footnotes. */
 .tabs .tabs-panel p {
   margin: 8px 0 0;
   font-size: 16px;
@@ -114,22 +93,11 @@
   color: var(--text-color);
 }
 
-/* ---- Legend labels ------------------------------------------------------ */
-
-/* Source legend items are 16px, regular weight, dark body color. In the
-   migrated DOM these are the "VYEPTI 100 mg (n=356)" style paragraphs; the
-   colored swatches live baked into the composed chart image, so keep the
-   labels as clean two-line text (the <br> supplies the (n=…) line). */
 .tabs .tabs-panel p:has(br) {
   font-size: 16px;
   font-weight: 400;
 }
 
-/* ---- Chart image -------------------------------------------------------- */
-
-/* The localized graph PNG is the bar-chart only (the callout box is rebuilt
-   below from the brand-mark + text fragments). Show it centered, capped to the
-   source render width so it doesn't over-scale. */
 .tabs .tabs-panel p:has(> picture) {
   margin: 16px 0 0;
   text-align: center;
@@ -143,25 +111,15 @@
   margin: 0 auto;
 }
 
-/* ---- Callout box (rebuilt from fragments) ------------------------------- */
+.tabs .tabs-panel p a picture img {
+  display: inline;
+  width: 20px;
+  max-width: 20px;
+  height: auto;
+  margin: 0 0 0 6px;
+  vertical-align: middle;
+}
 
-/* Source: light-blue box (#e5f2f5) with a 70px brand-mark triangle on top and
-   the stat text in teal. The migrated content supplies three loose fragments
-   after each chart: a background-shape SVG (redundant — hidden, we use the CSS
-   bg), a brand-mark SVG (the triangle), and the stat-text paragraph. We give
-   the brand-mark + text the shared light-blue background and butt them together
-   into a single callout card. */
-
-/* NOTE: Document Authoring rewrites image `src` to hashed `./media_<hash>.svg?...`
-   URLs, so filename-based selectors (img[src*='brand-mark']) do NOT work once
-   published — they only matched on the local aem-cli preview. The two decorative
-   callout SVGs (background shape + brand-mark triangle) are instead identified
-   DA-stably by being SVGs with an EMPTY alt (`.svg` + alt=""), whereas the real
-   chart/study-design images are PNGs with descriptive alt text. */
-
-/* Decorative callout SVGs (bg-shape, brand-mark): empty-alt SVGs that must not
-   render as full-width inline images (they were blowing up to 466px). Constrain
-   to a small brand-mark size; the paragraph wrapping them becomes the callout head. */
 .tabs .tabs-panel p:has(> picture img[src*='.svg'][alt='']) {
   margin: 16px 0 0;
   padding: 16px 12px 0;
@@ -201,15 +159,6 @@
   padding-bottom: 12px;
 }
 
-/* =========================================================================
-   Responsive — Bootstrap-4 breakpoints (source parity).
-   ========================================================================= */
-
-/* Tablet: 576px — no layout change needed; base already matches. */
-
-/* Desktop (>=992px): source lays the chart and callout side-by-side, chart
-   ~413px and callout ~177px. We keep them stacked (chart, then callout card)
-   for a robust CSS-only rebuild, but widen the chart cap to the source size. */
 @media (width >= 992px) {
   .tabs .tabs-panel picture img {
     max-width: 466px;

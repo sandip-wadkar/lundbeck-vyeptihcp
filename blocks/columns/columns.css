@@ -17,65 +17,44 @@
   display: block; /* @boilerplate */
 }
 
-/* ────────────────────────────────────────────────────────────────
- * dose callout (product-shot image + teal dose sentence).
- * Source: `.teaser.dose-100mg .cmp-teaser` — image left, text right,
- * vertically centered, 60px gap, 40px vertical padding. Scoped to the
- * plain columns instance that carries a `.columns-img-col` so it never
- * touches the arrow-nav variant or other columns.
- * ──────────────────────────────────────────────────────────────── */
-main .columns:not(.arrow-nav):has(> div > .columns-img-col) > div {
-  gap: 1.5rem;
-  align-items: center;
-}
+main .section:has(.columns.arrow-nav) {
+  margin-left: 0;
+  margin-right: 0;
 
-main .columns:not(.arrow-nav):has(> div > .columns-img-col) .columns-img-col {
-  flex: 0 0 auto;
-  line-height: 0;
-}
-
-main .columns:not(.arrow-nav):has(> div > .columns-img-col) .columns-img-col img {
-  width: 300px;
+> div {
   max-width: 100%;
-  height: auto;
-}
-
-main .columns:not(.arrow-nav):has(> div > .columns-img-col) > div > div:not(.columns-img-col) p {
   margin: 0;
-  font-size: var(--heading-font-size-m); /* 22px @desktop (source) */
-  font-weight: 700;
-  line-height: 1.27;
-  color: var(--link-color);
+  padding: 0;
+ }
 }
 
-/* ────────────────────────────────────────────────────────────────
- * arrow-nav variant (teal CTA band with two arrow links).
- * Source: `div.arrow-navigation` — solid teal band (rgb 65 116 141 =
- * --link-color), two white bold links each followed by a white
- * right-arrow glyph, vertical divider between them on desktop, stacked
- * and centered on mobile.
- * ──────────────────────────────────────────────────────────────── */
 main .columns.arrow-nav {
   background-color: var(--link-color);
-  max-width: var(--max-width-site);
+  max-width: 100%;
 }
 
 main .columns.arrow-nav > div {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 0;
+  max-width: 100%;
+  margin-inline: auto;
 }
 
 main .columns.arrow-nav > div > div {
   order: unset;
   flex: 1;
-  padding: 16px 15px;
-  text-align: center;
+  padding: 34.5px 15px;
+  text-align: right;
 }
 
 main .columns.arrow-nav > div > div p {
   margin: 0;
+  color: #fff;
+  font-family: var(--body-font-family);
+  font-size: var(--heading-font-size-s); /* 18px @desktop (source) */
+  font-weight: 700;
+  line-height: 1.22;
 }
 
 main .columns.arrow-nav a,
@@ -84,68 +63,71 @@ main .columns.arrow-nav a:any-link {
   align-items: center;
   gap: 12px;
   font-family: var(--body-font-family);
-  font-size: var(--heading-font-size-s); /* 18px @desktop (source) */
+  font-size: var(--heading-font-size-xs); /* 16px below 768px (source) */
   font-weight: 700;
-  line-height: 1.22;
+  line-height: 22px; /* fixed px in source (not a ratio) — stays 22px at both sizes */
   color: #fff;
   text-decoration: none;
 }
 
-main .columns.arrow-nav a:hover {
-  color: #fff;
-  text-decoration: underline;
+/* Hover highlight spans the whole cell, matching source's `.cmp-teaser__content:hover a`. */
+main .columns.arrow-nav > div > div:hover a {
+  color: var(--columns-arrow-nav-hover-color);
 }
 
-/* white right-arrow glyph after each link (source uses a 21x21 white arrow png) */
+/* white right-arrow glyph, thickened/enlarged to match the source's bolder arrow. */
 main .columns.arrow-nav a::after {
   content: '';
   flex: 0 0 auto;
-  width: 21px;
-  height: 21px;
+  width: var(--columns-arrow-nav-arrow-size);
+  height: var(--columns-arrow-nav-arrow-size);
   background-color: currentcolor;
-  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11h13.2l-4.6-4.6L14 5l7 7-7 7-1.4-1.4 4.6-4.6H4z"/></svg>') no-repeat center / contain;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 11H17L11.5 6L13 4.5L21 12L13 19.5L11 18.5L17 13H3Z"/></svg>') no-repeat center / contain;
   mask-repeat: no-repeat;
   mask-position: center;
   mask-size: contain;
 }
 
-/* stats-callout variant — vyepti study/survey results callouts.
-   Teal headings, large red italic "X fewer" numbers, centered copy. */
-main .columns.stats-callout > div > div {
+/* "options" section style — centered intro text + a row of short bullet items (e.g. infusion-information). Section-scoped since it also styles the default-content-wrapper text, not just the columns block. */
+main .section.options .default-content-wrapper {
   text-align: center;
-  align-items: flex-start;
 }
 
-main .columns.stats-callout h2,
-main .columns.stats-callout h4 {
-  color: var(--brand-primary);
+/* Source's heading stays 32px below 768px, unlike the site's generic h2 24px→34px step. */
+main .section.options .default-content-wrapper h2 {
+  font-size: 32px;
 }
 
-main .columns.stats-callout h4 {
-  font-size: var(--heading-font-size-l);
+/* Overrides the generic 24px `.columns-wrapper` top margin (styles.css); source uses 16px. */
+main .section.options .columns-wrapper {
+  margin-top: 16px;
 }
 
-main .columns.stats-callout h1 {
-  max-width: none;
-  margin: 0.2em 0;
-  font-style: italic;
-  font-size: var(--heading-font-size-xxl);
-  color: var(--brand-secondary);
+main .section.options .default-content-wrapper p,
+main .section.options .columns li {
+  font-size: 18px;
+  font-weight: 600;
 }
 
-main .columns.stats-callout h1 em {
-  font-style: italic;
+main .section.options .default-content-wrapper p {
+  margin: 0;
 }
 
-/* bold is teal only in the results blocks (comparison line + survey lead phrases);
-   intro-block bold (e.g. "1072 people", "94 people…") stays black, as in the source */
-main .columns.stats-callout:has(h1) strong,
-main .columns.stats-callout:has(img) strong {
-  color: var(--brand-primary);
+main .section.options .columns strong {
+  font-weight: 600;
 }
 
-main .columns.stats-callout p {
-  margin: 0.4em 0;
+/* Reduced from the browser-default 40px indent — 0 causes the bullet to overlap the previous item in our flex layout. */
+main .section.options .columns ul {
+  padding-left: 16px;
+  margin: 0; /* default 8px margin was stacking with the 16px flex gap, doubling item spacing */
+}
+
+/* Stays stacked past the boilerplate's 768px row-switch (source switches at 992px) and resets align-items back from the boilerplate's `center`. */
+main .section.options .columns > div {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px; /* source value at every breakpoint; boilerplate default is 24px */
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -192,45 +174,337 @@ main .columns.coverage-hero h3 {
   font-weight: 700;
 }
 
-/* survey results block (image + text rows): small circular patient photo with an
-   enlarged lead paragraph. Mobile-first: photo centered on top, centered text. */
-main .columns.stats-callout:has(img) > div {
-  gap: 1.5rem;
+/* ────────────────────────────────────────────────────────────────
+ * jump-nav variant — white pill card of same-page scroll-jump links,
+ * overlapping the bottom edge of a preceding page-title hero. Each row
+ * is one link, single cell.
+ * ──────────────────────────────────────────────────────────────── */
+main .columns.jump-nav {
+  max-width: var(--max-width-site);
+  position: relative;
+  z-index: 2;
+}
+
+main .columns.jump-nav > div {
+  display: flex;
+  flex-direction: column;
+  background: var(--background-color);
+  border-radius: 10px;
+  box-shadow: inset 0 0 8px 2px rgb(0 0 0 / 20%);
+  padding: 16px;
+  gap: 0;
+}
+
+main .columns.jump-nav > div > div {
+  border-bottom: 1px solid #a4a4a4;
+  padding: 6px 0;
+  flex: unset;
+}
+
+main .columns.jump-nav > div > div:first-child {
+  padding-top: 0;
+}
+
+main .columns.jump-nav > div > div:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+main .columns.jump-nav a {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--brand-teal-muted);
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
 }
 
-main .columns.stats-callout:has(img) .columns-img-col {
-  flex: 0 0 auto;
-  max-width: 230px;
-  margin: 0 auto;
+main .columns.jump-nav a::after {
+  content: "";
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  background-image: url('/icons/back-to-top.svg');
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transform: rotate(90deg);
 }
 
-main .columns.stats-callout:has(img) .columns-img-col img {
-  width: 230px;
-  aspect-ratio: 1;
-  object-fit: contain;
+main .columns.jump-nav > div > div:hover a {
+  color: var(--brand-secondary);
+  text-decoration: none;
+
+  &::after {
+  background-image: url('/icons/back-to-top-hover.svg');
+  }
 }
 
-/* enlarged teal-accented lead line (first paragraph) of each survey row */
-main .columns.stats-callout:has(img) > div > div:not(.columns-img-col) > p:first-child {
-  font-size: var(--heading-font-size-l);
+/* ────────────────────────────────────────────────────────────────
+ * icon-feature variant — repeating [icon, text] ITEMS, each authored as
+ * its own ROW (2 cells: icon, text). Sub-modifiers carry each source
+ * pattern's exact values: .callout (magenta band), .claims (2-col icon
+ * grid), .connect (circular icon + description grid).
+ * ──────────────────────────────────────────────────────────────── */
+main .columns.icon-feature {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+main > .section > .columns-wrapper:has(> .columns.icon-feature) {
+  margin-bottom: 0;
+}
+
+main .columns.icon-feature > div {
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+}
+
+main .columns.icon-feature > div > .columns-img-col {
+  flex: 0 0 80px;
+}
+
+main .columns.icon-feature > div > div:last-child :is(h1, h2, h3, h4, h5, h6) {
+  margin: 0;
+}
+
+main .columns.icon-feature > div > div:last-child > :first-child {
+  margin-top: 0;
+}
+
+main .columns.icon-feature > div > div:last-child ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+/* icon-feature.callout — magenta rounded band, white circular icon */
+main .columns.icon-feature.callout {
+  color: var(--background-color);
+  border-radius: 20px;
+  padding: 32px;
+  gap: 20px;
+}
+
+main .columns.icon-feature.callout img {
+  width: 52px;
+  height: 52px;
+  background: var(--background-color);
+}
+
+main .columns.icon-feature.callout > div > div:last-child p {
+  margin: 0;
+  font-size: 15px;
   line-height: 1.3;
 }
 
-/* Source (Bootstrap) breakpoint: the survey rows and intro/comparison columns
-   switch from stacked to side-by-side at 768px (col-md/col-lg on the source).
-   The base columns block only flips to a row at 900px, so the variant flips
-   its own flex-direction here to match the source. */
+/* Note: the icon-feature.claims and icon-feature.connect columns sub-variants
+   were removed — their content moved to the cards (icon-feature claims) /
+   cards (icon-feature icon-80) blocks. The base icon-feature, .callout and
+   .emboss variants remain — still used on safety, infusion, and dosing. */
+
+/* ────────────────────────────────────────────────────────────────
+ * logo-grid variant — bordered grid of logo + download-link ITEMS, each
+ * authored as its own ROW (2 cells: logo, link); each row is one bordered
+ * grid cell, internally stacked (logo above link).
+ * ──────────────────────────────────────────────────────────────── */
+main .columns.logo-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+main .columns.logo-grid > div {
+  border-bottom: 1px solid var(--columns-logo-grid-border-color);
+  padding: var(--columns-logo-grid-padding);
+  flex-direction: row;
+  justify-content: space-between;
+  gap: var(--columns-logo-grid-gap);
+  align-items: center;
+}
+
+main .columns.logo-grid > div:first-child {
+  padding: var(--columns-logo-grid-padding-first);
+}
+
+main .columns.logo-grid > div:last-child {
+  border-bottom: 0;
+}
+
+main .columns.logo-grid img {
+  width: auto;
+  max-width: var(--columns-logo-max-width);
+  height: auto;
+  object-fit: contain;
+}
+
+/* uniform logo area so short logos still fill it */
+main .columns.logo-grid > div > div:first-child {
+  display: flex;
+  align-items: center;
+  min-height: var(--columns-logo-item-height);
+}
+
+/* zero <p> margins so the flex gap governs spacing */
+main .columns.logo-grid > div p {
+  margin: 0;
+}
+
+main .columns.logo-grid > div > div:last-child a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--brand-teal-muted);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+main .columns.logo-grid > div > div:last-child img {
+  width: var(--columns-logo-download-icon-size);
+  height: var(--columns-logo-download-icon-size);
+  max-height: none;
+}
+
+/* ────────────────────────────────────────────────────────────────
+ * teal variant — solid teal callout box: document image beside a white
+ * heading + pill CTA (e.g. copay-support "Download the brochure").
+ * Mobile-first: stacked & centered; image left / text right at desktop.
+ * Button color stays author-controlled via link formatting (bold →
+ * rose primary); this variant only guarantees legibility on the dark
+ * background, it does not hardcode the button color.
+ * ──────────────────────────────────────────────────────────────── */
+main .columns.teal {
+  background: var(--columns-teal-bg);
+  border-radius: var(--columns-teal-radius);
+  padding: var(--columns-teal-padding);
+  color: var(--background-color);
+}
+
+/* The generic .columns-wrapper adds a 16px horizontal margin on top of the
+   section's 16px padding, caging the box to ~32px gutters. The source box
+   sits at ~15px gutters, so drop the wrapper's side margin for the teal box
+   (mobile only — desktop centers it in a wide section). */
+main .columns-wrapper:has(> .columns.teal) {
+  margin-inline: 0;
+}
+
+main .columns.teal > div {
+  gap: var(--columns-teal-gap);
+  align-items: center; /* centers the image column; text alignment stays author-controlled */
+  flex-direction: column;
+}
+
+main .columns.teal .columns-img-col {
+  flex: 0 0 auto;
+  line-height: 0;
+}
+
+main .columns.teal .columns-img-col img {
+  width: var(--columns-teal-img-width);
+  height: auto;
+
+  /* clip the asset's larger baked-in corners to the source's 20px radius */
+  border-radius: var(--columns-teal-radius);
+}
+
+/* Only guarantee legibility on the dark box and the source's spacing;
+   size/weight/line-height stay author-controlled. */
+main .columns.teal :is(h1, h2, h3, h4, h5, h6),
+main .columns.teal p:not(.button-wrapper) {
+  margin: 0 0 var(--columns-teal-gap);
+  color: var(--background-color);
+}
+
+main .columns.teal .button-wrapper {
+  margin: 0;
+  width: 100%;
+  line-height: 0; /* collapse the inline-block button's line-box descent */
+}
+
+/* On the teal background, the CTA renders as the contrasting rose pill
+   (mirrors the section.dark button-remap precedent so a filled button stays
+   legible on a colored box). Outline/secondary buttons keep their own style. */
+main .columns.teal a.button:not(.secondary) {
+  background-color: var(--brand-secondary);
+  border-color: var(--brand-secondary);
+  color: var(--background-color);
+}
+
+/* Hover/focus inverts the pill to match the source CTA: white fill, rose text
+   and rose border. */
+main .columns.teal a.button:not(.secondary):hover,
+main .columns.teal a.button:not(.secondary):focus {
+  background-color: var(--background-color);
+  border-color: var(--brand-secondary);
+  color: var(--brand-secondary);
+}
+
+/* margin:0 drops the global button margin so the box height matches the
+   source (the 40px heading-to-button gap is set on the heading).
+   Mobile: the pill stretches to the full content width (source is a
+   full-width block button, flush with the heading edges); desktop reverts
+   to an auto-width pill with the wider 60px inline padding.
+   Label casing stays author-controlled (no text-transform). */
+main .columns.teal a.button {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 16px 14px;
+  text-align: center; /* center the label inside the full-width pill */
+}
+
+@media (width >= 576px) {
+  main .columns.arrow-nav > div {
+    max-width: 540px;
+  }
+}
+
 @media (width >= 768px) {
   .columns > div { /* @boilerplate */
-    align-items: center; /* @boilerplate */
     flex-direction: unset; /* @boilerplate */
     gap: var(--columns-gap); /* @boilerplate */
+    align-items: center;
+  }
+
+  .columns.jump-nav > div {
+    align-items: unset;
   }
 
   .columns > div > div { /* @boilerplate */
     flex: 1; /* @boilerplate */
     order: unset; /* @boilerplate */
+  }
+
+  /* teal box (tablet): still stacked & centered like the source below 992px,
+     but with the wider box padding (source inset ≈ 50px). The image+heading
+     stay stacked here; the side-by-side row only kicks in at >=992px. */
+  main .columns.teal {
+    padding: var(--columns-teal-padding-desktop);
+  }
+
+  /* restore the wrapper's auto side margins so the max-width box re-centers
+     in the wide section (the mobile rule zeroes them to kill the double gutter) */
+  main .columns-wrapper:has(> .columns.teal) {
+    margin-inline: auto;
+  }
+
+  /* CTA reverts to an auto-width centered pill (source ≈ 345×56px) with the
+     wider 60px inline padding, no longer stretched full-width */
+  main .columns.teal .button-wrapper {
+    width: auto;
+    text-align: center;
+  }
+
+  main .columns.teal a.button {
+    display: inline-block;
+    width: auto;
+    padding: var(--columns-teal-button-padding);
   }
 
   .columns.divider.columns-2-cols > div {
@@ -253,38 +527,178 @@ main .columns.stats-callout:has(img) > div > div:not(.columns-img-col) > p:first
     align-items: center;
     justify-content: center;
     gap: 0;
+    max-width: 720px;
   }
 
   main .columns.arrow-nav > div > div {
-    padding: 24px 15px;
+    text-align: center;
   }
 
+  /* Fixed-height divider, vertically centered — a border would stretch to the
+     column's full height, which is taller than the source's actual divider. */
   main .columns.arrow-nav > div > div:not(:first-child) {
-    border-inline-start: 1px solid rgb(255 255 255 / 45%);
+    position: relative;
   }
 
-  main .columns.stats-callout > div {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: var(--columns-gap);
+  main .columns.arrow-nav > div > div:not(:first-child)::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    top: 50%;
+    width: 1px;
+    height: var(--columns-arrow-nav-divider-height);
+    background-color: var(--columns-arrow-nav-divider-color);
+    transform: translateY(-50%);
   }
 
-  main .columns.stats-callout > div > div {
-    flex: 1;
-    order: unset;
+  main .columns.arrow-nav a,
+  main .columns.arrow-nav a:any-link {
+    font-size: var(--heading-font-size-s); /* 18px at >=768px (source) */
   }
 
-  /* desktop: photo left, text left-aligned beside it */
-  main .columns.stats-callout:has(img) > div {
-    gap: 2rem;
+  main .columns.icon-feature.claims {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 32px;
+  }
+
+  /* desktop: 3-across; flex-wrap + center so a lone final item centers */
+  main .columns.logo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  main .columns.logo-grid > div,
+  main .columns.logo-grid > div:first-child {
+    flex: 0 0 calc(100% / 3);
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
+    gap: 8px;
+    padding: 16px 0;
+    border-right: 1px solid var(--columns-logo-grid-border-color);
+    border-bottom: 1px solid var(--columns-logo-grid-border-color);
   }
 
-  main .columns.stats-callout:has(img) .columns-img-col {
-    margin: 0;
+  main .columns.logo-grid > div:nth-child(3n) {
+    border-right: none;
   }
 
-  main .columns.stats-callout:has(img) > div > div:not(.columns-img-col) {
+  /* centered final item: dividers on both sides */
+  main .columns.logo-grid > div:last-child {
+    border-left: 1px solid var(--columns-logo-grid-border-color);
+    border-right: 1px solid var(--columns-logo-grid-border-color);
+  }
+
+  main .columns.icon-feature.connect {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 32px;
+  }
+
+  /* "options" section style: source's heading is a flat 32px below this breakpoint. */
+  main .section.options .default-content-wrapper h2 {
+    font-size: var(--heading-font-size-xl);
+  }
+}
+
+@media (width >= 992px) {
+  /* teal box: source switches to image left / text right side-by-side only
+     at >=992px (stacked & centered below that). Center the image+text group,
+     cap the text column, and bump the heading to 26px. */
+  main .columns.teal > div {
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--columns-teal-gap-desktop);
+    align-items: flex-start;
+  }
+
+  /* desktop only widens the heading-to-button gap; size/weight stay author-controlled */
+  main .columns.teal :is(h1, h2, h3, h4, h5, h6),
+  main .columns.teal p:not(.button-wrapper) {
+    margin-bottom: var(--columns-teal-gap-desktop);
+  }
+
+  main .columns.teal > div > div:last-child {
+    flex: 0 1 var(--columns-teal-text-max-width);
+  }
+
+  /* in the row layout the CTA is left-aligned under the text, not centered */
+  main .columns.teal .button-wrapper {
     text-align: left;
+  }
+
+  main .columns.jump-nav > div {
+    flex-direction: row;
+    border-radius: 20px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  main .columns.jump-nav > div > div {
+    border-bottom: 0;
+    border-left: 1px solid #a4a4a4;
+    padding: 0;
+    flex: 1;
+
+    > p {
+      width: 228px;
+      padding: 0 12px;
+    }
+    }
+
+    main .columns.jump-nav.columns-2-cols {
+      width: 720px;
+
+      p {
+        width: 310px;
+        padding: 0 40px;
+      }
+  }
+
+  main .columns.jump-nav.columns-3-cols {
+    p {
+      width: 290px;
+      padding: 0 40px;
+    }
+  }
+
+  main .columns.jump-nav > div > div:first-child {
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  main .columns.jump-nav > div > div:last-child {
+    padding-right: 0;
+  }
+
+  main .columns.jump-nav a {
+    font-size: 18px;
+  }
+
+  main .columns.icon-feature.callout {
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    gap: 24px;
+  }
+
+  main .columns.icon-feature.callout > div {
+    flex: 1;
+  }
+
+  /* "options" section style: source switches to side-by-side only here, not at 768px. */
+  main .section.options .columns > div {
+    flex-direction: row;
+    align-items: stretch; /* equal-height cells so text starts at the top, not centered */
+  }
+
+  /* Sized to content (source: flex: 0 1 auto), not equal quarters — the boilerplate's flex: 1 over-wrapped the longest item. */
+  main .section.options .columns > div > div {
+    flex: 0 1 auto;
+  }
+}
+
+@media (width >= 1200px) {
+  main .columns.arrow-nav > div {
+    max-width: var(--max-width-site); /* 1140px */
   }
 }

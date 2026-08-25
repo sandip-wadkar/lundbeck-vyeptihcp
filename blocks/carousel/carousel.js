@@ -1,3 +1,5 @@
+/* eslint-disable secure-coding/no-insecure-comparison
+-- browser-side keyboard navigation; comparing public KeyboardEvent.key values, not secrets. */
 import { moveInstrumentation, getBlockId } from '../../scripts/scripts.js';
 import { buildPictureContentFromImageCell } from '../../scripts/utils.js';
 import { createSliderControls, initSlider, showSlide } from '../../scripts/slider.js';
@@ -13,12 +15,12 @@ function createSlide(row, slideIndex, carouselId, isTestimonial) {
   row.querySelectorAll(':scope > div').forEach((column, colIdx) => {
     column.classList.add(`carousel-slide-${colIdx === 0 ? 'image' : 'content'}`);
     if (isTestimonial && colIdx === 0) {
-      const eager = slideIndex === 0;
+      // const eager = slideIndex === 0;
       const firstImg = column.querySelector('picture > img');
       column.replaceChildren(
         buildPictureContentFromImageCell(column, {
-          eagerSingle: eager,
-          eagerArtDirection: eager,
+          eagerSingle: false, // set to eager if forcing 1st slide eager
+          eagerArtDirection: false,  // set to eager if forcing 1st slide eager
         }),
       );
       const newImg = column.querySelector('picture > img');

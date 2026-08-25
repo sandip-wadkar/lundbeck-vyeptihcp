@@ -1,0 +1,6 @@
+/* connect-support design tokens */
+:root {
+  --connect-support-radius: 20px;
+  --connect-support-enroll-font-size: 18px;
+  --connect-support-fine-font-size: 13px;
+}

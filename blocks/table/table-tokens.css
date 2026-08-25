@@ -1,14 +1,31 @@
 /* table design tokens */
-:root { /* @libs */
-  --table-border-color: #d1d1d1; /* @libs */
-  --table-header-bg: linear-gradient(270deg, var(--brand-primary-light) 0%, var(--light-color) 30%); /* @libs */
-  --table-header-text-color: var(--brand-primary); /* @libs */
-  --table-header-font-size: 20px; /* @libs */
-  --table-header-line-height: 24px; /* @libs */
-  --table-header-padding: 6px 16px; /* @libs */
+:root {
+  --table-border-color: var(--brand-teal-muted);
+  --table-header-bg: var(--brand-teal-muted);
+  --table-header-text-color: #fff;
+  --table-body-text-color: var(--brand-teal-muted);
+  --table-header-font-size: 16px;
+  --table-header-line-height: 24px;
+  --table-header-padding: 4px 16px;
   --table-accent-color: var(--brand-secondary); /* @libs */
   --table-row-border-width: 1px; /* @libs */
-  --table-cell-padding-block: 16px; /* @libs */
+  --table-radius: 8px;
+  --table-divider-inset: 8px;
+  --table-cell-padding-block: 8px;
   --table-cell-padding-inline: 16px; /* @libs */
   --table-cell-padding-block-desktop: 21px; /* @libs */
+  --table-reactions-col-gap: 10px;
+  --table-reactions-col-gap-desktop: 30px;
+  --table-reactions-font-weight: 400;
+  --table-reactions-data1-background: #a0b9c6;
+  --table-reactions-data2-background: var(--brand-teal-muted);
+  --table-reactions-data3-background: #b6b6b6;
+  --table-reactions-data-color: #fff;
+  --table-reactions-data-font-size: 14px;
+  --table-reactions-data-font-size-desktop: 22px;
+  --table-reactions-label-background: #fff;
+  --table-reactions-label-font-size: 14px;
+  --table-reactions-label-font-size-desktop: 18px;
+  --table-reactions-label-color: var(--text-color);
+  --table-cell-padding-block-desktop: 8px;
 }

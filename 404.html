@@ -35,20 +35,97 @@
     import { sampleRUM } from '/scripts/aem.js';
     sampleRUM('404', { source: document.referrer });
   </script>
+  <script nonce="aem" type="module">
+    /* The shared isi block (blocks/isi/isi.js) hides its fixed bottom bar
+       the instant any pixel of the ISI section overlaps the viewport, and
+       re-shows it if the section later scrolls back out of view. On
+       vyeptihcp.com/ffff the bar instead stays visible until the ISI
+       section has scrolled to fill most of the viewport, then dismisses
+       permanently for the rest of the page (confirmed: scrolling back up
+       does not bring it back). This page-local override replicates that,
+       without changing the shared block's behavior on any other page. */
+    const bar = await new Promise((resolve) => {
+      const existing = document.querySelector('.isi-bar');
+      if (existing) {
+        resolve(existing);
+        return;
+      }
+      const mo = new MutationObserver(() => {
+        const found = document.querySelector('.isi-bar');
+        if (found) {
+          mo.disconnect();
+          resolve(found);
+        }
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+    });
+
+    const section = document.querySelector('main.error .section.isi-container');
+    if (section) {
+      let dismissed = false;
+      const applyState = () => bar.classList.toggle('isi-bar-hidden', dismissed);
+
+      const observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          dismissed = true;
+          applyState();
+          observer.disconnect();
+        }
+      }, { rootMargin: '0px 0px -85% 0px' });
+      observer.observe(section);
+
+      // Re-assert our state whenever the shared block's own (stricter)
+      // observer flips the class, so the two don't fight visibly.
+      new MutationObserver(applyState).observe(bar, {
+        attributes: true,
+        attributeFilter: ['class'],
+      });
+    }
+  </script>
   <link rel="stylesheet" href="/styles/styles.css">
   <style>
-    main.error {
-      min-height: calc(100vh - var(--nav-height));
-      display: flex;
-      align-items: center;
+    main.error .error-hero {
+      /* Overrides the global `main > div { margin: 40px 16px; }` default
+         (styles/styles.css) for this section only. */
+      margin-top: 0;
+      margin-bottom: 0;
+      padding-top: 48px;
+      padding-bottom: 0;
+      text-align: center;
     }
 
-    main.error .error-number {
+    /* Global h1 caps width at --h1-max-width (14em); text-align: center
+       only centers the text inside that narrower box, not the box itself,
+       so the heading sat flush-left. The original has no such max-width. */
+    main.error .error-title {
+      max-width: unset;
+    }
+
+    main.error .error-message {
+      font-size: var(--body-font-size-ms);
+      font-weight: var(--font-weight-bold);
+      color: #666; /* matches vyeptihcp.com/ffff subtext color */
+    }
+
+    main.error .error-button-home {
       width: 100%;
+      max-width: 555px; /* matches vyeptihcp.com/ffff button width */
+      margin-top: 32px;
+      text-transform: uppercase;
     }
 
-    main.error .error-number text {
-      font-family: monospace;
+    /* The original site has no "Go back" link. The referrer-detection
+       script (above) still runs and creates it, but it's hidden here so
+       only "Return to home" ever shows. */
+    main.error .error-button-back {
+      display: none;
+    }
+
+    /* The legacy 404 page has no divider between the button and the ISI
+       content, unlike normal content pages where the isi block's section
+       gets a border-top (blocks/isi/isi-tokens.css --isi-section-border-*). */
+    main.error .section.isi-container {
+      border-top: none;
     }
   </style>
   <link rel="stylesheet" href="/styles/lazy-styles.css">
@@ -57,14 +134,52 @@
 <body>
   <header></header>
   <main class="error">
-    <div class="section">
-      <svg viewBox="1 0 38 18" class="error-number">
-        <text x="0" y="17">404</text>
-      </svg>
-      <h2 class="error-message">Page Not Found</h2>
+    <div class="section error-hero">
+      <h1 class="error-title">Page not found</h1>
+      <p class="error-message">The page you’re looking for does not exist, or another error occurred</p>
       <p class="button-container">
-        <a href="/" class="button secondary error-button-home">Go home</a>
+        <a href="/" class="button primary error-button-home">Return to home</a>
       </p>
+    </div>
+    <div class="section">
+      <div class="isi">
+        <div>
+          <div>
+            <h4>IMPORTANT SAFETY INFORMATION AND INDICATION</h4>
+            <h5>CONTRAINDICATIONS</h5>
+            <p>VYEPTI is contraindicated in patients with serious hypersensitivity to eptinezumab-jjmr or to any of the excipients. Reactions have included anaphylaxis and angioedema.</p>
+            <h5>WARNINGS AND PRECAUTIONS</h5>
+            <p><strong>Hypersensitivity Reactions:</strong> Hypersensitivity reactions, including angioedema, urticaria, facial flushing, dyspnea, and rash, have occurred with VYEPTI in clinical trials and in the postmarketing setting. Most hypersensitivity reactions occurred during infusion and were not serious, but often led to discontinuation or required treatment. Serious hypersensitivity reactions may occur. Cases of anaphylaxis have been reported in the postmarketing setting. If a hypersensitivity reaction occurs, consider discontinuing VYEPTI and institute appropriate therapy.</p>
+            <p><strong>Hypertension:</strong> Development of hypertension and worsening of pre-existing hypertension have been reported following the use of CGRP antagonists, including VYEPTI, in the postmarketing setting. Some of the patients who developed new-onset hypertension had risk factors for hypertension. There were cases requiring initiation of pharmacological treatment for hypertension, and in some cases hospitalization. Hypertension may occur at any time during treatment, but was most frequently reported within 7 days of therapy initiation. The CGRP antagonist was discontinued in many of the reported cases.</p>
+            <p>Monitor patients treated with VYEPTI for new-onset hypertension or worsening of pre-existing hypertension, and consider whether discontinuation of VYEPTI is warranted if evaluation fails to establish an alternative etiology or blood pressure is inadequately controlled.</p>
+            <p><strong>Raynaud’s Phenomenon:</strong> Development of Raynaud’s phenomenon and recurrence or worsening of pre-existing Raynaud’s phenomenon have been reported in the postmarketing setting following the use of CGRP antagonists. In reported cases with monoclonal antibody CGRP antagonists, symptom onset occurred a median of 71 days following dosing. Many of the cases reported serious outcomes, including hospitalizations and disability, generally related to debilitating pain. In most reported cases, discontinuation of the CGRP antagonist resulted in resolution of symptoms.</p>
+            <p>VYEPTI should be discontinued if signs or symptoms of Raynaud’s phenomenon develop, and patients should be evaluated by a healthcare provider if symptoms do not resolve. Patients with a history of Raynaud’s phenomenon should be monitored for, and informed about the possibility of, worsening or recurrence of signs and symptoms.</p>
+            <h5>ADVERSE REACTIONS</h5>
+            <p>The most common adverse reactions (≥2% and at least 2% or greater than placebo) in the clinical trials for the preventive treatment of migraine were nasopharyngitis and hypersensitivity.</p>
+            <h4>INDICATION</h4>
+            <p>VYEPTI is indicated for the preventive treatment of migraine in adults.</p>
+            <p><strong>For more information, please see the Full <a href="https://www.lundbeck.com/content/dam/lundbeck-com/americas/united-states/products/neurology/vyepti_pi_us_en.pdf">Prescribing Information</a> and <a href="https://www.lundbeck.com/content/dam/lundbeck-com/americas/united-states/products/neurology/vyepti_ppi_us_en.pdf">Patient Information</a>.</strong></p>
+          </div>
+        </div>
+        <div>
+          <div>
+            <h4>IMPORTANT SAFETY INFORMATION AND INDICATION</h4>
+            <h5>CONTRAINDICATIONS</h5>
+            <p>VYEPTI is contraindicated in patients with serious hypersensitivity to eptinezumab-jjmr or to any of the excipients. Reactions have included anaphylaxis and angioedema.</p>
+            <h5>WARNINGS AND PRECAUTIONS</h5>
+            <p><strong>Hypersensitivity Reactions:</strong> Hypersensitivity reactions, including angioedema, urticaria, facial flushing, dyspnea, and rash, have occurred with VYEPTI in clinical trials and in the postmarketing setting. Most hypersensitivity reactions occurred during infusion and were not serious, but often led to discontinuation or required treatment. Serious hypersensitivity reactions may occur. Cases of anaphylaxis have been reported in the postmarketing setting. If a hypersensitivity reaction occurs, consider discontinuing VYEPTI and institute appropriate therapy.</p>
+            <p><strong>Hypertension:</strong> Development of hypertension and worsening of pre-existing hypertension have been reported following the use of CGRP antagonists, including VYEPTI, in the postmarketing setting. Some of the patients who developed new-onset hypertension had risk factors for hypertension. There were cases requiring initiation of pharmacological treatment for hypertension, and in some cases hospitalization. Hypertension may occur at any time during treatment, but was most frequently reported within 7 days of therapy initiation. The CGRP antagonist was discontinued in many of the reported cases.</p>
+            <p>Monitor patients treated with VYEPTI for new-onset hypertension or worsening of pre-existing hypertension, and consider whether discontinuation of VYEPTI is warranted if evaluation fails to establish an alternative etiology or blood pressure is inadequately controlled.</p>
+            <p><strong>Raynaud’s Phenomenon:</strong> Development of Raynaud’s phenomenon and recurrence or worsening of pre-existing Raynaud’s phenomenon have been reported in the postmarketing setting following the use of CGRP antagonists. In reported cases with monoclonal antibody CGRP antagonists, symptom onset occurred a median of 71 days following dosing. Many of the cases reported serious outcomes, including hospitalizations and disability, generally related to debilitating pain. In most reported cases, discontinuation of the CGRP antagonist resulted in resolution of symptoms.</p>
+            <p>VYEPTI should be discontinued if signs or symptoms of Raynaud’s phenomenon develop, and patients should be evaluated by a healthcare provider if symptoms do not resolve. Patients with a history of Raynaud’s phenomenon should be monitored for, and informed about the possibility of, worsening or recurrence of signs and symptoms.</p>
+            <h5>ADVERSE REACTIONS</h5>
+            <p>The most common adverse reactions (≥2% and at least 2% or greater than placebo) in the clinical trials for the preventive treatment of migraine were nasopharyngitis and hypersensitivity.</p>
+            <h4>INDICATION</h4>
+            <p>VYEPTI is indicated for the preventive treatment of migraine in adults.</p>
+            <p><strong>For more information, please see the Full <a href="https://www.lundbeck.com/content/dam/lundbeck-com/americas/united-states/products/neurology/vyepti_pi_us_en.pdf">Prescribing Information</a> and <a href="https://www.lundbeck.com/content/dam/lundbeck-com/americas/united-states/products/neurology/vyepti_ppi_us_en.pdf">Patient Information</a>.</strong></p>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
   <footer></footer>

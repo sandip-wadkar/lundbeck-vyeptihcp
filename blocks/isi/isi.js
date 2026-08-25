@@ -28,6 +28,27 @@ export default function decorate(block) {
   bar.className = 'isi-bar';
   bar.setAttribute('aria-label', 'Important Safety Information');
 
+  /* Pin critical positioning AND a height cap inline so the bar is both fixed
+     and bounded the instant it enters the DOM — isi.css/isi-tokens.css load
+     async, and decorate() (JS import) typically resolves before that fetch
+     completes. Without this, the bar briefly renders at full, unclipped
+     content height anchored to bottom:0 (filling most of the viewport), then
+     snaps down to the real collapsed height once the stylesheet lands —
+     exactly the shift PageSpeed penalizes. 150px matches isi-tokens.css'
+     mobile --isi-bar-height and covers the window before that custom
+     property resolves. */
+  bar.style.position = 'fixed';
+  bar.style.left = '0';
+  bar.style.right = '0';
+  bar.style.bottom = '0';
+  bar.style.boxSizing = 'border-box';
+  bar.style.overflow = 'hidden';
+  bar.style.maxHeight = 'var(--isi-bar-height, 150px)';
+  /* Hidden until the next frame so the DOM's initial reflow (fonts, column
+     layout, isi.css applying) isn't counted as a layout shift — elements with
+     visibility:hidden are excluded from layout-shift scoring. */
+  bar.style.visibility = 'hidden';
+
   /* Move the abbreviated content into the bar */
   const barContent = document.createElement('div');
   barContent.className = 'isi-bar-content';
@@ -59,23 +80,38 @@ export default function decorate(block) {
   document.body.append(bar);
 
   /* ── 3. Expand / collapse toggle ────────────────────────────── */
-  toggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const expanded = bar.classList.toggle('full');
+  const setExpanded = (expanded) => {
+    bar.classList.toggle('full', expanded);
+    /* Drop the inline CLS-guard cap so the stylesheet's .isi-bar.full rule
+       (height: auto, larger max-height) governs the expanded size — an inline
+       max-height would out-specify it and block expansion. By the time any
+       expand/collapse fires, isi.css has long since loaded. */
+    bar.style.removeProperty('max-height');
+    bar.style.removeProperty('overflow');
     toggle.setAttribute('aria-expanded', String(expanded));
     toggle.setAttribute(
       'aria-label',
       expanded ? 'Collapse safety information' : 'Expand safety information',
     );
+  };
+
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setExpanded(!bar.classList.contains('full'));
   });
 
   /* Clicking anywhere on the collapsed bar also expands it */
   bar.addEventListener('click', () => {
-    if (!bar.classList.contains('full')) {
-      bar.classList.add('full');
-      toggle.setAttribute('aria-expanded', 'true');
-      toggle.setAttribute('aria-label', 'Collapse safety information');
-    }
+    if (!bar.classList.contains('full')) setExpanded(true);
+  });
+
+  /* Reveal the bar once its initial layout has settled (see the CLS guard in
+     step 2). Two RAFs ensure a full style/layout pass has run so no
+     post-reveal reflow is scored. */
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      bar.style.removeProperty('visibility');
+    });
   });
 
   /* ── 4. IntersectionObserver – show/hide the bar ────────────── */
@@ -86,8 +122,7 @@ export default function decorate(block) {
     ([entry]) => {
       if (entry.isIntersecting) {
         bar.classList.add('isi-bar-hidden');
-        bar.classList.remove('full');
-        toggle.setAttribute('aria-expanded', 'false');
+        setExpanded(false);
       } else {
         bar.classList.remove('isi-bar-hidden');
       }

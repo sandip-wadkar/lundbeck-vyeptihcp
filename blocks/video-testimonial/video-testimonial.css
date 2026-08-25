@@ -1,0 +1,122 @@
+@import url('./video-testimonial-tokens.css');
+
+/* Mobile: single column, DOM order = stack order. Card look comes from .emboss;
+   source uses a tighter radius below desktop. */
+.video-testimonial {
+  display: flex;
+  flex-direction: column;
+  gap: var(--video-testimonial-row-gap);
+  border-radius: var(--video-testimonial-card-radius);
+}
+
+.video-testimonial .video-testimonial-title {
+  margin: 0;
+  color: var(--video-testimonial-title-color);
+  font-family: var(--heading-font-family);
+  font-weight: var(--heading-font-weight);
+  font-size: var(--video-testimonial-title-size);
+  line-height: 1.2;
+}
+
+.video-testimonial .video-testimonial-quote {
+  margin: 0;
+  color: var(--video-testimonial-quote-color);
+  font-family: var(--heading-font-family);
+  font-weight: var(--heading-font-weight);
+  font-size: var(--video-testimonial-quote-size);
+  line-height: 1.3;
+}
+
+.video-testimonial .video-testimonial-disclaimer {
+  margin: 0;
+  font-size: var(--body-font-size-xs);
+  line-height: 1.3;
+  color: var(--text-color);
+}
+
+/* Brightcove player, 16:9. */
+.video-testimonial .video-testimonial-media {
+  width: 100%;
+}
+
+.video-testimonial .video-testimonial-media video-js,
+.video-testimonial .video-testimonial-media .video-js {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--video-testimonial-video-radius);
+}
+
+/* Fallback when the provider is unknown. */
+.video-testimonial .video-testimonial-media > a {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--video-testimonial-video-radius);
+  background: var(--brand-teal);
+}
+
+/* CTA = global .button.primary; block adds layout + uppercase. */
+.video-testimonial .video-testimonial-cta {
+  display: block;
+  align-self: center;
+  width: var(--button-wide-width);
+  text-transform: uppercase;
+}
+
+.video-testimonial .video-testimonial-cta::after {
+  content: none;
+}
+
+/* Tablet: quote grows to match the title. */
+@media (width >= 768px) {
+  .video-testimonial .video-testimonial-quote {
+    font-size: var(--video-testimonial-quote-size-desktop);
+  }
+}
+
+/* Desktop: text left, video right. */
+@media (width >= 900px) {
+  .video-testimonial {
+    display: grid;
+    gap: 0 var(--video-testimonial-column-gap);
+    align-items: center;
+    padding: var(--video-testimonial-card-padding-desktop);
+    border-radius: var(--video-testimonial-card-radius-desktop);
+    grid-template:
+      'title video' auto
+      'quote video' auto
+      'cta   video' auto
+      'disc  video' 1fr
+      / 1fr 1fr;
+  }
+
+  .video-testimonial .video-testimonial-title {
+    grid-area: title;
+    align-self: end;
+  }
+
+  .video-testimonial .video-testimonial-quote {
+    grid-area: quote;
+    padding-top: 12px;
+  }
+
+  .video-testimonial .video-testimonial-cta {
+    grid-area: cta;
+    place-self: start start;
+    margin-top: 20px;
+  }
+
+  .video-testimonial .video-testimonial-disclaimer {
+    grid-area: disc;
+    align-self: start;
+    padding-top: 24px;
+  }
+
+  .video-testimonial .video-testimonial-media {
+    grid-area: video;
+    align-self: center;
+  }
+}

@@ -1,0 +1,15 @@
+/* video-testimonial design tokens (values extracted from vyeptihcp.com) */
+:root {
+  --video-testimonial-card-radius: 10px;
+  --video-testimonial-card-radius-desktop: 20px;
+  --video-testimonial-card-padding-desktop: 40px;
+  --video-testimonial-column-gap: 32px;
+  --video-testimonial-row-gap: 24px;
+  --video-testimonial-video-radius: 20px;
+  --video-testimonial-title-color: var(--text-color);
+  --video-testimonial-title-size: 22px;
+  --video-testimonial-quote-color: var(--brand-teal-muted);
+  --video-testimonial-quote-size: 18px;
+  --video-testimonial-quote-size-desktop: 22px;
+  --video-testimonial-cta-max-width: 345px;
+}

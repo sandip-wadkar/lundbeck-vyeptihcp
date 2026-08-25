@@ -35,7 +35,7 @@
      thin white rule sits under the links (added in the overrides below). */
   --footer-linkbar-background: transparent;
   --footer-linkbar-padding: 0; /* mobile top space above the link row */
-  --footer-linkbar-inner-padding: 30px 0 23px; /* side gutters + gap down to the rule */
+  --footer-linkbar-inner-padding: 30px 15px 23px; /* side gutters (matches vyeptihcp.com; was 0, leaving links flush against the edge) + gap down to the rule */
   --footer-link-text-align: left;
   --footer-link-color: var(--link-color); /* teal */
   --footer-link-hover-color: var(--link-hover-color); /* unchanged on hover (only underline appears) */
@@ -44,13 +44,13 @@
   --footer-link-font-size: 16px; /* mobile */
   --footer-link-font-size-desktop: 16px; /* Onfi keeps 20px on desktop */
   --footer-link-font-weight: 700;
-  --footer-link-line-height: 16px;
+  --footer-link-line-height: 24px;
   --footer-link-gap: 0; /* Onfi separates links with a pipe (p + p border-left), not a margin */
-  --footer-link-mobile-gap: 10px; /* @boilerplate */
+  --footer-link-mobile-gap: 24px; /* vertical gap between stacked links (source) */
   --footer-transition: 0.2s ease; /* @boilerplate */
 
   /* ---- Onfi link extras (consumed by the overrides section) ---------- */
-  --footer-link-padding: 0 35px 10px 0; /* inline-block padding on each link */
+  --footer-link-padding: 0 35px 0 0; /* inline-block padding on each link */
   --footer-link-separator: 0;
 
   /* word-space the source gets between inline-block <li>s: 4.5px space + 2px
@@ -70,8 +70,8 @@
   --footer-link-font-family: open-sans, sans-serif;
 
   /* ---- body section (legal + logo) ----------------------------------- */
-  --footer-body-padding: 14px 15px 30px; /* desktop (top gap below the white rule) */
-  --footer-body-padding-mobile: 0 15px 160px; /* mobile: tall bottom clears the fixed mobile UI */
+  --footer-body-padding: 14px 15px 60px; /* desktop (top gap below the white rule); bottom matches vyeptihcp.com */
+  --footer-body-padding-mobile: 0 15px 60px; /* mobile; bottom matches vyeptihcp.com (was 160px, meant for a fixed mobile UI element this site doesn't have) */
 
   /* legal column (column 1) — Onfi values are MOBILE here; the overrides bump
      them on desktop (footer2 only models a single legal size). */
@@ -91,6 +91,8 @@
   /* right column (column 2) */
   --footer-right-width: 33.3333%; /* desktop 1/3 split (source col-sm-4) */
 
+  --footer-columns-inner-padding-desktop: 15px 0; /* left inset aligns legal copy with the links row */
+
   /* ---- divider-column gutters (Onfi 2-col row) -----------------------
      asymmetric gutters so the vertical rule lands at the 2/3 split:
      15px on the legal side, 40px on the logo side; 15px outer each edge. */
@@ -104,6 +106,9 @@
 
   /* ---- logo (Lundbeck) ----------------------------------------------- */
   --footer-logo-width: 140px; /* natural aspect (height auto) */
+  --footer-logo-width-mobile: 150px; /* cap the bare-picture logo to source size */
+  --footer-social-row-gap: 4px; /* gap between social icons */
+  --footer-logo-social-gap: 20px; /* gap below logo, down to the social row */
 
   /* logo left offset within its column (source: ~71px from the column content
      edge — left-aligned with an extra indent rather than centred) */
@@ -114,8 +119,8 @@
      source's 88px divider height; the logo lands 40px below the text top. */
   --footer-logo-col-margin-top: 30px;
   --footer-logo-col-padding-bottom: 8px; /* sets the vertical divider height (logo box + this) */
-  --footer-logo-col-margin-top-mobile: 10px;
-  --footer-logo-col-margin-top-desktop: -120px;
+  --footer-logo-col-margin-top-mobile: 32px; /* gap above logo (legal copy → logo) */
+  --footer-logo-col-margin-top-desktop: -88px; /* logo lands ~17px below the links row (source) */
   --footer-logo-margin-bottom: 20px;
 
   /* ---- UNUSED BY ONFI (no phone pill / social icons / assistance label).
@@ -215,7 +220,11 @@ footer .footer .columns.divider img {
     --footer-legal-line-height: var(--footer-legal-line-height-desktop);
     --footer-legal-margin-bottom: var(--footer-legal-margin-bottom-desktop);
     --footer-linkbar-padding: 30px 0 0;
-    --footer-linkbar-inner-padding: 30px 150px 23px 0;
+    --footer-linkbar-inner-padding: 30px 150px 23px 15px; /* left matches vyeptihcp.com (was 0) */
+
+    --footer-social-row-gap: 8px; /* desktop icon gaps (source) */
+    --footer-logo-social-gap: 31px; /* renders ~40px below the logo (source) */
+    --footer-link-padding: 0; /* drop the link padding 768–1200 (restored >=1200) */
   }
 
   /* [LIBS GAP] footer.css lays the desktop links out as inline-block <p>s, so
@@ -270,13 +279,14 @@ footer .footer .columns.divider img {
 @media (width >= 992px) {
    :root {
       --footer-max-width: 60pc;
-      --footer-linkbar-inner-padding: 30px 0 23px;
+      --footer-linkbar-inner-padding: 30px 0 23px 15px; /* left matches vyeptihcp.com (was 0) */
    }
 }
 
 @media (width >= 1200px) {
    :root {
       --footer-max-width: 855pt;
-      --footer-linkbar-inner-padding: 30px 0 23px;
+      --footer-linkbar-inner-padding: 30px 0 23px 15px; /* left matches vyeptihcp.com (was 0) */
+      --footer-link-padding: 0 35px 0 0; /* restore link padding at wide widths */
    }
 }

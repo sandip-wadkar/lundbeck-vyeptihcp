@@ -1,0 +1,258 @@
+/* stylelint-disable selector-id-pattern */
+@import url('./hero-tabs-tokens.css');
+
+.hero-tabs .tabs-list {
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  overflow: visible;
+}
+
+/* Mobile-first: buttons look like accordion headers (full-width, dark bg, arrow indicator).
+   The tab-strip look (transparent bg, uppercase teal text, all buttons in one row) is layered
+   on at the >=1200px breakpoint below, once there's room for a real tab strip. */
+.hero-tabs .tabs-list button.tabs-tab {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  padding: 24px 15px;
+  background-color: var(--brand-primary-dark);
+  color: var(--background-color);
+  font-family: var(--body-font-family);
+  font-size: 22px;
+  white-space: normal;
+  cursor: pointer;
+  text-wrap-style: balance;
+  transition: none;
+  text-transform: none;
+}
+
+.hero-tabs .tabs-list button.tabs-tab::after {
+  content: '';
+  display: inline-block;
+  width: var(--hero-tabs-arrow-size);
+  height: var(--hero-tabs-arrow-size);
+  background: var(--hero-tabs-arrow) center / contain no-repeat;
+  flex: 0 0 auto;
+  transform: rotate(90deg);
+}
+
+.hero-tabs .tabs-list button.tabs-tab[aria-selected='true']::after {
+  transform: rotate(-90deg);
+}
+
+.hero-tabs .tabs-list button.tabs-tab p {
+  margin: 0;
+}
+
+/* nth-of-type counts only <button> siblings, so these still target the 2nd/3rd tab
+   even though each button's panel sits between it and the next button in the DOM. */
+.hero-tabs .tabs-list button.tabs-tab:nth-of-type(2) {
+  background-color: var(--brand-secondary);
+}
+
+.hero-tabs .tabs-list button.tabs-tab:nth-of-type(3) {
+  background-color: #7fa8b8;
+}
+
+.hero-tabs .tabs-list button.tabs-tab[aria-selected='true'] {
+  /* dedicated dark navy for the active state — distinct from all three
+     unselected tab colors (source: #073348), not the brand-primary teal
+     used elsewhere on the site, which is lighter than the unselected
+     first tab and reads as a step backward rather than "active" */
+  background-color: #073348;
+  color: var(--background-color);
+}
+
+/* ---- Panel -------------------------------------------------------------- */
+
+.hero-tabs .tabs-panel {
+  overflow: visible;
+  margin-top: 0;
+  padding-top: 2px;
+}
+
+.hero-tabs .tabs-panel[aria-hidden='true'] {
+  display: none;
+}
+
+.hero-tabs .tabs-panel > div {
+  margin: 16px 16px 24px;
+  box-shadow: 4px 4px 4px rgb(0 0 0 / 25%);
+  border-radius: 0 0 20px 20px;
+  background-color: white;
+  padding: 24px 24px 16px;
+}
+
+.hero-tabs .tabs-panel h2 {
+  margin: 0;
+  color: var(--link-color);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 28px;
+}
+
+/* Subtitle line under the h2. */
+.hero-tabs .tabs-panel h2 + p {
+  margin: 4px 0 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.hero-tabs .tabs-panel h3 {
+  margin: 16px 0 8px;
+  color: var(--text-color);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 28px;
+}
+
+.hero-tabs .tabs-panel p {
+  margin: 8px 0 0;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--text-color);
+}
+
+.hero-tabs button#tab-tabpanel-tabs_0-tab-1 {
+  background-image: linear-gradient(180deg, #1c6586, #073348);
+}
+
+.hero-tabs button#tab-tabpanel-tabs_0-tab-2 {
+background-image: linear-gradient(180deg, #c02b58, #962244);
+}
+
+.hero-tabs button#tab-tabpanel-tabs_0-tab-3 {
+  background-image: linear-gradient(180deg, #7ebcc6, #5b90a2);
+  }
+  
+.hero-tabs .tabs-panel#tabpanel-tabs_0-tab-1 {
+  background-image: linear-gradient(180deg, #2e4f64, #bfdde2 49.97%, #fff 99.94%);
+}
+
+.hero-tabs .tabs-panel#tabpanel-tabs_0-tab-2 {
+  background-image: linear-gradient(180deg, #c02c57, #fff 99.94%);
+}
+
+.hero-tabs .tabs-panel#tabpanel-tabs_0-tab-3 {
+  background-image: linear-gradient(180deg, #7ebcc6, #fff 99.94%);
+}
+
+.hero-tabs .tabs-panel > h3 {
+  color: var(--brand-primary-dark);
+  font-size: 25.2px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0 0 24px;
+}
+
+@media (width >= 567px) {
+  .hero-tabs .tabs-list button.tabs-tab {
+    padding-right: calc((100% - var(--max-width-site)) / 2);
+    padding-left: calc((100% - var(--max-width-site)) / 2);
+}
+
+.hero-tabs .tabs-panel > div {
+  margin-right: calc((100% - var(--max-width-site)) / 2);
+  margin-left: calc((100% - var(--max-width-site)) / 2);
+}
+}
+
+@media (width >= 992px) {
+  .hero-tabs .tabs-panel picture img {
+    max-width: 120px;
+  }
+
+  .hero-tabs .tabs-panel p:has(> picture) {
+    text-align: center;
+  }
+
+}
+
+@media (width >= 1200px) {
+  /* Tab-strip layout: buttons form one row (grid auto-placement fills row 1 left-to-right
+     in DOM order since only buttons are pinned to grid-row 1); the single visible panel
+     (others are display: none via aria-hidden) spans the full row underneath. --tab-count
+     is set by hero-tabs.js to size the columns for however many tabs are authored.
+     A fluid edge column on each side lets .tabs-panel go full-bleed (grid-column: 1 / -1)
+     for its background, while the buttons and the panel's inner card stay confined to a
+     1110px-wide middle content area — both use --hero-tabs-columns (inherited) so they
+     line up. */
+  .hero-tabs .tabs-list {
+    display: grid;
+
+    --hero-tabs-columns: minmax(0, 1fr) repeat(var(--tab-count, 1), calc(1110px / var(--tab-count, 1))) minmax(0, 1fr);
+
+    grid-template-columns: var(--hero-tabs-columns);
+    gap: 0;
+  }
+
+  /* Reserves the left edge column in row 1 so button auto-placement starts at column 2. */
+  .hero-tabs .tabs-list::before {
+    content: '';
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+
+  .hero-tabs .tabs-list button.tabs-tab {
+    grid-row: 1;
+    width: 370px;
+    padding-right: 24px;
+    padding-left: 24px;
+    text-align: left;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .hero-tabs .tabs-panel > div {
+    margin: 16px 0 0;
+    grid-column: 2 / -2;
+    width: 1110px;
+  }
+
+  .hero-tabs .tabs-list button.tabs-tab[aria-selected='true'] {
+    background-color: var(--link-color); /* rgb(65,116,141) */
+    color: #fff;
+    cursor: default;
+  }
+
+  .hero-tabs .tabs-panel {
+    display: grid;
+    grid-template-columns: var(--hero-tabs-columns);
+    grid-row: 2;
+    grid-column: 1 / -1;
+    padding: 0;
+  }
+
+  /* overlaps the bottom of the preceding hero section */
+.hero-tabs {
+  position: relative;
+  z-index: 2;
+  padding-bottom: 24px;
+}
+
+.hero-tabs button#tab-tabpanel-tabs_0-tab-1 {
+  background: linear-gradient(180deg, #073348, #1c6586);
+
+}
+
+.hero-tabs button#tab-tabpanel-tabs_0-tab-2 {
+background-image: linear-gradient(180deg, #c02b58, #962244);
+}
+
+.hero-tabs button#tab-tabpanel-tabs_0-tab-3 {
+  background-image: linear-gradient(180deg, #7ebcc6, #5b90a2);
+  }
+
+  .hero-tabs .tabs-panel#tabpanel-tabs_0-tab-1 > div {
+    margin-top: 0;
+    border-top: 16px solid #1b6384;
+}
+}

@@ -1,0 +1,9 @@
+/* banner-cta design tokens */
+:root {
+  --banner-cta-border-color: #999;
+  --banner-cta-border-radius: 16px;
+  --banner-cta-text-color: #666;
+  --banner-cta-icon-size: 93px;
+  --banner-cta-arrow-width: 50px;
+  --banner-cta-arrow-width-desktop: 77px;
+}

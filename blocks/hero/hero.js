@@ -1,18 +1,8 @@
 import { buildPictureContentFromImageCell } from '../../scripts/utils.js';
 /** ADCL events handling for hero */
 
-function applyAccentColor(block) {
-  block.querySelectorAll('h1 strong, h2 strong, h3 strong, p strong').forEach((strong) => {
-    const span = document.createElement('span');
-    span.className = 'accent-color';
-    span.textContent = strong.textContent;
-    strong.replaceWith(span);
-  });
-}
-
 function decorateSinglePanel(block) {
   block.classList.add('single');
-  applyAccentColor(block);
 
   const contentDiv = block.querySelector(':scope > div:last-child');
   const lastP = contentDiv?.querySelector(':scope > div > p:last-child');
@@ -87,20 +77,19 @@ function decorateDualPanel(block, rows) {
   wrapper.className = 'hero-panels';
   panels.forEach((p) => wrapper.appendChild(p));
   block.appendChild(wrapper);
-
-  applyAccentColor(block);
 }
 
 /**
- * Section-metadata styles single-light / single-dark force the single full-bleed
- * panel layout regardless of how the hero cells are authored.
+ * Section-metadata styles single-light / single-dark / page-title force the
+ * single full-bleed panel layout regardless of how the hero cells are authored.
  * @param {Element} block
  * @returns {boolean} true if a single-* section style is present
  */
 function hasSingleSectionStyle(block) {
   const section = block.closest('.section');
   return !!section && (section.classList.contains('single-light')
-    || section.classList.contains('single-dark'));
+    || section.classList.contains('single-dark')
+    || section.classList.contains('page-title'));
 }
 
 /**

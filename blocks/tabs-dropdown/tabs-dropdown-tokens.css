@@ -1,0 +1,62 @@
+:root {
+    /* trial-data blockquote callout */
+    --tabs-blockquote-bg: #e5f2f5;
+    --tabs-blockquote-color: var(--link-color);
+    --tabs-blockquote-padding: 4px;
+    --tabs-blockquote-font-size: 16px;
+    --tabs-blockquote-line-height: 20px;
+    --tabs-blockquote-stat-font-size: 34px;
+    --tabs-blockquote-stat-line-height: 34px;
+    --tabs-blockquote-height-tab1: 120px;
+    --tabs-blockquote-height-tab2: 120px;
+    --tabs-blockquote-height-tab3: 150px;
+    --tabs-blockquote-height-tab4: 150px;
+
+    /* per-tab stat sizes (tab 1 uses the base above) */
+    --tabs-blockquote-stat-font-size-tab2: 40px;
+    --tabs-blockquote-stat-font-size-tab3: 21px;
+    --tabs-blockquote-stat-font-size-tab4: 40px;
+    --tabs-blockquote-stat-font-size-tab4-h2: 38px;
+    --tabs-blockquote-sup-font-size: 8px;
+    --tabs-blockquote-sup-line-height: 4px;
+    --tabs-blockquote-width: 100%;
+    --tabs-blockquote-mark-size: 76px;
+    --tabs-blockquote-mark-gutter: 24px;
+  
+    /* mobile: mark overhangs the box's left edge by half its width (blue starts at the mark's midline) */
+    --tabs-blockquote-mark-overhang: 38px;
+  
+    /* mobile: left inset for text = clears the mark's in-box portion; kept tight so the intro stays on one line */
+    --tabs-blockquote-text-inset: 40px;
+}
+
+@media (width >= 992px) {
+    :root {
+        --tabs-blockquote-width: 170px;
+        --tabs-blockquote-height-tab1: 211px;
+        --tabs-blockquote-height-tab2: 220px;
+        --tabs-blockquote-height-tab3: 248px;
+        --tabs-blockquote-height-tab4: 228px;
+        --tabs-blockquote-padding: 10px;
+        --tabs-blockquote-stat-font-size-tab4-h2: 32px;
+    }
+}
+
+@media (width >= 1200px) {
+    :root {
+      --tabs-blockquote-stat-font-size: 35px;
+      --tabs-blockquote-stat-line-height: 35px;
+      --tabs-blockquote-mark-size: 70px;
+      --tabs-blockquote-width: 177px;
+      --tabs-blockquote-cut-height: 42px;
+      --tabs-blockquote-height-tab2: 260px;
+      --tabs-blockquote-height-tab3: 288px;
+      --tabs-blockquote-height-tab4: 288px;
+  
+      /* tabs 2 & 4 use larger stat + text at this width */
+      --tabs-blockquote-stat-font-size-tab2: 50px;
+      --tabs-blockquote-stat-font-size-tab4: 50px;
+      --tabs-blockquote-stat-font-size-tab4-h2: 32px;
+      --tabs-blockquote-tab24-font-size: 18px;
+    }
+}

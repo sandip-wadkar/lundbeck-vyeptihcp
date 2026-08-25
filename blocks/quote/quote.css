@@ -1,43 +1,135 @@
 @import url('./quote-tokens.css');
 
-.quote blockquote { /* @boilerplate */
-  margin: 0 auto; /* @boilerplate */
-  padding: var(--quote-padding); /* @boilerplate */
-  max-width: var(--quote-max-width); /* @boilerplate */
+.quote {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--quote-gap);
+  padding: var(--quote-padding);
+  background-color: var(--quote-bg);
+  border-radius: var(--quote-radius);
+
+  /* Bypass the ambiguous 'open sans' alias in --heading-font-family/--body-font-family:
+     on machines with that literal system font installed, it resolves ~16% narrower than
+     the real open-sans webfont, causing text to wrap differently than intended. */
+  font-family: open-sans, open-sans-fallback, sans-serif;
 }
 
-@media (width >= 900px) { /* @boilerplate */
-  .quote blockquote { /* @boilerplate */
-    padding: var(--quote-padding-desktop); /* @boilerplate */
+.quote .quote-image {
+  flex: 0 0 auto;
+}
+
+.quote .quote-image img {
+  display: block;
+  width: var(--quote-image-size);
+  height: var(--quote-image-size);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.quote .quote-content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.quote blockquote {
+  margin: auto;
+  padding: 0;
+  max-width: none;
+  text-align: left;
+}
+
+.quote .quote-content blockquote {
+  margin: 0;
+}
+
+.quote blockquote .quote-quotation,
+.quote blockquote .quote-quotation :is(p, h1, h2, h3, h4, h5, h6) {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 25px;
+  color: var(--brand-teal-muted);
+}
+
+/* Authors sometimes format the quotation as a heading instead of a paragraph —
+   cover both so the decorative quote marks always render. */
+.quote blockquote .quote-quotation :is(p, h1, h2, h3, h4, h5, h6):first-child::before,
+.quote blockquote .quote-quotation :is(p, h1, h2, h3, h4, h5, h6):last-child::after {
+  line-height: 0;
+}
+
+.quote blockquote .quote-quotation :is(p, h1, h2, h3, h4, h5, h6):first-child::before {
+  content: '“';
+}
+
+.quote blockquote .quote-quotation :is(p, h1, h2, h3, h4, h5, h6):last-child::after {
+  content: '”';
+}
+
+.quote blockquote .quote-attribution,
+.quote blockquote .quote-attribution :is(p, h1, h2, h3, h4, h5, h6) {
+  text-align: left;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--brand-teal-muted);
+}
+
+/* Target the inline tags directly rather than paragraph position — authors may
+   combine the name and role/org line in a single paragraph with a line break,
+   in which case p:first-child would incorrectly match both. strong/b default to
+   font-weight: bolder, which would otherwise resolve to 900 against our 700 parent. */
+.quote blockquote .quote-attribution :is(strong, b) {
+  display: inline-block;
+  padding-bottom: 4px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+}
+
+.quote blockquote .quote-attribution p:first-child::before {
+  content: none;
+  padding-right: 0;
+}
+
+/* Source breakpoint: the live reference switches image-left/text-right at 768px,
+   not this site's usual 900px — matched here so the row/column switch lines up
+   exactly with the original (see blocks/columns/columns.css for the same pattern).
+   The image size and quotation font-size don't bump until a later, separate
+   source breakpoint (992px) — see the next media block. */
+@media (width >= 768px) {
+  .quote {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+  }
+
+  .quote .quote-image img {
+    width: var(--quote-image-size-tablet);
+    height: var(--quote-image-size-tablet);
+  }
+
+  .quote blockquote .quote-quotation,
+  .quote blockquote .quote-quotation :is(p, h1, h2, h3, h4, h5, h6) {
+    line-height: 32px;
   }
 }
 
-.quote blockquote .quote-quotation { /* @boilerplate */
-  font-size: var(--quote-quotation-font-size); /* @boilerplate */
-}
+/* Source breakpoint: the live reference bumps the headshot to full size and the
+   quotation to its larger desktop type size here, one tier later than the
+   768px row-layout switch above. */
+@media (width >= 992px) {
+  .quote .quote-image img {
+    width: var(--quote-image-size-desktop);
+    height: var(--quote-image-size-desktop);
+  }
 
-.quote blockquote .quote-quotation > :first-child { /* @boilerplate */
-  text-indent: -0.5ch; /* @boilerplate */
-}
+  .quote blockquote {
+    max-width: 825px;
+  }
 
-.quote blockquote .quote-quotation p:first-child::before,
-.quote blockquote .quote-quotation p:last-child::after { /* @boilerplate */
-  line-height: 0; /* @boilerplate */
-}
-
-.quote blockquote .quote-quotation p:first-child::before { /* @boilerplate */
-  content: '“'; /* @boilerplate */
-}
-
-.quote blockquote .quote-quotation p:last-child::after { /* @boilerplate */
-  content: '”'; /* @boilerplate */
-}
-
-.quote blockquote .quote-attribution { /* @boilerplate */
-  text-align: right; /* @boilerplate */
-}
-
-.quote blockquote .quote-attribution p:first-child::before { /* @boilerplate */
-  content: '—'; /* @boilerplate */
-  padding-right: 0.5ch; /* @boilerplate */
+  .quote blockquote .quote-quotation,
+  .quote blockquote .quote-quotation :is(p, h1, h2, h3, h4, h5, h6) {
+    font-size: 22px;
+  }
 }

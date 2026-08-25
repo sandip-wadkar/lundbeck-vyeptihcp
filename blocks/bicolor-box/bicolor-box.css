@@ -1,0 +1,199 @@
+@import url('./bicolor-box-tokens.css');
+
+/* Bicolor box — brand-color header banner fused to a light body panel
+   below it (no gap — one continuous rounded shape). */
+
+main .bicolor-box {
+  position: relative;
+  color: var(--text-color);
+  border-radius: var(--bicolor-box-radius);
+  overflow: hidden;
+  margin: 16px auto;
+}
+
+/* .emboss / .emboss-heavy (styles/styles.css) add their own white background
+   + 20px padding to frame arbitrary content, and paint their inset shadow as
+   part of that background — here the header/body are opaque and fill the
+   block edge-to-edge, so that shadow would be fully hidden underneath them.
+   Drop the padding/background so the header/body sit flush against the
+   edges, and re-paint the shadow on an absolutely-positioned ::after: taking
+   it out of normal flow makes it stack above the (static-positioned)
+   header/body content instead of underneath it. */
+main .bicolor-box.emboss,
+main .bicolor-box.emboss-heavy {
+  background: transparent;
+  padding: 0;
+  max-width: 485px; /* hardcode match to customer site */
+}
+
+main .bicolor-box.emboss::after,
+main .bicolor-box.emboss-heavy::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+main .bicolor-box.emboss::after {
+  box-shadow: inset 0 0 8px 2px rgb(0 0 0 / 20%);
+}
+
+main .bicolor-box.emboss-heavy::after {
+  box-shadow: inset 0 0 8px 4px rgb(0 0 0 / 40%);
+}
+
+main .bicolor-box-header {
+  background: var(--brand-primary-dark);
+  color: var(--background-color);
+  border-radius: var(--bicolor-box-radius) var(--bicolor-box-radius) 0 0;
+  padding: 20px 32px;
+}
+
+main .bicolor-box-header p {
+  margin: 0;
+  font-size: var(--body-font-size-ms);
+  font-weight: 700;
+}
+
+main .bicolor-box-title {
+  margin: 0;
+  color: var(--background-color);
+  font-size: var(--bicolor-box-title-font-size);
+}
+
+main .bicolor-box-header a {
+  color: var(--background-color);
+  text-decoration: underline;
+}
+
+main .bicolor-box-body {
+  background: var(--bicolor-box-body-bg);
+  border-radius: 0 0 var(--bicolor-box-radius) var(--bicolor-box-radius);
+  padding: 20px 32px;
+}
+
+main .bicolor-box-body p,
+main .bicolor-box-body li {
+  font-size: var(--body-font-size-ms);
+}
+
+main .bicolor-box-body p {
+  margin: 0 0 12px;
+}
+
+main .bicolor-box-body p:last-child {
+  margin-bottom: 0;
+}
+
+main .bicolor-box.stat-box .bicolor-box-body p:last-child {
+  font-size: var(--bicolor-box-stat-source-font-size);
+}
+
+main .bicolor-box-body a {
+  color: var(--link-color);
+  text-decoration: underline;
+}
+
+main .bicolor-box-list {
+  list-style: none;
+  margin: 16px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+main .bicolor-box-list li {
+  margin: 0;
+}
+
+main .bicolor-box-body .small-text {
+  color: var(--text-color-light);
+}
+
+/* stat-box variant — header cell authored as a list: first li is a large
+   stat number, remaining li's are description columns laid out beside it. */
+main .bicolor-box.stat-box .bicolor-box-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 16px 24px 0;
+}
+
+main .bicolor-box-stat-value {
+  margin: 0;
+  color: var(--background-color);
+  font-size: var(--bicolor-box-stat-value-font-size);
+  font-family: var(--body-font-family);
+  line-height: 1;
+}
+
+main .bicolor-box-stat-unit {
+  font-size: 0.6em;
+  font-weight: inherit;
+  vertical-align: super;
+}
+
+main .bicolor-box-header .bicolor-box-stat-description {
+  margin: 0 0 16px;
+  color: var(--background-color);
+  font-weight: 700;
+  font-size: var(--bicolor-box-stat-description-font-size);
+}
+
+main .bicolor-box-stat-description sup {
+  position: relative;
+  top: -0.7em;
+  font-family: var(--body-font-family);
+  font-size: 0.5em !important;
+  line-height: 0.5em !important;
+  vertical-align: baseline;
+}
+
+main .bicolor-box.stat-box .bicolor-box-body {
+  background: var(--light-color);
+  padding: 6px 24px 10px;
+  font-weight: 700;
+  font-size: var(--bicolor-box-stat-source-font-size);
+  text-align: center;
+}
+
+@media (width >= 768px) {
+  main .bicolor-box-body {
+    padding: 14px 32px 32px;
+  }
+
+  main .bicolor-box-header {
+    padding: 16px 32px;
+  }
+
+  main .bicolor-box-list {
+    flex-direction: row;
+    gap: 40px;
+  }
+}
+
+@media (width >= 992px) {
+  main .bicolor-box.stat-box .bicolor-box-header {
+    flex-flow: row wrap;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 24px;
+  }
+
+  main .bicolor-box-stat-value {
+    font-size: var(--bicolor-box-stat-value-font-size-desktop);
+    flex: 0 0 auto;
+  }
+
+  main .bicolor-box-stat-description {
+    margin: 0;
+    flex: 1 1 200px;
+  }
+
+  main .bicolor-box.stat-box .bicolor-box-body {
+    padding: 6px 32px 10px;
+  }
+}

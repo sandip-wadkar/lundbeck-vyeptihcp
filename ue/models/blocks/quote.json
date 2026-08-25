@@ -6,11 +6,13 @@
       "model": "quote",
       "plugins": {
         "da": {
-          "rows": 2,
+          "rows": 3,
           "columns": 1,
           "fields": [
             { "name": "quote", "selector": "div:nth-child(1)>div"},
-            { "name": "author", "selector": "div:nth-child(2)>div"}
+            { "name": "author", "selector": "div:nth-child(2)>div"},
+            { "name": "image", "selector": "div:nth-child(3)>picture>img[src]" },
+            { "name": "imageAlt", "selector": "div:nth-child(3)>picture>img[alt]" }
           ]
         }
       }
@@ -33,6 +35,20 @@
           "label": "Author (optional)",
           "valueType": "string",
           "description": "Use italics for [cite] tag"
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Headshot (optional)",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "imageAlt",
+          "label": "Headshot Alt",
+          "multi": false
         }
       ]
     }

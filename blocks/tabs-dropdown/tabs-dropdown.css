@@ -1,0 +1,366 @@
+@import url('./tabs-dropdown-tokens.css');
+
+/* ---- Tablist / triggers --------------------------------------------------
+   Mobile-first: base rules render the "fake select" — only the active tab
+   shows, styled as a closed dropdown trigger with a chevron; tapping it
+   reveals the full stacked list (`.is-open`). Tablet+ (768px) reverts to a
+   normal always-visible tab row; desktop+ (992px) adds the hover state. */
+
+.tabs-dropdown .tabs-dropdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 100%;
+  margin: 0; 
+  padding: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.tabs-dropdown .tabs-dropdown-list button.tabs-dropdown-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+  padding: 16px 17px 16px 16px;
+  border: 0;
+  border-radius: 0;
+  background-color: var(--link-color);
+  color: rgb(255 255 255 / 70%);
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: normal;
+  cursor: pointer;
+  transition: background-color var(--transition-duration, 0.2s), color var(--transition-duration, 0.2s);
+}
+
+.tabs-dropdown .tabs-dropdown-list button.tabs-dropdown-tab p {
+  margin: 0;
+}
+
+/* Only the active trigger shows until the list is opened. */
+.tabs-dropdown .tabs-dropdown-list:not(.is-open) button.tabs-dropdown-tab:not([aria-selected='true']) {
+  display: none;
+}
+
+/* The active row is always bright; every other row (visible once the list is open)
+   is dimmed — matches source, where this split holds whether the list is open or
+   closed (the closed trigger, being the active row, is always bright). */
+.tabs-dropdown .tabs-dropdown-list button.tabs-dropdown-tab[aria-selected='true'] {
+  color: #fff;
+}
+
+/* Chevron, closed: shown on the (only visible) active trigger, pointing down
+   (accordion.css's border-drawn arrow technique, reused for a consistent CSS-only icon). */
+.tabs-dropdown .tabs-dropdown-list:not(.is-open) button.tabs-dropdown-tab[aria-selected='true']::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  width: 8px;
+  height: 8px;
+  margin-top: -6px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Chevron, open: pinned to the physically-first row (matches source), pointing up —
+   regardless of which row is active. */
+.tabs-dropdown .tabs-dropdown-list.is-open button.tabs-dropdown-tab:first-child::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  width: 8px;
+  height: 8px;
+  margin-top: -2px;
+  border: solid rgb(255 255 255 / 70%);
+  border-width: 0 2px 2px 0;
+  transform: rotate(225deg);
+  transition: transform 0.2s ease-in-out;
+}
+
+.tabs-dropdown .tabs-dropdown-list.is-open button.tabs-dropdown-tab:first-child[aria-selected='true']::after {
+  border-color: #fff;
+}
+
+/* ---- Panel -------------------------------------------------------------- */
+
+.tabs-dropdown .tabs-dropdown-panel {
+  margin-top: 0;
+  padding: 24px 0 0;
+  border: 0;
+  overflow: visible;
+  color: var(--text-color);
+}
+
+.tabs-dropdown .tabs-dropdown-panel[aria-hidden='true'] {
+  display: none;
+}
+
+.tabs-dropdown .tabs-dropdown-panel > div {
+  padding: 0;
+}
+
+
+/* trial-data blockquote → teal-on-light-blue stat callout (styling only, no positioning) */
+main .section.trial-data blockquote {
+  position: relative;
+
+  /* mobile: inset the box so the mark overhangs its left edge (blue starts at the mark's midline) */
+  margin: 24px 0 24px var(--tabs-blockquote-mark-overhang);
+
+  /* reserve just enough left inset to clear the mark's in-box portion */
+  padding: var(--tabs-blockquote-padding) var(--tabs-blockquote-padding)
+    var(--tabs-blockquote-padding) var(--tabs-blockquote-text-inset);
+  background-color: var(--tabs-blockquote-bg);
+  color: var(--tabs-blockquote-color);
+  font-size: var(--tabs-blockquote-font-size);
+  line-height: var(--tabs-blockquote-line-height);
+  align-content: center;
+  text-wrap-style: balance;
+  min-height: var(--tabs-blockquote-height-tab1);
+  border-radius: 0;
+}
+
+/* decorative brand ribbon — top-left on mobile, overhanging the box edge */
+main .section.trial-data blockquote::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: calc(var(--tabs-blockquote-mark-overhang) * -1);
+  width: var(--tabs-blockquote-mark-size);
+  height: var(--tabs-blockquote-mark-size);
+  background: url('/icons/callout-mark.svg') no-repeat center / contain;
+}
+
+main .section.trial-data blockquote p {
+  margin: 0;
+  font-size: var(--tabs-blockquote-font-size);
+  line-height: var(--tabs-blockquote-line-height);
+  color: var(--tabs-blockquote-color);
+}
+
+main .section.trial-data blockquote .size-h1 {
+  color: var(--tabs-blockquote-color);
+  font-size: var(--tabs-blockquote-stat-font-size);
+  line-height: var(--tabs-blockquote-stat-line-height);
+}
+
+main .section.trial-data sup {
+  font-size: .6em;
+}
+
+/* footnote reference marks (¹,², *) are tiny — but NOT a % that's part of a stat */
+main .section.trial-data blockquote sup {
+  font-size: var(--tabs-blockquote-sup-font-size);
+  line-height: var(--tabs-blockquote-sup-line-height);
+}
+
+/* a % inside a stat scales with the stat, not the footnote size */
+main .section.trial-data blockquote :is(.size-h1, .size-h3) sup {
+  font-size: 0.5em;
+  line-height: normal;
+}
+
+/* per-tab stat sizes (tab 1 uses the base; tabs 2-4 differ in the source).
+   attribute selector because the JS-generated id ("tabs_0") isn't kebab-case */
+main .section.trial-data .tabs-dropdown-panel:nth-child(3) blockquote {
+  min-height: var(--tabs-blockquote-height-tab2);
+
+.size-h1 {
+  font-size: var(--tabs-blockquote-stat-font-size-tab2);
+  line-height: var(--tabs-blockquote-stat-font-size-tab2);
+  min-height: var(--tabs-blockquote-height-tab2);
+ }
+}
+
+main .section.trial-data .tabs-dropdown-panel:nth-child(4) blockquote {
+  min-height: var(--tabs-blockquote-height-tab3);
+
+.size-h3 {
+  font-size: var(--tabs-blockquote-stat-font-size-tab3);
+  line-height: var(--tabs-blockquote-stat-font-size-tab3);
+ }
+}
+
+main .section.trial-data .tabs-dropdown-panel:nth-child(5) blockquote {
+  min-height: var(--tabs-blockquote-height-tab4);
+
+.size-h1 {
+  font-size: var(--tabs-blockquote-stat-font-size-tab4);
+  line-height: var(--tabs-blockquote-stat-font-size-tab4);
+}
+
+.size-h2 {
+  font-size: var(--tabs-blockquote-stat-font-size-tab4-h2);
+  line-height: var(--tabs-blockquote-stat-font-size-tab4-h2);
+ }
+}
+
+ main .section.trial-data .tabs-dropdown-panel picture.trial-data-stat-pair-picture img {
+    max-width: unset;
+    width: 100%;
+ }
+
+/* Tablet+ */
+@media (width >= 768px) {
+  .tabs-dropdown .tabs-dropdown-list {
+    flex-flow: row wrap;
+    gap: 0;
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: rgb(223 233 241);
+  }
+
+  .tabs-dropdown .tabs-dropdown-list:not(.is-open) button.tabs-dropdown-tab:not([aria-selected='true']) {
+    display: flex;
+  }
+
+  .tabs-dropdown .tabs-dropdown-list button.tabs-dropdown-tab {
+    flex: 1 1 0;
+    justify-content: center;
+    width: auto;
+    padding: 8px;
+    border-bottom: 0;
+    background-color: transparent;
+    color: rgb(65 116 141 / 70%); /* --link-color @ 70% */
+    text-align: center;
+  }
+
+  .tabs-dropdown .tabs-dropdown-list button.tabs-dropdown-tab[aria-selected='true'] {
+    background-color: var(--link-color);
+    color: #fff;
+    cursor: default;
+  }
+
+  .tabs-dropdown .tabs-dropdown-list button.tabs-dropdown-tab::after {
+    display: none;
+  }
+}
+
+@media (width >= 992px) {
+  main .section.trial-data blockquote::before {
+    right: 0;
+    left: auto;
+  }
+
+  .tabs-dropdown .tabs-dropdown-list button.tabs-dropdown-tab:hover {
+    background-color: var(--link-color);
+    color: #fff;
+  }
+
+  main .section.trial-data blockquote {
+  max-width: var(--tabs-blockquote-width);
+  padding: var(--tabs-blockquote-mark-gutter) var(--tabs-blockquote-padding)
+  var(--tabs-blockquote-padding);
+  align-content: flex-end;
+  margin: 24px 0;
+  }
+
+  main .section.trial-data .tabs-dropdown-panel .trial-data-stat-segment {
+  margin-bottom: 40px;
+  }
+
+  /* an author-inserted <hr> splits a panel into independent stat segments
+     (scripts.js wraps each run into `.trial-data-stat-segment`); the rule
+     itself is only a structural marker here, so it's hidden at this width */
+  main .section.trial-data .tabs-dropdown-panel > div > hr {
+    display: none;
+  }
+
+  main .section.trial-data :is(.trial-data-stat-pair, .trial-data-stat-solo) {
+    display: flow-root;
+    position: relative;
+    margin-top: 24px;
+  }
+
+  main .section.trial-data :is(.trial-data-stat-pair, .trial-data-stat-solo) > * {
+    width: 40%;
+  }
+
+  main .section.trial-data .accordion-sublist {
+    width: unset;
+  }
+
+  main .section.trial-data .trial-data-stat-pair-picture {
+    width: calc(60% - 24px);
+    float: right;
+    margin-top: -100px;
+
+    img {
+      max-width: unset;
+      width: 100%;
+    }
+  }
+
+  main .section.trial-data .trial-data-stat-pair:has(blockquote) .trial-data-stat-pair-picture {
+    position: absolute;
+    top: 12px;
+    left: calc(60% - var(--tabs-blockquote-width));
+    margin-top: 0;
+  }
+
+  /* paired with a blockquote: narrow the picture to leave room on the right
+     for it — the blockquote floats right too and, appearing earlier in the
+     DOM, claims the rightmost strip first, landing beside the picture
+     rather than stacked above/below it, without moving either in the DOM */
+  main .section.trial-data .trial-data-stat-pair .trial-data-stat-pair-picture {
+    width: calc(60% - 16px - var(--tabs-blockquote-width));
+  }
+
+  main .section.trial-data .trial-data-stat-pair-quote {
+    float: right;
+    width: var(--tabs-blockquote-width);
+  }
+}
+
+@media (width >= 1200px) {
+  main .section.trial-data blockquote {
+    padding: 30px 12px 10px;
+    margin-top: 30px;
+  }
+
+  /* tabs 2 & 4: 18px body text (tab 1 stays base, tab 3 unchanged) */
+  main .section.trial-data .tabs-dropdown-panel:nth-child(3) blockquote p,
+  main .section.trial-data .tabs-dropdown-panel:nth-child(5) blockquote p {
+    font-size: var(--tabs-blockquote-tab24-font-size);
+  }
+
+  /* diagonally cut the top-right corner: a page-colored triangle under the ribbon */
+  main .section.trial-data blockquote::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: var(--tabs-blockquote-mark-size);
+    height: var(--tabs-blockquote-cut-height);
+    background: var(--background-color);
+    clip-path: polygon(9% 0, 100% 0, 100% 100%);
+  }
+
+  /* keep the ribbon above the corner cut */
+  main .section.trial-data blockquote::before {
+    z-index: 1;
+  }
+
+  main .section.trial-data .trial-data-stat-pair .trial-data-stat-pair-picture {
+    width: calc(60% - 42px - var(--tabs-blockquote-width));
+}
+}
+
+/* Wide+ */
+@media (width >= 1440px) {
+  .tabs-dropdown .tabs-dropdown-list button.tabs-dropdown-tab {
+    line-height: 40px;
+  }
+}

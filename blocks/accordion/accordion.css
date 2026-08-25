@@ -12,29 +12,33 @@
 
    Source breakpoints (Bootstrap 4): 576 / 768 / 992 / 1200px. */
 
-.accordion > ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+@import url('./accordion-tokens.css');
+
+.accordion ul, .accordion ol {
+  padding-left: 20px;
 }
 
-/* each item is a flat row divided from the next by a thin grey rule
-   (source: border-bottom 1px solid #a4a4a4; no background, no radius, no padding) */
-.accordion > ul > li {
+.accordion > ul,
+.accordion .accordion-sublist {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+/* each item (at any nesting depth) is a flat row divided from the next by a thin
+   grey rule (source: border-bottom 1px solid #a4a4a4; no background, no radius, no padding) */
+.accordion .accordion-item {
   background-color: transparent;
   border-radius: 0;
   border-bottom: 1px solid #a4a4a4;
   padding: 0 0 24px;
-  margin-top: 0;
+  margin-top: 24px;
   cursor: pointer;
 }
 
-.accordion > ul > li + li {
-  margin-top: 24px;
-}
-
-.accordion p {
-  margin: 0;
+/* nested (child) accordions sit inside a parent's body — no divider, open or closed */
+.accordion .accordion-item-body > .accordion-sublist > .accordion-item {
+  border-bottom: none;
 }
 
 /* clickable header row — teal title, chevron pushed to the right edge
@@ -60,6 +64,20 @@
   margin: 0;
 }
 
+.accordion-sublist li.accordion-item:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* authors sometimes mark up the title as a heading (h1-h6) rather than a
+   plain paragraph. When the accordion is nested inside a tabs panel,
+   .tabs .tabs-panel h3 (blocks/tabs/tabs.css) is more specific than a plain
+   heading rule and overrides its color/size/margin — reset it back to the
+   label's own styling here, with enough specificity to always win. */
+.accordion .accordion-item .accordion-item-label :is(h1, h2, h3, h4, h5, h6) {
+  margin: 0;
+}
+
 /* lead phrase stays the same weight/color as the title (no separate emphasis) */
 .accordion .accordion-item-label strong,
 .accordion .accordion-item-label b {
@@ -73,41 +91,63 @@
   display: none;
 }
 
-.accordion li.active .accordion-item-label-detail {
+.accordion .accordion-item.active > .accordion-item-label .accordion-item-label-detail {
   display: inline;
 }
 
 /* active title keeps the teal (source does not recolor on expand) */
-.accordion li.active .accordion-item-label {
+.accordion .accordion-item.active > .accordion-item-label {
   color: var(--link-color);
 }
 
-.accordion li.active .accordion-item-label strong,
-.accordion li.active .accordion-item-label b {
+.accordion .accordion-item.active > .accordion-item-label strong,
+.accordion .accordion-item.active > .accordion-item-label b {
   color: var(--link-color);
 }
 
-/* chevron — CSS-drawn equivalent of the source icon-font "cheveron-down".
-   Points down when collapsed, flips up when active. Centered on the header row. */
+/* chevron badge — circle outline, CSS-drawn equivalent of the source
+   icon-cheveron-down/-up PNGs. Fills solid on hover (see :hover rules below). */
+.accordion .accordion-item-label::before {
+  content: '';
+  position: absolute;
+  top: 60%;
+  right: var(--accordion-icon-right);
+  width: var(--accordion-icon-size);
+  height: var(--accordion-icon-size);
+  margin-top: calc(var(--accordion-icon-size) / -2);
+  border: var(--accordion-icon-border-width) solid var(--accordion-icon-color);
+  border-radius: 50%;
+  background-color: transparent;
+  transition: background-color var(--accordion-icon-transition-duration);
+}
+
+/* chevron mark, centered inside the circle above.
+   Points down when collapsed, flips up when active. */
 .accordion .accordion-item-label::after {
   content: '';
   position: absolute;
-  top: 50%;
-  right: 6px;
-  width: 12px;
-  height: 12px;
-  margin-top: -9px;
-  border: solid var(--link-color);
-  border-width: 0 2px 2px 0;
+  top: 55%;
+  right: calc(var(--accordion-icon-right) + (var(--accordion-icon-size) - 10px) / 2);
+  width: 10px;
+  height: 10px;
+  margin-top: -5px;
+  border: solid var(--accordion-icon-color);
+  border-width: 0 var(--accordion-icon-thickness) var(--accordion-icon-thickness) 0;
   transform: rotate(45deg);
   transform-origin: center;
-  transition: transform 0.4s ease-in-out;
+  transition: transform 0.4s ease-in-out, border-color var(--accordion-icon-transition-duration);
 }
 
-.accordion li.active .accordion-item-label::after {
-  border-color: var(--link-color);
-  margin-top: -3px;
-  transform: rotate(-135deg);
+.accordion .accordion-item-label:hover::before {
+  background-color: var(--accordion-icon-color);
+}
+
+.accordion .accordion-item-label:hover::after {
+  border-color: #fff;
+}
+
+.accordion .accordion-item.active > .accordion-item-label::after {
+  transform: rotate(-135deg) translate(-3px, -3px);
 }
 
 /* body / panel — hidden until active */
@@ -115,48 +155,12 @@
   display: none;
 }
 
-.accordion li.active .accordion-item-body {
+.accordion .accordion-item.active > .accordion-item-body {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-top: 20px;
   color: var(--text-color);
   font-size: var(--body-font-size-s);
   line-height: 1.5;
-  cursor: auto;
-}
-
-.accordion .accordion-item-body p {
-  margin: 0;
-  font-size: var(--body-font-size-s);
-  line-height: 1.5;
-}
-
-/* body headings (e.g. "PROMISE-2") — teal, 700, matches source h5 */
-.accordion .accordion-item-body h2,
-.accordion .accordion-item-body h3,
-.accordion .accordion-item-body h4,
-.accordion .accordion-item-body h5,
-.accordion .accordion-item-body h6 {
-  margin: 0;
-  color: var(--link-color);
-  font-weight: 700;
-  text-transform: none;
-}
-
-.accordion .accordion-item-body h5 {
-  font-size: var(--heading-font-size-m);
-}
-
-.accordion .accordion-item-body ul,
-.accordion .accordion-item-body ol {
-  margin: 0 0 0 5px;
-  padding-left: 20px;
-  font-size: var(--body-font-size-s);
-  line-height: 1.5;
-}
-
-.accordion .accordion-item-body li {
   cursor: auto;
 }
 
@@ -164,45 +168,17 @@
 .accordion .accordion-item-body picture,
 .accordion .accordion-item-body p:has(> picture) {
   display: block;
+  margin: auto;
 }
 
-.accordion .accordion-item-body picture img {
-  max-width: 100%;
-  height: auto;
-}
-
-/* "Read full clinical publication" link — teal, bold, underlined */
-.accordion .accordion-item-body a {
-  color: var(--link-color);
-  font-weight: var(--font-weight-bold, 700);
-  text-decoration: underline;
-}
-
-.accordion .accordion-item-body a:hover {
-  color: var(--brand-primary);
-}
-
-/* KNOWN ISSUE FIX: the "Read full clinical publication" external-link icon
-   (icon-linkout PNG, natural ~49x48) renders oversized. Constrain small inline
-   icons inside links to their natural small size so they don't blow up.
-   The large study-design charts above are NOT inside <a>, so they are unaffected. */
-.accordion .accordion-item-body a picture,
-.accordion .accordion-item-body a img {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  max-width: 18px;
-  vertical-align: text-bottom;
-  margin-left: 6px;
+.accordion .accordion-item-body > picture {
+  margin: 16px auto;
 }
 
 /* tablet+ (source uses Bootstrap 768px breakpoint) */
 @media (width >= 768px) {
-  .accordion > ul > li {
+  .accordion .accordion-item {
     padding-bottom: 32px;
-  }
-
-  .accordion > ul > li + li {
     margin-top: 32px;
   }
 
@@ -212,5 +188,20 @@
 
   .accordion .accordion-item-label-detail {
     display: inline;
+  }
+}
+
+/* trial-data: a body's blockquote pairs with its nearest chart, both set
+   beside the remaining content in that range (scripts.js wraps the pair).
+   An author-inserted <hr> can also split a body into independent segments —
+   the segment after it may have no blockquote, so its nearest picture
+   stands in alone (mirrors the equivalent tabs-dropdown-panel logic). */
+@media (width >= 992px) {
+  main .section.trial-data .accordion-item-body > hr {
+    display: none;
+  }
+
+  .accordion .accordion-sublist {
+    clear: both;
   }
 }

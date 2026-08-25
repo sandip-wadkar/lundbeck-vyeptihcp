@@ -111,13 +111,171 @@ main .cards.promo .cards-card-body a:hover {
   text-decoration: underline;
 }
 
-/* Tablet+ : quicklink four across, promo two across */
-@media (width >= 600px) {
+/* icon-feature — icon + text feature cards (patient-profiles, copay-support).
+   Icon column and text column sit side by side; the icon-to-text ratio is set
+   with percentage flex-basis so icons scale with the card and never stretch or
+   squash. Aspect ratio is held on the picture, not on fixed icon dimensions. */
+
+/* Establish a query container so column counts respond to the block's own
+   width rather than the viewport (see @container rules below). */
+main .cards.icon-feature {
+  container-type: inline-size;
+  container-name: cards-icon-feature;
+}
+
+/* Neutralise the auto-added cards-N-cols sizing (cards.js adds cards-2-cols /
+   cards-3-cols by card count): icon-feature cards always fill their grid cell
+   and stay left-aligned, matching the source full-width rows. */
+main .cards.icon-feature.cards-2-cols > ul,
+main .cards.icon-feature.cards-3-cols > ul,
+main .cards.icon-feature > ul {
+  grid-template-columns: 1fr;
+  justify-items: stretch;
+  gap: 2rem;
+}
+
+main .cards.icon-feature.cards-2-cols > ul > li,
+main .cards.icon-feature.cards-3-cols > ul > li,
+main .cards.icon-feature > ul > li {
+  border: none;
+  background-color: transparent;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  padding: 0;
+  width: auto;
+}
+
+/* icon column — ~18% of the card width, capped so it never dominates.
+   No fixed width/height: the picture holds a square (1:1) aspect ratio and the
+   icon scales responsively within its column. */
+main .cards.icon-feature .cards-card-image {
+  flex: 0 0 18%;
+  max-width: 100px;
+  min-width: 56px;
+  line-height: 0;
+}
+
+main .cards.icon-feature .cards-card-image picture,
+main .cards.icon-feature .cards-card-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+}
+
+/* text column — takes the remaining space beside the icon */
+main .cards.icon-feature .cards-card-body {
+  flex: 1 1 auto;
+  margin: 0;
+}
+
+main .cards.icon-feature .cards-card-body :is(h3, h4, h5) {
+  margin: 0 0 0.35em;
+  font-family: var(--heading-font-family);
+  color: var(--brand-primary-dark, #41748d);
+}
+
+main .cards.icon-feature .cards-card-body ul,
+main .cards.icon-feature .cards-card-body ol {
+  margin: 0;
+  padding-inline-start: 1.1em;
+}
+
+main .cards.icon-feature .cards-card-body p {
+  margin: 0.25em 0;
+}
+
+/* claims — wider (~4:3) icons; source renders these at 116px in a 2-up grid.
+   Icon and text are top-aligned with a 20px gap (matches the source). */
+main .cards.icon-feature.claims > ul > li {
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* Center the copay-claims section's default content (the "Copay claims,
+   simplified" heading + intro, "You may submit…" line, EFT heading + intro),
+   matching the source. The icon-feature card rows stay left-aligned. */
+main .section:has(> div > .cards.icon-feature.claims) > .default-content-wrapper {
+  text-align: center;
+}
+
+main .cards.icon-feature.claims .cards-card-image {
+  flex: 0 0 30%;
+  max-width: 116px;
+  min-width: 72px;
+}
+
+main .cards.icon-feature.claims .cards-card-image picture,
+main .cards.icon-feature.claims .cards-card-image img {
+  aspect-ratio: 4 / 3;
+}
+
+/* label heading — bold gray 22px (source uses a muted gray, not brand teal) */
+main .cards.icon-feature.claims .cards-card-body :is(h3, h4, h5) {
+  margin: 0 0 0.25em;
+  color: var(--text-color-light, #666);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* body copy — 18px */
+main .cards.icon-feature.claims .cards-card-body p {
+  font-size: var(--body-font-size-ms, 18px);
+}
+
+/* icon-80 — optional opt-in that clamps the icon column at 80px (e.g. the
+   VYEPTI CONNECT support rows). Icons are circular, teal-outlined to match the
+   source; icon and text sit 24px apart. Only applied when explicitly requested. */
+main .cards.icon-feature.icon-80 > ul > li {
+  gap: 24px;
+}
+
+main .cards.icon-feature.icon-80 .cards-card-image {
+  flex: 0 0 80px;
+  max-width: 80px;
+  min-width: 80px;
+}
+
+main .cards.icon-feature.icon-80 .cards-card-image picture,
+main .cards.icon-feature.icon-80 .cards-card-image img {
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+}
+
+main .cards.icon-feature.icon-80 .cards-card-body p {
+  color: var(--text-color, #484848);
+}
+
+/* Tablet+ : quicklink four across, promo two across, icon-feature claims two
+   across, icon-80 two across */
+@media (width >= 768px) {
   main .cards.quicklink > ul {
     grid-template-columns: repeat(4, 1fr);
   }
 
   main .cards.promo > ul {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  main .cards.icon-feature > ul {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  main .cards.icon-feature.icon-80 > ul {
+    gap: 16px 32px;
+  }
+}
+
+@container cards-icon-feature (width >=992px) {
+  main .cards.icon-feature.cards-2-cols > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  main .cards.icon-feature.cards-3-cols > ul {
+    grid-template-columns: repeat(3, 1fr);
   }
 }

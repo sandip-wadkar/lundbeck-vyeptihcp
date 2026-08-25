@@ -33,6 +33,19 @@
           "value": "",
           "label": "Attribution",
           "valueType": "string"
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Headshot (optional)",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "name": "imageAlt",
+          "label": "Headshot Alt Text",
+          "valueType": "string"
         }
       ]
     }

@@ -1,0 +1,59 @@
+{
+  "definitions": [
+    {
+      "title": "Tabs Dropdown",
+      "id": "tabs-dropdown",
+      "model": "tabs-dropdown",
+      "filter": "tabs-dropdown",
+      "plugins": {
+        "da": {
+          "columns": 0,
+          "rows": 0
+        }
+      }
+    },
+    {
+      "title": "Tabs Dropdown Item",
+      "id": "tabs-dropdown-item",
+      "model": "tabs-dropdown-item",
+      "plugins": {
+        "da": {
+          "columns": 2,
+          "rows": 1,
+          "fields": [
+            { "name": "name", "selector": "div:nth-child(1)"},
+            { "name": "content", "selector": "div:nth-child(2)"}
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "tabs-dropdown-item",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "name",
+          "value": "name",
+          "valueType": "string",
+          "label": "Tab Name",
+          "required": true
+        },
+        {
+          "component": "richtext",
+          "name": "content",
+          "value": "content",
+          "label": "Content",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "tabs-dropdown",
+      "components": ["tabs-dropdown-item"]
+    }
+  ]
+}

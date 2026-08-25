@@ -1,0 +1,12 @@
+/* bicolor-box design tokens */
+:root {
+  --bicolor-box-radius: 20px;
+  --bicolor-box-title-font-size: 28px;
+  --bicolor-box-body-bg: #dfe9f1;
+
+  /* stat-box variant */
+  --bicolor-box-stat-value-font-size: 56px;
+  --bicolor-box-stat-value-font-size-desktop: 80px;
+  --bicolor-box-stat-source-font-size: 20px;
+  --bicolor-box-stat-description-font-size: 20px;
+}

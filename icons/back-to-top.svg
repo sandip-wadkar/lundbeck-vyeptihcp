@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="56" height="56" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <title>Back to top</title>
+  <g fill="none" fill-rule="evenodd">
+    <g transform="translate(28 28) scale(0.86) translate(-28 -28)">
+      <circle cx="28" cy="28" r="28" fill="#C02C57"/>
+    </g>
+    <path d="M28 17 L28 39 M28 17 L19 26 M28 17 L37 26" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

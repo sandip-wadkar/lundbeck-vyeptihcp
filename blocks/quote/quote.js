@@ -1,14 +1,13 @@
-import { getBlockId, ensureDOMPurify } from '../../scripts/scripts.js';
-import { DOMPURIFY } from '../../scripts/aem.js';
+import { getBlockId } from '../../scripts/scripts.js';
 
-export default async function decorate(block) {
+export default function decorate(block) {
   const blockId = getBlockId('quote');
   block.setAttribute('id', blockId);
   block.setAttribute('aria-label', `quote-${blockId}`);
   block.setAttribute('role', 'region');
   block.setAttribute('aria-roledescription', 'Quote');
 
-  const [quotation, attribution] = [...block.children].map((c) => c.firstElementChild);
+  const [quotation, attribution, imageRow] = [...block.children].map((c) => c.firstElementChild);
   const blockquote = document.createElement('blockquote');
   // decorate quotation
   quotation.className = 'quote-quotation';
@@ -17,14 +16,22 @@ export default async function decorate(block) {
   if (attribution) {
     attribution.className = 'quote-attribution';
     blockquote.append(attribution);
-    await ensureDOMPurify();
-    const ems = attribution.querySelectorAll('em');
-    ems.forEach((em) => {
-      const cite = document.createElement('cite');
-      cite.innerHTML = window.DOMPurify.sanitize(em.innerHTML, DOMPURIFY);
-      em.replaceWith(cite);
-    });
   }
+
+  const picture = imageRow?.querySelector('picture, img');
   block.innerHTML = '';
-  block.append(blockquote);
+
+  if (picture) {
+    const imageWrapper = document.createElement('div');
+    imageWrapper.className = 'quote-image';
+    imageWrapper.append(picture);
+    block.append(imageWrapper);
+
+    const content = document.createElement('div');
+    content.className = 'quote-content';
+    content.append(blockquote);
+    block.append(content);
+  } else {
+    block.append(blockquote);
+  }
 }

@@ -4,6 +4,29 @@
   --columns-divider-width: 1px;
   --columns-divider-spacing: var(--spacing-l, 32px);
   --columns-divider-color: #7ebcc6;
+  --columns-arrow-nav-divider-height: 29px;
+  --columns-arrow-nav-divider-color: #fff;
+  --columns-arrow-nav-arrow-size: 30px;
+  --columns-arrow-nav-hover-color: #7ebcc6;
+  --resource-list-gap: 16px;
+  --columns-logo-grid-border-color: #a4a4a4;
+  --columns-logo-grid-padding: 16px 0;
+  --columns-logo-grid-padding-first: 24px 0 16px;
+  --columns-logo-grid-gap: 48px;
+  --columns-logo-max-width: 216px;
+  --columns-logo-item-height: 92px;
+  --columns-logo-download-icon-size: 32px;
+
+  /* teal variant — solid teal callout box (image + heading + CTA) */
+  --columns-teal-bg: var(--brand-teal-muted); /* #41748d */
+  --columns-teal-radius: 20px;
+  --columns-teal-padding: 20px 15px; /* mobile: source content inset ≈ 20px/15px */
+  --columns-teal-padding-desktop: 36px 50px;
+  --columns-teal-gap: 20px;
+  --columns-teal-gap-desktop: 40px;
+  --columns-teal-img-width: 195px;
+  --columns-teal-text-max-width: 570px; /* source text column ≈ 567px */
+  --columns-teal-button-padding: 16px 60px; /* source CTA ≈ 345×56px */
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -16,6 +39,7 @@
  * pill CTA the other. Column order in the authored table IS the layout
  * (left cell renders left, right cell renders right).
  * ──────────────────────────────────────────────────────────────── */
+
 
 main .columns.teaser-cta > div {
   gap: 1.5rem;
@@ -56,16 +80,6 @@ main .columns.teaser-cta .button-container a {
   border-radius: var(--button-border-radius);
 }
 
-/* Tablet+ : two columns side by side */
-@media (width >= 768px) {
-  main .columns.teaser-cta > div {
-    gap: 2.5rem;
-  }
-}
-
-/* banner-text — hero sub-copy container (single column). Used inside a `banner`
-   section for the small definition/footnote heading beneath the hero art. Gives
-   authors a styled container instead of bare default content. */
 main .columns.banner-text {
   max-width: var(--max-width-site);
 }
@@ -85,4 +99,59 @@ main .columns.banner-text :is(h1, h2, h3, h4, h5, h6) {
 main .columns.banner-text p {
   font-size: var(--body-font-size-xs);
   color: var(--text-color-light);
+}
+
+/* ────────────────────────────────────────────────────────────────
+ * resource-list variant — vertical icon+link lists side by side
+ * (resource/guide/form/letter download lists).
+ * ──────────────────────────────────────────────────────────────── */
+main .columns.resource-list > div {
+  align-items: stretch;
+  gap: var(--resource-list-gap);
+  margin-top: var(--resource-list-gap);
+  margin-bottom: var(--resource-list-gap);
+}
+
+main .columns.resource-list > div > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resource-list-gap)
+}
+
+main .columns.resource-list a {
+  display: inline-flex;
+  gap: 8px;
+  min-height: 32px;
+  color: var(--brand-teal-muted);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+main .columns.resource-list a:hover {
+  opacity: .7;
+}
+
+main .columns.resource-list img {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+
+/* Tablet+ : two columns side by side */
+@media (width >= 768px) {
+  main .columns.teaser-cta > div {
+    gap: 2.5rem;
+  }
+
+  .columns > div:has( > div.emboss) {
+    align-items: stretch;
+  }
+}
+
+@media (width >= 992px) {
+  main .columns.resource-list > div {
+    gap: 60px;
+  }
 }

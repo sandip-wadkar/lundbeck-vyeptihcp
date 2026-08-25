@@ -1,30 +1,7 @@
 @import url('./header-tokens.css');
 
-/* ============================================================
-   VYEPTI HCP header — 3 rows:
-   (0) HCP notification bar (white, dismissible)
-   (1) Utility bar — indication tagline + PI/Patient Info dropdowns
-   (2) Brand + tools + primary nav
-
-   MOBILE-FIRST layout (do NOT reintroduce max-width queries):
-   • Base rules below target the smallest viewport (~375px): white brand band,
-     hamburger + LuMi avatar on the top bar, accordion nav, stacked CTA block,
-     two-band utility area.
-   • Exactly TWO min-width media sections follow, near the end of the file:
-       @media (width >= 600px)  — tablet overrides (tool CTAs go 2-up)
-       @media (width >= 900px)  — desktop overrides (teal band, horizontal nav)
-     The 900px literal MUST match --header-mobile-breakpoint in header-tokens.css
-     (and header.js's matchMedia('(min-width: 900px)')).
-
-   All values resolve to tokens in header-tokens.css (which reference the global
-   design tokens in styles/styles.css). Tune the header there, not here.
-   ============================================================ */
-
-/* CLS reservation for this multi-row header lives in the EAGER styles.css
-   (`header { min-height: var(--header-reserve-height-*) }` + a loaded-state
-   release), because it must reserve space from first paint — this block's CSS
-   loads lazily and would apply too late to prevent the shift. Nothing to set
-   here; the header sizes to its real content once loaded. */
+/* VYEPTI HCP header — 3 rows: HCP bar, utility bar, brand+tools+nav. Mobile-first; only two
+   min-width sections (600px tablet, 992px desktop — must match header-tokens.css and header.js). */
 
 header .nav-wrapper {
   width: 100%;
@@ -34,6 +11,12 @@ header .nav-wrapper {
 header nav {
   display: block;
   font-family: var(--body-font-family);
+}
+
+/* Every header control is a native <button>, which inherits the global .button margin — reset it. */
+header nav button {
+  margin: 0;
+  border-radius: 0;
 }
 
 header nav .nav-visually-hidden {
@@ -53,7 +36,6 @@ header nav .nav-utility-container,
 header nav .nav-brand-container,
 header nav .nav-links-container {
   box-sizing: border-box;
-  max-width: var(--max-width-site);
   margin: 0 auto;
   padding: 0 var(--header-padding-container);
 }
@@ -68,7 +50,9 @@ header nav .nav-hcp-container {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+
+  /* Centered while wrapped (<870px, content-driven); flex-start once it fits on one line. */
+  justify-content: center;
   gap: var(--header-row-gap);
   padding-block: var(--header-space-2xs);
 }
@@ -93,7 +77,8 @@ header nav .nav-hcp-actions .nav-hcp-link {
 }
 
 header nav .nav-hcp-continue {
-  border: var(--header-border-width) solid var(--header-accent-color);
+  /* Thinner than the shared --header-border-width (2px) — source's CONTINUE button is 1px. */
+  border: 1px solid var(--header-accent-color);
   border-radius: var(--header-pill-radius);
   background: transparent;
   color: var(--header-accent-color);
@@ -120,9 +105,7 @@ header nav .nav-hcp-link {
   gap: var(--header-hcp-arrow-gap);
 }
 
-/* Circular right-arrow after "GO TO PATIENT SITE". Mobile (base) uses the
-   outlined variant: white circle + 2px teal ring + teal arrow. Desktop swaps
-   to the filled teal circle with a white arrow. */
+/* Circular right-arrow after "GO TO PATIENT SITE" (white circle, teal ring + arrow), all breakpoints. */
 header nav .nav-hcp-link::after {
   content: '';
   display: inline-block;
@@ -136,10 +119,7 @@ header nav .nav-hcp-link:hover {
   text-decoration: underline;
 }
 
-/* ---- Row 1: Utility bar ----
-   Mobile: two stacked bands (matches source) — a teal indication tagline band
-   (white text) above a light-blue PI/Patient Info band (teal text), centered
-   with a divider between the two triggers. "View patient site" is hidden. */
+/* ---- Row 1: Utility bar — mobile is two stacked bands (teal tagline + light PI/Patient Info). ---- */
 header nav .nav-utility {
   background-color: var(--header-brand-band-bg);
   font-size: var(--header-font-size-xs);
@@ -161,8 +141,7 @@ header nav .nav-utility-tagline {
   font-size: var(--header-mobile-util-font-size);
 }
 
-/* PI/Patient Info band: full-bleed light-blue strip below the teal tagline.
-   Both links stay on one line side-by-side (no wrap) — matches source. */
+/* PI/Patient Info: full-bleed light-blue strip; both links stay on one line (no wrap), matches source. */
 header nav .nav-utility-links {
   display: flex;
   flex-wrap: nowrap;
@@ -186,9 +165,7 @@ header nav .nav-utility-links > li:not(.nav-dropdown) {
   display: none;
 }
 
-/* ---- Teal brand band: logo left, spanning stacked [tools row / nav row] right ----
-   Mobile: white band, logo + LuMi avatar + hamburger on one row; the right
-   column (tools + primary nav) collapses into the hamburger pop-over. */
+/* ---- Teal brand band: logo left, stacked [tools row / nav row] right; mobile is a white band. ---- */
 header nav .nav-brand-row {
   position: relative;
   background-color: var(--header-mobile-brand-bg);
@@ -215,8 +192,7 @@ header nav .nav-brand img {
   height: var(--header-logo-height);
 }
 
-/* Mobile shows the full-colour logo on the white band; desktop shows the white
-   logo on the teal band. */
+/* Mobile shows the full-colour logo on the white band; desktop shows the white logo on the teal band. */
 header nav .nav-brand .nav-brand-logo-desktop {
   display: none;
 }
@@ -231,9 +207,7 @@ header nav .nav-brand-right {
   display: none;
 }
 
-/* Open menu = a pop-over overlay (source): absolutely positioned below the
-   brand bar, full-width white panel that floats OVER the page. Tool CTAs on top
-   (teal block, flush), then the nav accordion. */
+/* Open menu = a pop-over overlay (source): absolute, full-width, floats over the page. */
 header nav.nav-mobile-open .nav-brand-right {
   display: flex;
   flex-direction: column;
@@ -244,14 +218,12 @@ header nav.nav-mobile-open .nav-brand-right {
   background: var(--header-mobile-menu-bg);
   box-shadow: var(--header-mobile-menu-shadow);
 
-  /* Match the container inset so the CTA/util full-bleed (negative-margin)
-     bands still align to the viewport edges. */
+  /* Matches the container inset so the full-bleed (negative-margin) bands align to the viewport. */
   padding: 0 var(--header-mobile-menu-inset) var(--header-mobile-menu-padding-block);
   z-index: var(--header-mobile-menu-z);
 }
 
-/* Tool CTAs sit on a full-width teal block. Phone (base): all three pills stack
-   full-width. The tablet override switches to 2-up + full-width third. */
+/* Tool CTAs sit on a full-width teal block; phone stacks all three full-width. */
 header nav .nav-tools-row {
   display: flex;
   align-items: center;
@@ -296,16 +268,16 @@ header nav .nav-tool-cta:focus {
   color: var(--header-brand-band-bg);
 }
 
-/* ---- Primary nav links ----
-   Mobile: a full-width vertical accordion with divider lines between items. */
+/* ---- Primary nav links: mobile is a full-width vertical accordion with divider lines. ---- */
 header nav .nav-links-row {
   display: block;
   width: 100%;
   padding-bottom: 0;
 }
 
+/* No grow — the LuMi widget (pushed right via its own margin-left: auto) must never get crowded out. */
 header nav .nav-links-row .nav-links-list {
-  flex: 1 1 auto;
+  flex: 0 1 auto;
 }
 
 header nav .nav-links-list {
@@ -348,9 +320,9 @@ header nav .nav-dropdown-trigger {
   cursor: pointer;
   font-family: inherit;
 
-  /* Global .button rule sets overflow:hidden, which clips the rotated chevron
-     corner; allow it to render fully. */
+  /* Global .button rule clips the chevron and forces uppercase; undo both. */
   overflow: visible;
+  text-transform: none;
 }
 
 header nav .nav-links-list > li > a:hover,
@@ -358,9 +330,7 @@ header nav .nav-dropdown-trigger:hover {
   text-decoration: underline;
 }
 
-/* Accordion chevron (mobile): the source's 24x24 teal V image. Stays pointing
-   down when expanded (no rotate) — matches source. Desktop swaps to a small
-   rotated-square caret. */
+/* Accordion chevron (mobile): source's 24x24 teal V, no rotate. Desktop swaps to a rotated caret. */
 header nav .nav-links-list .nav-dropdown-trigger::after {
   content: '';
   position: relative;
@@ -372,13 +342,9 @@ header nav .nav-links-list .nav-dropdown-trigger::after {
   transform: none;
 }
 
-/* ---- LuMi AI Assistant widget ----
-   Mobile: just the circular avatar (no label), on the top bar immediately left
-   of the hamburger (moved there in header.js). Desktop: avatar + label sitting
-   to the right of the primary nav. */
+/* ---- LuMi AI Assistant: mobile is avatar-only next to the hamburger; desktop adds the label. ---- */
 header nav .nav-lumi {
-  /* Static so the popup anchors to the full-width .nav-brand-row (position
-     relative on mobile) instead of this narrow avatar box. */
+  /* Static so the popup anchors to the full-width .nav-brand-row, not this narrow avatar box. */
   position: static;
   flex: 0 0 auto;
 
@@ -425,15 +391,15 @@ header nav .nav-lumi-label {
   line-height: var(--header-lumi-label-line-height);
   text-align: left;
 
-  /* Wrap to two lines ("LuMi AI" / "Assistant") as on source, keeping the
-     widget compact so the primary nav links stay on one row. */
+  /* Source renders "LuMi AI" / "Assistant" mixed-case; reset the global button{} uppercase rule. */
+  text-transform: none;
+
+  /* Wraps to two lines like source, keeping the widget compact so the nav links stay on one row. */
   white-space: normal;
   max-width: var(--header-lumi-label-max-width);
 }
 
-/* Popup drops below the avatar. On a narrow viewport the 335px card can't
-   center under an avatar near the right edge, so right-align it to the screen
-   (capping width to fit) and keep its arrow pointing up at the avatar. */
+/* Popup drops below the avatar; right-aligned + width-capped so it fits narrow viewports. */
 header nav .nav-lumi-popup {
   display: none;
   position: absolute;
@@ -451,9 +417,7 @@ header nav .nav-lumi-button[aria-expanded='true'] + .nav-lumi-popup {
   display: block;
 }
 
-/* Upward triangle indicator, teal like the popup header, pointing up at the
-   avatar. Mobile anchors it from the popup's right edge; desktop uses a wider
-   offset (avatar sits further in). */
+/* Upward triangle pointing at the avatar; mobile/desktop use different right-offsets. */
 header nav .nav-lumi-popup::before {
   content: '';
   position: absolute;
@@ -579,12 +543,8 @@ header nav .nav-dropdown-menu a:hover {
   text-decoration: underline;
 }
 
-/* Dropdown menus with the "card" treatment (matches source): fully rounded card
-   with side padding, 12px/700 links, and a divider line between each item (all
-   but the last). Shared by the primary-nav submenus (VYEPTI Results / Access &
-   Savings) and the utility-bar submenus (Prescribing / Patient Information).
-   On mobile the primary-nav submenus flatten into the accordion (below); the
-   utility-bar submenus keep the card. */
+/* "Card" dropdowns (source): rounded, side padding, 12px/700 links, divider between items.
+   Shared by primary-nav (VYEPTI Results / Access & Savings) and utility-bar submenus. */
 header nav .nav-links-list .nav-dropdown-menu,
 header nav .nav-utility-links .nav-dropdown-menu {
   border-radius: var(--header-navmenu-radius);
@@ -616,8 +576,7 @@ header nav .nav-utility-links .nav-dropdown-menu a:hover {
   background: transparent;
 }
 
-/* Primary-nav submenus on mobile: flatten the card into an inline accordion
-   (no absolute overlay, no rounded card / shadow). Desktop restores the card. */
+/* Primary-nav submenus flatten into an inline mobile accordion (no overlay/card); desktop restores it. */
 header nav .nav-links-list .nav-dropdown-menu {
   position: static;
   min-width: 0;
@@ -631,9 +590,6 @@ header nav .nav-links-list .nav-dropdown-menu a {
   color: var(--header-accent-color);
   font-size: var(--header-font-size-s);
   font-weight: var(--header-font-weight-medium);
-
-  /* Taller line box gives extra vertical breathing room between sub-items
-     (matches source's 24px line-height). */
   line-height: var(--header-mobile-sublink-line-height);
   white-space: normal;
 
@@ -641,7 +597,7 @@ header nav .nav-links-list .nav-dropdown-menu a {
   border-bottom: 0;
 }
 
-/* Utility-bar dropdowns render as inline text triggers (not teal-band buttons) */
+/* Utility-bar dropdowns render as inline text triggers (not teal-band buttons). */
 header nav .nav-utility-links .nav-dropdown {
   position: relative;
   list-style: none;
@@ -655,8 +611,7 @@ header nav .nav-utility-links .nav-dropdown-trigger {
   font: inherit;
   font-weight: var(--header-font-weight-medium);
 
-  /* 12px keeps each label on one line so PI + Patient Info sit side-by-side with
-     the divider between them (matches source), rather than wrapping. */
+  /* 12px keeps PI + Patient Info on one line side-by-side with the divider, matching source. */
   font-size: var(--header-mobile-util-font-size);
   white-space: nowrap;
   cursor: pointer;
@@ -664,13 +619,11 @@ header nav .nav-utility-links .nav-dropdown-trigger {
   align-items: center;
   gap: var(--header-chevron-gap);
 
-  /* Global .button rule sets overflow:hidden, which clips the rotated chevron
-     corner; allow it to render fully. */
+  /* Global .button rule clips the rotated chevron corner; allow it to render fully. */
   overflow: visible;
 }
 
-/* Down chevron on the utility-bar dropdown triggers (PI / Patient Info).
-   Stays pointing down when expanded (no rotate) — matches source. */
+/* Down chevron on the utility-bar triggers; stays pointing down when expanded, matches source. */
 header nav .nav-utility-links .nav-dropdown-trigger::after {
   content: '';
   position: relative;
@@ -693,16 +646,12 @@ header nav .nav-utility-links .nav-dropdown-menu {
   min-width: var(--header-utility-dropdown-min-width);
 }
 
-/* Utility dropdown links don't wrap, so the panel grows to fit each label
-   (matches source; primary-nav dropdowns wrap instead). */
+/* Utility dropdown links don't wrap, so the panel grows to fit each label (matches source). */
 header nav .nav-utility-links .nav-dropdown-menu a {
   white-space: nowrap;
 }
 
-/* ---- Hamburger (mobile): icon + persistent "Menu" label, dark on the white
-   band. Reset the global button padding (14px 25px) so the icon isn't pushed in
-   from the right edge; spacing is controlled by --header-hamburger-inset. The
-   3-bar icon morphs into an X when the menu is open. Hidden on desktop. ---- */
+/* ---- Hamburger (mobile): icon + "Menu" label; morphs into an X when open; hidden on desktop. ---- */
 header nav .nav-hamburger {
   display: inline-flex;
   flex-direction: column;
@@ -749,19 +698,20 @@ header nav .nav-hamburger-icon::after {
 }
 
 header nav .nav-hamburger-label {
-  font-size: var(--header-font-size-xs);
+  font-size: 12px;
   font-weight: var(--header-font-weight-medium);
   line-height: var(--header-hamburger-label-line-height);
   color: var(--header-mobile-hamburger-label-color);
+
+  /* Source renders "Menu" mixed-case; reset the global button{} uppercase rule. */
+  text-transform: none;
 }
 
-/* Open state: bars morph into an X. */
+/* Open state: bars morph into an X (source hamburger-cross.svg: shorter + thicker arms). */
 header nav.nav-mobile-open .nav-hamburger-icon {
   background: transparent;
 }
 
-/* The X arms are shorter + thicker than the 3-line bars so the cross reads as
-   bold like the source (hamburger-cross.svg: ~26px diagonal arms, ~5px thick). */
 header nav.nav-mobile-open .nav-hamburger-icon::before,
 header nav.nav-mobile-open .nav-hamburger-icon::after {
   width: var(--header-hamburger-x-arm-length);
@@ -776,12 +726,7 @@ header nav.nav-mobile-open .nav-hamburger-icon::after {
   transform: translateX(var(--header-hamburger-x-shift-x)) rotate(-45deg);
 }
 
-/* ============================================================
-   TABLET overrides (width >= 600px): the tool CTAs switch from the phone's
-   fully-stacked column to a 2-up top row (INFUSION LOCATOR + CHECK COVERAGE),
-   with REQUEST A REP full-width on the row below. These persist up into the
-   desktop range until the desktop section re-lays the tools horizontally.
-   ============================================================ */
+/* TABLET (>=600px): tool CTAs go 2-up (INFUSION LOCATOR + CHECK COVERAGE), REQUEST A REP full-width. */
 @media (width >= 600px) {
   header nav .nav-tools {
     flex-flow: row wrap;
@@ -801,39 +746,72 @@ header nav.nav-mobile-open .nav-hamburger-icon::after {
   }
 }
 
-/* ============================================================
-   DESKTOP overrides (width >= 900px): the header returns to its full layout —
-   the teal brand band with the white logo, the utility bar as a single light
-   row, tool CTAs on one horizontal row above the horizontal primary nav, and
-   the LuMi avatar + label to the right of the nav. The hamburger / accordion /
-   pop-over are hidden. This 900px literal MUST match --header-mobile-breakpoint
-   and header.js's matchMedia('(min-width: 900px)').
-   ============================================================ */
-@media (width >= 900px) {
-  /* HCP arrow returns to the filled teal circle with a white arrow. */
-  header nav .nav-hcp-link::after {
-    background-image: var(--header-hcp-arrow-image);
+/* Bootstrap's own md container (720px, centered) governs source's HCP/utility/brand row insets
+   from 768px up until the 992px desktop tier takes over with its own wider container. */
+@media (width >= 768px) {
+  header nav .nav-hcp-container, header nav .nav-utility-container, header nav .nav-brand-container, header nav .nav-links-container {
+    max-width: 720px;
   }
 
-  /* Utility bar: single light row. */
+  /* Source spaces CONTINUE and GO TO PATIENT SITE apart by a wide, viewport-independent gap once wrapped. */
+  header nav .nav-hcp-actions {
+    gap: 177px;
+  }
+
+  /* The light-blue PI/Patient Info strip must bleed full-bleed past the 720px container, unlike its content. */
+  header nav .nav-utility-links {
+    position: relative;
+    left: 50%;
+    width: 100vw;
+    margin-left: -50vw;
+  }
+}
+
+/* DESKTOP (>=992px): teal brand band, single-row utility bar, horizontal CTAs + nav, hamburger hidden. */
+@media (width >= 992px) {
+  :root {
+    /* Wider than the shared site max-width — the narrow 992-1199px tier needs the room. */
+    --header-container-max-width: 943px;
+  }
+
+  header nav .nav-hcp-container, header nav .nav-utility-container, header nav .nav-brand-container, header nav .nav-links-container {
+    max-width: var(--header-container-max-width);
+}
+
+  header nav .nav-hcp-container {
+    justify-content: flex-start;
+    gap: var(--header-hcp-gap-wide);
+    padding-block: var(--header-space-s) var(--header-space-m);
+  }
+
+  header nav .nav-hcp-actions {
+    gap: var(--header-hcp-gap-wide);
+  }
+
   header nav .nav-utility {
-    background-color: var(--header-utility-bg);
+    background-color: var(--header-mobile-util-band-bg);
   }
 
   header nav .nav-utility-container {
-    flex-direction: row;
+    flex-flow: row nowrap;
     align-items: center;
     gap: var(--header-space-s);
-    padding-block: var(--header-space-3xs);
+    padding-block: var(--header-space-2xs);
   }
 
   header nav .nav-utility-tagline {
+    flex: 1 1 auto;
+    min-width: 0;
     color: var(--header-accent-color);
     padding-bottom: 0;
     font-size: var(--header-font-size-xs);
   }
 
   header nav .nav-utility-links {
+    position: static;
+    left: auto;
+    width: auto;
+    flex: 0 0 auto;
     gap: var(--header-actions-gap);
     margin: 0;
     padding: 0;
@@ -854,7 +832,10 @@ header nav.nav-mobile-open .nav-hamburger-icon::after {
     display: list-item;
   }
 
-  /* Brand band: teal, single row, white logo. */
+  header nav .nav-utility-link {
+    font-size: var(--header-font-size-xs);
+  }
+
   header nav .nav-brand-row {
     position: static;
     background-color: var(--header-brand-band-bg);
@@ -865,6 +846,15 @@ header nav.nav-mobile-open .nav-hamburger-icon::after {
     align-items: stretch;
     justify-content: normal;
     padding-block: 0;
+
+    /* Source sits the nav content flush against the logo at this tier — no gap to spare. */
+    gap: 0;
+  }
+
+  header nav .nav-brand {
+    /* Nudges the logo up and right of dead-center to match source's off-center placement.
+       A transform (not margin) so the shift doesn't consume flex-row space or move the nav links. */
+    transform: translate(-8.5px, -20px);
   }
 
   header nav .nav-brand .nav-brand-logo-desktop {
@@ -875,19 +865,21 @@ header nav.nav-mobile-open .nav-hamburger-icon::after {
     display: none;
   }
 
-  /* Right column stacks the CTA/tools row above the primary nav links row. */
   header nav .nav-brand-right {
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
     min-width: 0;
+    gap: var(--header-space-m);
   }
 
   header nav .nav-tools-row {
     justify-content: flex-end;
     background: none;
     margin: 0;
-    padding: var(--header-space-m) 0 var(--header-space-2xs);
+
+    /* Matches source's 24px gap above the pills; the row below drops its own bottom padding instead. */
+    padding: var(--header-space-2xl) 0 var(--header-space-2xs);
   }
 
   header nav .nav-tools {
@@ -913,18 +905,26 @@ header nav.nav-mobile-open .nav-hamburger-icon::after {
     font-size: var(--header-font-size-s);
   }
 
-  /* Primary nav goes horizontal. */
+  /* Nav goes horizontal; gap/font tightened here (restored at 1200px) so everything fits one line.
+     Source's nav-links row isn't indented past the logo like the CTA row above it — it spans the
+     full container width independently, since the logo has already ended above this row's own
+     vertical position. Break out of nav-brand-right's column by the logo's own fixed rendered
+     width (134.9375px at this tier's logo height) to match. */
   header nav .nav-links-row {
     display: flex;
     align-items: center;
-    gap: var(--header-row-gap);
-    width: auto;
-    padding-bottom: var(--header-space-2xs);
+    gap: var(--header-nav-link-gap);
+    width: calc(100% + 134.9375px);
+    margin-left: -134.9375px;
+    padding-bottom: 0;
   }
 
   header nav .nav-links-list {
-    flex-flow: row wrap;
+    flex-flow: row nowrap;
     width: auto;
+
+    /* Source doesn't start the nav flush at the container edge — it's indented past the logo. */
+    margin-left: 44px;
   }
 
   header nav .nav-links-list > li {
@@ -933,26 +933,31 @@ header nav.nav-mobile-open .nav-hamburger-icon::after {
     border-bottom: 0;
   }
 
-  header nav .nav-links-list > li:last-child {
-    margin-right: 0;
-  }
-
   header nav .nav-links-list > li > a,
   header nav .nav-dropdown-trigger {
     width: auto;
     justify-content: normal;
     color: var(--header-white-text-color);
     padding: var(--header-nav-link-padding);
+    white-space: nowrap;
+    font-size: var(--header-font-size-s);
   }
 
-  /* Desktop dropdown chevron: small rotated-square caret (nudged up to optically
-     center) instead of the mobile V image. */
+  /* Current-page indicator: underline the matching nav item (never a dropdown trigger, per source).
+     A real border, not box-shadow — box-shadow paints outside the box and gets covered by the
+     content below, which sits flush against the header's bottom edge with no gap. */
+  header nav .nav-links-list > li.nav-link-current > a {
+    padding-bottom: 18px;
+    border-bottom: 6px solid var(--link-hover-color);
+  }
+
+  /* Desktop dropdown chevron: rotated-square caret instead of the mobile V image, matching source's bigger/thinner caret. */
   header nav .nav-links-list .nav-dropdown-trigger::after {
     top: var(--header-chevron-offset-y);
-    width: var(--header-chevron-size);
-    height: var(--header-chevron-size);
-    border-right: var(--header-border-width) solid currentcolor;
-    border-bottom: var(--header-border-width) solid currentcolor;
+    width: 8px;
+    height: 8px;
+    border-right: var(--header-chevron-border-width) solid currentcolor;
+    border-bottom: var(--header-chevron-border-width) solid currentcolor;
     background: none;
     transform: rotate(45deg);
   }
@@ -974,20 +979,26 @@ header nav.nav-mobile-open .nav-hamburger-icon::after {
     border-bottom: var(--header-navmenu-separator);
   }
 
-  /* Utility trigger label returns to 14px. */
   header nav .nav-utility-links .nav-dropdown-trigger::after {
     top: var(--header-chevron-offset-y);
   }
 
-  /* LuMi: avatar + label to the right of the nav; popup right-aligned to it. */
   header nav .nav-lumi {
     position: relative;
+    margin-left: 0;
     margin-right: 0;
     align-self: auto;
   }
 
   header nav .nav-lumi-label {
     display: block;
+
+    /* Floor: "Assistant" is the longest unbreakable word at this font size. */
+    max-width: 76px;
+  }
+
+  header nav .nav-lumi-button {
+    gap: 4px;
   }
 
   header nav .nav-lumi-avatar {
@@ -1004,8 +1015,53 @@ header nav.nav-mobile-open .nav-hamburger-icon::after {
     right: var(--header-lumi-arrow-right);
   }
 
-  /* Hamburger is mobile-only. */
   header nav .nav-hamburger {
     display: none;
+  }
+}
+
+/* WIDE (>=1200px): restore the 992-1199px tier's max-width/gap reductions once there's room to spare. */
+@media (width >= 1200px) {
+  :root {
+    /* Header-specific, matching source's own Bootstrap xl container — wider than --max-width-site. */
+    --header-container-max-width: 1140px;
+  }
+
+  header nav .nav-hcp-container {
+    padding-block: 12px;
+  }
+
+  header nav .nav-hcp-continue {
+    padding: var(--header-hcp-continue-padding-wide);
+  }
+
+  header nav .nav-brand-container {
+    gap: var(--header-brand-gap);
+  }
+
+  header nav .nav-tools-row {
+    /* The 992px tier's own bottom padding is redundant once nav-brand-right's gap supplies the gap below. */
+    padding-bottom: 0;
+  }
+
+  header nav .nav-brand-right {
+    gap: 8px;
+  }
+
+  header nav .nav-brand {
+    /* Source nudges the logo down (not up, unlike the 992px tier) at this wider tier — reset then re-nudge. */
+    transform: translate(0, 7px);
+  }
+
+  header nav .nav-links-list > li {
+    margin-right: var(--header-nav-link-gap-wide);
+  }
+
+  /* The 992px tier's logo-breakout isn't needed here (this tier already fits without it) and would
+     collide with the logo, which sits lower at this wider tier — revert to the constrained width. */
+  header nav .nav-links-row {
+    width: auto;
+    margin-left: 0;
+    gap: var(--header-nav-link-gap-wide);
   }
 }

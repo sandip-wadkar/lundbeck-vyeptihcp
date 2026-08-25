@@ -10,21 +10,21 @@
 .back-to-top.block button {
   position: fixed;
   right: var(--back-to-top-offset-right);
-  top: var(--back-to-top-top);
+  bottom: var(--back-to-top-bottom);
   z-index: var(--back-to-top-z-index);
   width: var(--back-to-top-width);
   height: var(--back-to-top-height);
   padding: 0;
   border: 0;
-  border-radius: 0;
   overflow: visible;
   background-color: transparent;
-  background-image: url('/icons/toptobottom.svg');
+  background-image: url('/icons/back-to-top.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
   opacity: 0;
   visibility: hidden;
+  filter: drop-shadow(var(--back-to-top-shadow));
   transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
@@ -35,14 +35,26 @@
 
 .back-to-top.block button:hover,
 .back-to-top.block button:focus {
-  cursor: default;
+  cursor: pointer;
   background-color: transparent;
   border-color: transparent;
+  background-image: url('/icons/back-to-top-hover.svg');
 }
 
-@media (width >= 768px) {
+@media (width >= 992px) {
   .back-to-top.block button {
-    top: auto;
-    bottom: var(--back-to-top-bottom);
+    right: var(--back-to-top-desktop-offset-right);
+    bottom: var(--back-to-top-desktop-bottom);
+    width: var(--back-to-top-desktop-width);
+    height: var(--back-to-top-desktop-height);
+    background-image: url('/icons/back-to-top-desktop.svg');
   }
+
+.back-to-top.block button:hover,
+.back-to-top.block button:focus {
+  cursor: pointer;
+  background-color: transparent;
+  border-color: transparent;
+  background-image: url('/icons/back-to-top-desktop-hover.svg');
+}
 }

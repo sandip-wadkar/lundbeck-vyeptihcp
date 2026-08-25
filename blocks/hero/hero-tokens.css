@@ -6,13 +6,11 @@
 
   /* colors */
   --hero-text-color-light: #fff;
-  --hero-text-shadow: 0 1px 3px rgb(0 0 0 / 60%)
+  --hero-text-shadow: 0 1px 3px rgb(0 0 0 / 60%);
 
-  /* eyebrow (h3) */
-  --hero-eyebrow-font-size: 20px;
+  /* eyebrow (p) */
+  --hero-eyebrow-font-size: 24px;
   --hero-eyebrow-font-size-desktop: 24px;
-  --hero-eyebrow-line-height: 1.33;
-  --hero-eyebrow-gap: 4px;
 
   /* heading (h1) */
   --hero-heading-line-height: 1.07;
@@ -66,7 +64,7 @@
   --hero-single-heading-font-size-xs: 24px;
   --hero-single-heading-font-size-s: 28px;
   --hero-single-heading-font-size-m: 32px;
-  --hero-single-heading-font-size-desktop: 56px;
+  --hero-single-heading-font-size-desktop: 55px;
   --hero-single-body-font-size: 18px;
   --hero-single-cta-bg: var(--brand-secondary);
   --hero-single-cta-bg-hover: var(--brand-secondary-dark);
@@ -77,4 +75,27 @@
   --hero-z-bg: 0;
   --hero-z-content: 1;
   --hero-z-caption: 2;
+
+  /* page-title variant — compact sub-page title band (photo strip + teal
+     scrim + white H1, optional eyebrow h3) */
+  --hero-page-title-min-height: 151px;
+  --hero-page-title-min-height-tablet: 112px;
+  --hero-page-title-min-height-desktop: 160px;
+  --hero-page-title-heading-font-size: 32px;
+  --hero-page-title-heading-font-size-tablet: 38px;
+  --hero-page-title-heading-font-size-desktop: 43px;
+  --hero-page-title-heading-line-height-desktop: 52px;
+  --hero-page-title-eyebrow-font-size: 18px;
+  --hero-page-title-eyebrow-font-size-desktop: 22px;
+  --hero-page-title-scrim-color: rgb(4 97 131 / 55%);
+
+  /* single-dark — main marketing hero: darkens the photo so centered
+     white text stays legible regardless of the underlying image
+     (source vyeptihcp.com homepage uses the same navy tone) */
+  --hero-single-dark-scrim: rgb(7 51 72 / 55%);
+
+  /* single-dark eyebrow ribbon — same navy tone as --hero-single-dark-scrim,
+     solid instead of translucent (source's own eyebrow text color) */
+  --hero-eyebrow-text-color: #073348;
+  --hero-single-dark-eyebrow-font-size: 30px;
 }

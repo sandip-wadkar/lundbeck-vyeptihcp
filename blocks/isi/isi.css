@@ -22,6 +22,10 @@ main .isi li { /* @boilerplate */
   line-height: var(--isi-line-height); /* @boilerplate */
 }
 
+main .isi p {
+  margin-top: var(--isi-paragraph-margin-top);
+}
+
 main .isi li { /* @boilerplate */
   line-height: var(--isi-list-line-height); /* @boilerplate */
   margin-bottom: var(--isi-list-item-margin-bottom); /* @boilerplate */
@@ -29,12 +33,24 @@ main .isi li { /* @boilerplate */
   padding-bottom: var(--isi-list-item-padding-y); /* @boilerplate */
 }
 
-main .isi h3 { /* @boilerplate */
-  color: var(--isi-heading-color); /* @boilerplate */
-  font-size: var(--isi-heading-font-size); /* @boilerplate */
-  font-weight: var(--isi-heading-font-weight); /* @boilerplate */
-  line-height: var(--isi-heading-line-height); /* @boilerplate */
-  margin-bottom: var(--isi-heading-margin-bottom); /* @boilerplate */
+/* Regular sub-headings use h5 (matches vyeptihcp.com markup). The title +
+   "Indication" headings are authored as h4 instead - re-authored from h5 to
+   keep the page's heading levels sequential (h1 > ... > h4) for
+   accessibility - and get their own rule below with the teal accent. */
+main .isi h5 {
+  color: var(--isi-text-color);
+  font-size: var(--isi-heading-font-size);
+  font-weight: var(--isi-heading-font-weight);
+  line-height: var(--isi-heading-line-height);
+  margin-bottom: var(--isi-heading-margin-bottom);
+}
+
+main .isi h4 {
+  color: var(--isi-heading-color);
+  font-size: var(--isi-title-font-size);
+  font-weight: var(--isi-heading-font-weight);
+  line-height: var(--isi-heading-line-height);
+  margin-bottom: var(--isi-heading-margin-bottom);
 }
 
 main .isi a { /* @boilerplate */
@@ -55,7 +71,7 @@ main .isi a:hover { /* @boilerplate */
   background-color: var(--isi-bar-background); /* @boilerplate */
   border-top: var(--isi-bar-border-width) solid var(--isi-bar-border-color); /* @boilerplate */
   height: var(--isi-bar-height); /* @boilerplate */
-  overflow: hidden; /* @boilerplate */
+  overflow-y: auto; /* scrollable while collapsed too, matches vyeptihcp.com */
   padding: var(--isi-bar-padding); /* @boilerplate */
   transition: height var(--isi-bar-height-transition-duration) var(--isi-bar-height-transition-easing); /* @boilerplate */
   color: var(--isi-text-color); /* @boilerplate */
@@ -89,13 +105,43 @@ main .isi a:hover { /* @boilerplate */
   min-width: 0; /* @boilerplate */
 }
 
-.isi-bar-col h3 { /* @boilerplate */
-  color: var(--isi-bar-heading-color, var(--isi-heading-color)); /* @boilerplate */
-  font-size: var(--isi-heading-font-size); /* @boilerplate */
-  font-weight: var(--isi-heading-font-weight); /* @boilerplate */
-  line-height: var(--isi-heading-line-height); /* @boilerplate */
-  padding-bottom: var(--isi-bar-heading-padding-bottom); /* @boilerplate */
-  margin: 0; /* @boilerplate */
+/* Same treatment, scoped to the bar (moved outside <main> once decorated,
+   so main .isi h5/h4 above don't reach it). Title + "Indication" are h4;
+   regular sub-headings are h5. */
+.isi-bar-col h5 {
+  color: var(--isi-text-color);
+  font-size: var(--isi-heading-font-size);
+  font-weight: var(--isi-heading-font-weight);
+  line-height: var(--isi-heading-line-height);
+  padding-bottom: var(--isi-bar-heading-padding-bottom);
+  margin: 0;
+}
+
+.isi-bar-col h4 {
+  color: var(--isi-bar-heading-color, var(--isi-heading-color));
+  font-size: var(--isi-title-font-size);
+  font-weight: var(--isi-heading-font-weight);
+  line-height: var(--isi-heading-line-height);
+  padding-bottom: var(--isi-bar-heading-padding-bottom);
+  margin: 0;
+}
+
+/* Only the very first heading (the title) gets the larger gap before the
+   next heading; the last one ("INDICATION") uses the regular 8px, since
+   it's the only other h4. */
+.isi-bar-col h4:first-of-type {
+  padding-bottom: var(--isi-bar-title-padding-bottom);
+}
+
+/* A heading right after a paragraph needs a bigger gap than one after
+   another heading (e.g. "CONTRAINDICATIONS" after the title) - inline
+   gets this for free from the global heading margin-top, but .isi-bar-col
+   h5/h4 above reset all margins to 0, so it's added back here as padding.
+   "INDICATION" (h4) is the only title heading this applies to; the title
+   itself is never preceded by a paragraph. */
+.isi-bar-col p + h5,
+.isi-bar-col p + h4 {
+  padding-top: var(--isi-bar-heading-padding-top);
 }
 
 .isi-bar-col p { /* @boilerplate */
@@ -136,7 +182,12 @@ main .isi a:hover { /* @boilerplate */
 /* ── Toggle button (+/−) ─────────────────────────────────────── */
 .isi-bar-toggle { /* @boilerplate */
   position: absolute; /* @boilerplate */
-  right: var(--isi-toggle-right); /* @boilerplate */
+
+  /* Pin to the content edge, not the viewport edge, once viewport > max-width. */
+  right: max(
+    var(--isi-toggle-right),
+    calc((100vw - var(--isi-content-max-width)) / 2)
+  );
   top: var(--isi-toggle-top); /* @boilerplate */
   background: none; /* @boilerplate */
   border: var(--isi-toggle-border-width) solid var(--isi-toggle-color); /* @boilerplate */
@@ -149,14 +200,24 @@ main .isi a:hover { /* @boilerplate */
   align-items: center; /* @boilerplate */
   justify-content: center; /* @boilerplate */
   color: var(--isi-toggle-color); /* @boilerplate */
-  transition: color var(--isi-toggle-transition-duration), border-color var(--isi-toggle-transition-duration); /* @boilerplate */
+  transition: color var(--isi-toggle-transition-duration), border-color var(--isi-toggle-transition-duration), background-color var(--isi-toggle-transition-duration);
   z-index: var(--isi-toggle-z-index); /* @boilerplate */
 }
 
-.isi-bar-toggle:hover { /* @boilerplate */
-  color: var(--isi-toggle-hover-color); /* @boilerplate */
-  border-color: var(--isi-toggle-hover-color); /* @boilerplate */
-  background: none; /* @boilerplate */
+/* Hover: solid rose fill with white icon, matches vyeptihcp.com. */
+.isi-bar-toggle:hover {
+  background: var(--isi-toggle-color);
+  border-color: var(--isi-toggle-color);
+  color: var(--isi-toggle-hover-color);
+}
+
+/* Native <button>s default to a filled "primary" style site-wide, which
+   would otherwise stick after a click (:focus, without :hover). Reset it,
+   but only when not hovering so this can't cancel the :hover fill above. */
+.isi-bar-toggle:focus:not(:hover) {
+  background: none;
+  border-color: var(--isi-toggle-color);
+  color: var(--isi-toggle-color);
 }
 
 /* Plus icon (collapsed) */

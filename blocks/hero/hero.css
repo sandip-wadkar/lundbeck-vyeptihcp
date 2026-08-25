@@ -10,7 +10,7 @@ main > .section.hero-container {
   margin: 0;
 }
 
-.hero-container .hero-wrapper {
+main > .section.hero-container > .hero-wrapper {
   max-width: unset;
   padding: 0;
 }
@@ -51,9 +51,7 @@ main > .section.hero-container {
 .hero.single > div:last-of-type {
   position: relative;
   z-index: var(--hero-z-content);
-  max-width: var(--max-width-site);
   margin: 0 auto;
-  width: 100%;
   padding: 32px 24px;
   display: flex;
   flex-direction: column;
@@ -98,8 +96,6 @@ main > .section.hero-container {
   object-position: center;
 }
 
-
-
 .hero .hero-panel-light .hero-panel-description > p:nth-child(2) {
   font-size: var(--hero-light-hero-font-size) !important;
   padding-bottom: var(--hero-body-gap);
@@ -111,13 +107,16 @@ main > .section.hero-container {
    SHARED STYLES (both modes)
    ═══════════════════════════════════════════════════ */
 
-/* Eyebrow h3 - rose */
-.hero h3 {
-  color: var(--brand-secondary);
+.hero p {
   font-size: var(--hero-eyebrow-font-size);
-  font-weight: var(--font-weight-bold);
   line-height: var(--hero-eyebrow-line-height);
   margin: 0 0 var(--hero-eyebrow-gap);
+  color: #073348;
+  font-weight: var(--font-weight-bold);
+
+  em {
+    padding-left: 105px;
+  }
 }
 
 .hero h1 {
@@ -128,33 +127,12 @@ main > .section.hero-container {
   margin: 0 0 var(--hero-heading-gap);
 }
 
-/* Bold text in headings → accent color */
-.hero .accent-color {
-  color: var(--brand-secondary);
-  font-weight: inherit;
-}
-
 .hero.single > div:last-of-type p {
   color: var(--text-color);
   font-size: var(--body-font-size-m);
   font-weight: 400;
   line-height: var(--hero-body-line-height);
   margin: 0;
-}
-
-/* CTA link - teal outline pill button with arrow */
-.hero.single > div:last-of-type a,
-.hero .hero-panel-light a {
-  display: inline-block;
-  padding: var(--button-padding);
-  background-color: var(--background-color);
-  color: var(--brand-primary);
-  border-radius: var(--button-border-radius);
-  font-size: var(--button-font-size);
-  font-weight: var(--button-font-weight);
-  text-decoration: none;
-  transition: var(--button-transition);
-  margin: var(--hero-body-gap) 0 0;
 }
 
 .hero .hero-panel-light .hero-panel-cta-wrap a {
@@ -177,22 +155,6 @@ main > .section.hero-container {
   align-items: center;
   text-align: center;
 }
-
-/* Copy block — light column stays centered; dark stays left */
-.hero-panel-description {
-  width: 100%;
-  text-align: center;
-}
-
-.hero-panel-dark .hero-panel-description {
-  text-align: center;
-  max-width: 100%;
-}
-
-.hero .hero-panel-light .hero-panel-description > p:nth-child(1) {
-  padding-bottom: 0;
-}
-
 
 /* Dark panel — white Nunito-style stack (#split-image-col-wrapper-1) */
 .hero .hero-panel-dark .hero-panel-description > p {
@@ -309,6 +271,7 @@ main > .section.hero-container {
   position: relative;
   display: block;
   overflow: hidden;
+  height: 400px;
 }
 
 /* Image row flows in normal document flow — its rendered height drives the
@@ -339,20 +302,17 @@ main > .section.hero-container {
 .section.single-light .hero > div:last-of-type,
 .section.single-dark .hero > div:last-of-type {
   position: absolute;
-  top: 5.5%;
+  top: 45%;
   z-index: var(--hero-z-content);
   box-sizing: border-box;
-  max-width: var(--hero-single-content-max-width);
-  width: 100%;
   padding-right: 15px;
-  padding-left: 15px;
+  padding-left: 0;
   margin-right: auto;
   margin-left: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  text-align: center;
 }
 
 /* Headline */
@@ -362,31 +322,7 @@ main > .section.hero-container {
   font-size: var( --hero-single-heading-font-size-s);
   font-weight: var(--heading-font-weight);
   line-height: var(--hero-heading-line-height);
-  margin: 0 0 var(--hero-heading-gap);
-  max-width: 100%;
-}
-
-/* Body copy */
-.section.single-light .hero > div:last-of-type p,
-.section.single-dark .hero > div:last-of-type p {
-  font-size: var(--hero-single-body-font-size);
-  font-weight: 400;
-  line-height: var(--hero-body-line-height);
-}
-
-/* CTA — rose pill, white label, white arrow (shared) */
-.section.single-light .hero > div:last-of-type a,
-.section.single-dark .hero > div:last-of-type a {
-  display: inline-block;
-  margin: var(--hero-body-gap) 0 0;
-  padding: var(--button-padding);
-  background-color: var(--hero-single-cta-bg);
-  color: var(--hero-single-cta-color);
-  border-radius: var(--button-border-radius);
-  font-size: var(--button-font-size);
-  font-weight: var(--button-font-weight);
-  text-decoration: none;
-  transition: var(--button-transition);
+  margin: var(--hero-heading-gap) 0 var(--hero-heading-gap);
 }
 
 .section.single-light .hero > div:last-of-type a::after,
@@ -411,63 +347,133 @@ main > .section.hero-container {
   color: var(--hero-single-cta-color);
 }
 
-/* "Actor portrayal" caption — italic, bottom-right */
-.section.single-light .hero .actor-portrayal,
-.section.single-dark .hero .actor-portrayal {
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
-  z-index: var(--hero-z-caption);
-  margin: 0;
-  font-style: italic;
-  font-weight: 400;
-}
-
 /* ── single-dark: white text over imagery ── */
-.section.single-dark .hero h1
- {
- color: var(--brand-primary);
- padding: 0 25px 24px; 
- margin: 0;
+.section.single-dark .hero h1 {
+  color: var(--hero-text-color-light);
+  padding: 0 16px 24px;
+  font-family: var(--page-title-font-family);
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1;
 }
 
-.section.single-dark .hero .actor-portrayal {
-  color: var(--hero-text-color-light);
-  text-shadow: var(--hero-text-shadow);
+/* Eyebrow ribbon — light gradient pill behind the italic lead-in line
+   (source vyeptihcp.com homepage treatment). `main` prefix matches the
+   specificity of `.hero.single > div:last-of-type p` (line 130, font-weight:
+   400) so this override actually wins. */
+main .section.single-dark .hero p {
+  display: inline-block;
+  color: var(--hero-eyebrow-text-color);
+  background: linear-gradient(90deg, hsl(0deg 0% 100% / 0%), #bcdce2 38.46%, #7ebcc6);
+  border-radius: 0 16px 16px 0;
+  margin: 0 0 5px;
+  box-shadow: 0 4px 4px 0 rgb(0 0 0 / 25%);
+  padding: 6px 10px;
+  width: fit-content;
+  font-family: var(--page-title-font-family);
+  font-weight: 700;
+  font-size: var(--hero-single-dark-eyebrow-font-size);
+  line-height: 1;
 }
 
 /* ── single-light: teal headline, dark body ── */
 .section.single-light .hero h1 {
-  color: var(--hero-text-color-light);
+  color: var(--brand-primary);
+  font-family: var(--page-title-font-family);
 }
 
 .section.single-light .hero > div:last-of-type p {
-  color: var(--hero-text-color-light);
+  color: var(--text-color);
 }
 
 .section.single-light .hero .actor-portrayal {
+  color: var(--text-color);
+}
+
+/* ═══════════════════════════════════════════════════
+   PAGE-TITLE VARIANT
+   Compact sub-page title band — short photo strip with a teal
+   scrim and a single white H1 (optional eyebrow h3 lead-in).
+   Section-metadata Style: page-title, same pattern as
+   single-light / single-dark above.
+   ═══════════════════════════════════════════════════ */
+
+.section.page-title .hero {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  min-height: var(--hero-page-title-min-height);
+}
+
+.section.page-title .hero > div:first-child {
+  position: absolute;
+  inset: 0;
+  z-index: var(--hero-z-bg);
+}
+
+.section.page-title .hero > div:first-child::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--hero-page-title-scrim-color);
+}
+
+.section.page-title .hero > div:first-child > div,
+.section.page-title .hero > div:first-child p {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.section.page-title .hero img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+.section.page-title .hero > div:last-of-type {
+  position: relative;
+  z-index: var(--hero-z-content);
+  max-width: var(--max-width-site);
+  min-height: var(--hero-page-title-min-height);
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.section.page-title .hero h3 {
   color: var(--hero-text-color-light);
+  font-size: var(--hero-page-title-eyebrow-font-size);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.33;
+  margin: 0 0 8px;
+}
+
+.section.page-title .hero h1 {
+  color: var(--hero-text-color-light);
+  font-size: var(--hero-page-title-heading-font-size);
+  line-height: 1.15;
+  margin: 0;
 }
 
 
-
-@media (width >= 600px) {
-  .hero.single {
-    min-height: var(--hero-single-min-height-tablet);
-  }
-
-  .hero.single > div:last-of-type {
-    min-height: var(--hero-single-min-height-tablet);
-  }
-
-  .section.single-light .hero > div:last-of-type, .section.single-dark .hero > div:last-of-type
-  { justify-content: center;
+@media (width >= 567px) {
+  .section.single-light .hero > div:last-of-type, .section.single-dark .hero > div:last-of-type {
+    justify-content: center;
+    top: 50%;
  }
  
- .section.single-light .hero h1, .section.single-dark .hero h1
- {
+.section.single-dark .hero {
+  height: 516px;
+  
+  h1 {
    padding-bottom: 24px;
  }
+}
 }
 
 
@@ -483,46 +489,9 @@ main > .section.hero-container {
     padding: 60px 32px;
   }
 
-  .hero.single h3,
-  .hero.single h1,
-  .hero.single > div:last-of-type p {
-    width: 55%;
-  }
-
-  .hero h3 {
-    font-size: var(--hero-eyebrow-font-size-desktop);
-  }
-
   .hero h1 {
     font-size: var(--heading-font-size-xxl);
-    line-height: var(--hero-heading-line-height);
-  }
-
-  .hero-panel-light .hero-panel-content {
-    padding: 20px;
-  }
-
-  .hero .hero-panel-cta-wrap {
-    bottom: 50px;
-  }
-
-  .hero .hero-panel-dark .hero-panel-description > p {
-    font-size: var(--hero-dark-font-size-desktop);
-    line-height: var(--hero-body-line-height);
-  }
-
-  .hero .hero-panel-light .hero-panel-description > p {
-    font-size: var(--hero-light-font-size-desktop);
-  }
-
-  .hero .hero-panel-dark .hero-panel-description > p:last-of-type {
-    font-size: var(--hero-dark-hero-font-size-desktop);
-    line-height: 32px;
-  }
-
-  .hero.single .actor-portrayal {
-    bottom: 34px;
-    right: 67px;
+    width: 75%;
   }
 
   /* Dual-panel desktop — height = vyepti banner 2880×1116 (explicit + aspect fallback) */
@@ -542,50 +511,51 @@ main > .section.hero-container {
   .section.single-light .hero,
   .section.single-dark .hero {
     aspect-ratio: auto;
-    min-height: 0;
+    height: 290px;
   }
 
   .section.single-light .hero > div:last-of-type,
   .section.single-dark .hero > div:last-of-type {
-    max-width: 720px;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    left: 50%;
-    padding-right:15px;
-    padding-left:15px;
+    text-align: left;
+    left: 27%;
+    padding: 40px 0 32px;
+    top: 0;
   }
 
   .section.single-light .hero h1,
   .section.single-dark .hero h1 {
-  font-size: var(--hero-single-heading-font-size-m);
-    margin:0;
+    margin-left: 100px;
   }
 
   .section.single-dark .hero h1 {
     padding: 0 0 16px;
   }
 
-
-  .section.single-light .hero h1,
-  .section.single-dark .hero h1,
-  .section.single-light .hero > div:last-of-type p,
-  .section.single-dark .hero > div:last-of-type p {
-    width: 60%;
-    text-align: left;
-  }
-
-  .section.single-light .hero .actor-portrayal,
-  .section.single-dark .hero .actor-portrayal {
-    right: 40px;
-    bottom: 20px;
-  }
-
 .section.single-light .hero > div:last-of-type a, .section.single-dark .hero > div:last-of-type a {
   margin-top:24px;
 }
+
+.section.page-title .hero,
+  .section.page-title .hero > div:last-of-type {
+    min-height: var(--hero-page-title-min-height-tablet);
+  }
+
+  .section.page-title .hero h1 {
+    font-size: var(--hero-page-title-heading-font-size-tablet);
+  }
 }
 
 @media (width >= 992px) {
+
+   .section.single-light .hero,
+  .section.single-dark .hero {
+    height: 266px;
+  }
+
+.section.single-dark .hero img {
+max-width: unset;
+}
+
   .hero-panel-dark .hero-panel-description {
     max-width: 100%;
   }
@@ -594,81 +564,74 @@ main > .section.hero-container {
     padding-top: 30px;
   }
 
-  .hero .actor-portrayal {
-    bottom: 20px;
-    right: 60px;
-  }
-
-  .hero .hero-panel-cta-wrap {
-    bottom: 60px;
-  }
-
-  .hero .hero-panel-light .hero-panel-description > p:nth-child(3) {
-    width: 60%;
-  }
-
-  .section.single-light .hero h1, .section.single-dark .hero h1  {
-    font-size: 42px;
-    line-height: 48px;
-}
-
  .section.single-light .hero > div:last-of-type,
 .section.single-dark .hero > div:last-of-type {
- max-width: 960px;
+ left: 18%;
 }
+  .section.page-title .hero,
+  .section.page-title .hero > div:last-of-type {
+    min-height: var(--hero-page-title-min-height-desktop);
+  }
 
-.section.single-light .hero h1,  .section.single-light .hero > div:last-of-type p {
- max-width:55%;
-}
+  .section.page-title .hero h1 {
+    font-size: var(--hero-page-title-heading-font-size-desktop);
+    line-height: var(--hero-page-title-heading-line-height-desktop);
+  }
 
-.section.single-dark .hero h1,  .section.single-dark .hero > div:last-of-type p {
- width:70%;
-}
+  .section.page-title .hero h3 {
+    font-size: var(--hero-page-title-eyebrow-font-size-desktop);
+  }
 }
 
 @media (width >= 1200px) {
   .hero-panel-content {
     padding-top: 40px;
   }
+ 
+  .section.single-dark .hero img {
+    width: unset;
 
-  .hero-panel-light .hero-panel-bg img {
-    object-position: 58% center;
+  }
+
+  .section.single-light .hero, .section.single-dark .hero {
+     height: 336px;
+  }
+  /* Source sits at left: 25% (measured stable at 1600/1920/2560px) vs our 18%
+     (set at >=992px, line 486) — shift the content block right to match, plus
+     a further 10px nudge per direct request. */
+  .section.single-light .hero > div:last-of-type,
+  .section.single-dark .hero > div:last-of-type {
+    left: calc(25% + 10px);
   }
 
       .hero-panel-light .hero-panel-content {
         padding:40px;
       }
 
-  .hero .hero-panel-light .hero-panel-description > p {
-    font-size: var(--hero-light-font-size-wide);
+  .section.single-dark .hero > p {
+    font-size: 30px;
   }
 
-  .section.single-light .hero > div:last-of-type,
-  .section.single-dark .hero > div:last-of-type {
-     max-width: 1140px;
-  }
+  /* Content wrapper is top-anchored (line 452) with fixed padding, and the tab row overlaps via a fixed negative margin — so redistributing the H1's own margin only shifted it, it didn't create room; zeroed to match source's own zero-margin heading instead. */
 
+  /* width: wrapper has no width cap above this breakpoint, so the H1 wraps later than source (source uses a hard-coded <br> in its copy, not width — a content change outside this repo). Explicit width (not max-width) since the wrapper is a flex column with align-items: flex-start, which shrink-fits its children instead of stretching — max-width alone let it collapse narrower than intended. 760px keeps "...NEXT STEP" on one line (measured live at 728px) while excluding "for" (809px), matching source's break. */
   .section.single-light .hero h1, .section.single-dark .hero h1 {
     font-size: var(--hero-single-heading-font-size-desktop);
-    line-height: 60px;
-  }
-
-    .section.single-dark .hero h1,  .section.single-dark .hero > div:last-of-type p {
-    width:60%;
-    padding-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    width: 760px;
   }
 }
 
-@media (width >= 1400px) {
-  .hero .hero-panel-dark .hero-panel-description > p {
-   line-height: var(--hero-body-line-height-l);
-  }
-}
-  
 
 @media (width >= 1440px) {
   .hero-panel-content {
     padding-top: 38px;
+  }
+
+  .section.single-dark .hero img {
+    width: 100%;
   }
 
   .hero .hero-panel-dark .hero-panel-description > p {
@@ -707,6 +670,8 @@ main > .section.hero-container {
     margin-right: 25%;
     margin-left: 0;
   }
+
+  
 
   .hero .hero-panel-dark .hero-panel-description > p {
     margin-left:25%;

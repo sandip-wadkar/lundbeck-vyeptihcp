@@ -24,14 +24,20 @@ export default async function decorate(block) {
   const tbody = document.createElement('tbody');
   const header = !block.classList.contains('no-header');
 
-  [...block.children].forEach((row, i) => {
+  const rows = [...block.children];
+  const columnCount = Math.max(...rows.map((row) => row.children.length));
+
+  rows.forEach((row, i) => {
     const tr = document.createElement('tr');
     moveInstrumentation(row, tr);
 
-    [...row.children].forEach((cell) => {
+    const cells = [...row.children];
+    cells.forEach((cell) => {
       const td = document.createElement(i === 0 && header ? 'th' : 'td');
 
       if (i === 0) td.setAttribute('scope', 'column');
+      // a lone header/row cell spans the full table width (e.g. a section band)
+      if (cells.length === 1 && columnCount > 1) td.setAttribute('colspan', columnCount);
       td.innerHTML = window.DOMPurify.sanitize(cell.innerHTML, DOMPURIFY);
       tr.append(td);
     });

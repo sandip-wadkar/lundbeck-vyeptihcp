@@ -8,23 +8,32 @@
 .table.block table { /* @libs */
   width: 100%; /* @libs */
   max-width: 100%; /* @libs */
-  border-collapse: collapse; /* @libs */
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
   font-family: var(--body-font-family); /* @libs */
   font-size: var(--body-font-size-s); /* @libs */
   line-height: 1.5; /* @libs */
-  color: var(--text-color); /* @libs */
+  color: var(--table-body-text-color);
+  border: var(--table-row-border-width) solid var(--table-border-color);
+  border-radius: var(--table-radius);
+  overflow: hidden;
 }
 
 .table.block table th,
 .table.block table td { /* @libs */
   padding: var(--table-cell-padding-block) var(--table-cell-padding-inline); /* @libs */
-  text-align: left; /* @libs */
+  text-align: center;
   vertical-align: top; /* @libs */
 }
 
-/* header band — compact teal gradient strip with bold teal label */
+.table.block table td {
+  background: var(--background-color);
+}
+
+/* header band — solid teal strip with bold white label */
 .table.block table thead tr { /* @libs */
-  background-image: var(--table-header-bg); /* @libs */
+  background: var(--table-header-bg);
 }
 
 .table.block table th { /* @libs */
@@ -35,8 +44,17 @@
   color: var(--table-header-text-color); /* @libs */
 }
 
-.table.block table tbody tr { /* @libs */
-  border-bottom: var(--table-row-border-width) solid var(--table-border-color); /* @libs */
+/* inset vertical divider between body cells (small gap top/bottom) */
+.table.block table tbody td + td {
+  position: relative;
+}
+
+.table.block table tbody td + td::before {
+  content: '';
+  position: absolute;
+  inset: var(--table-divider-inset) auto var(--table-divider-inset) 0;
+  width: var(--table-row-border-width);
+  background: var(--table-border-color);
 }
 
 .table table th p,
@@ -72,7 +90,7 @@
 .table.block.heading-11 table tbody tr:nth-child(11),
 .table.block.heading-12 table tbody tr:nth-child(12) { /* @libs */
   border-bottom: 0; /* @libs */
-  background-image: var(--table-header-bg); /* @libs */
+  background: var(--table-header-bg);
 }
 
 /* remove the separator above a heading row (the preceding row's bottom border) */
@@ -125,7 +143,91 @@
   border: var(--table-row-border-width) solid var(--table-border-color); /* @libs */
 }
 
+/* vertical gutters for reactions table */
+.table.block.reactions table {
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.table.block.reactions table thead tr {
+  background: none;
+}
+
+.table.block.reactions table th {
+  padding: var(--table-cell-padding-block) 0;
+}
+
+.table.block.reactions table td {
+  padding: var(--table-cell-padding-block) 8px;
+}
+
+.table.block.reactions table th,
+.table.block.reactions table td {
+  border-right: var(--table-reactions-col-gap) solid transparent;
+  background-clip: padding-box;
+  color: var(--table-reactions-data-color);
+  font-size: var(--table-reactions-data-font-size);
+  text-align: center;
+}
+
+.table.block.reactions table th p,
+.table.block.reactions table td p {
+  font-size: var(--table-reactions-data-font-size);
+  font-weight: var(--table-reactions-font-weight);
+}
+
+.table.block.reactions table td:first-child p {
+  font-size: var(--table-reactions-label-font-size);
+}
+
+/* reactions table borders, override base table */
+.table.block.reactions table tbody tr {
+  border-bottom: none;
+  border-top: var(--table-row-border-width) solid #fff;
+}
+
+/* label column for both reactions tables */
+.table.block.reactions table tbody tr td:first-child {
+  border-top: var(--table-row-border-width) solid #41748d;
+  color: var(--text-reactions-label-color);
+  font-size: var(--table-reactions-label-font-size);
+  text-align: left;
+}
+
+.table.block.reactions table th:last-child,
+.table.block.reactions table td:last-child {
+  border-right: none;
+}
+
+/* data columns background colors for 4-column reactions table */
+.table.block.reactions tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(2),
+.table.block.reactions tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(2){
+  background-color: var(--table-reactions-data1-background);
+}
+
+.table.block.reactions tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(3),
+.table.block.reactions tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(3) {
+  background-color: var(--table-reactions-data2-background);
+}
+
+.table.block.reactions tr th:nth-child(1):nth-last-child(4) ~ th:nth-child(4),
+.table.block.reactions tr td:nth-child(1):nth-last-child(4) ~ td:nth-child(4) {
+  background-color: var(--table-reactions-data3-background);
+}
+
+/* data column background color for 2-column reactions table */
+.table.block.reactions tr th:nth-child(2):nth-last-child(1),
+.table.block.reactions tr td:nth-child(2):nth-last-child(1) {
+  background-color: var(--table-reactions-data2-background);
+}
+
 @media (width >= 768px) { /* @libs */
+  :root {
+    --table-reactions-data-font-size: var(--table-reactions-data-font-size-desktop);
+    --table-reactions-label-font-size: var(--table-reactions-label-font-size-desktop);
+    --table-reactions-col-gap: var(--table-reactions-col-gap-desktop);
+  }
+
   .table.block table td { /* @libs */
     padding: var(--table-cell-padding-block-desktop) var(--table-cell-padding-inline); /* @libs */
   }

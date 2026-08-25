@@ -4,7 +4,17 @@
  * https://www.hlx.live/developer/block-collection/embed
  */
 import { DOMPURIFY } from '../../scripts/aem.js';
-import { getYoutubeEmbedHtml, getVimeoEmbedHtml } from '../../scripts/utils.js';
+import {
+  getYoutubeEmbedHtml, getVimeoEmbedHtml, getBrightcoveIds, createBrightcovePlayer,
+  getBrightcoveScriptTag,
+} from '../../scripts/utils.js';
+
+// the shared DOMPURIFY profile strips <iframe>; the youtube/vimeo embeds below need it
+const IFRAME_DOMPURIFY = {
+  ...DOMPURIFY,
+  ADD_TAGS: ['iframe'],
+  ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling', 'src', 'title'],
+};
 
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
@@ -34,8 +44,29 @@ const embedTwitter = (url) => {
   return embedHTML;
 };
 
+/* Brightcove: embed the player in-page (load its player script + render a
+   <video-js> element) rather than via iframe, so the page's own CSS can style
+   the controls (e.g. the big play button) to match the source. */
+const embedBrightcove = (block, ids, autoplay) => {
+  const videoEl = createBrightcovePlayer(ids, { autoplay, fluid: true });
+  block.append(videoEl);
+  getBrightcoveScriptTag(ids.accountId, ids.playerId, videoEl);
+};
+
 const loadEmbed = (block, link, autoplay) => {
   if (block.classList.contains('embed-is-loaded')) {
+    return;
+  }
+
+  const embedUrl = new URL(link);
+
+  // Brightcove uses an in-page player (special-cased: it inserts a <video-js>
+  // element and loads the player script, rather than returning embed HTML).
+  const brightcove = link.includes('players.brightcove.net') ? getBrightcoveIds(embedUrl) : null;
+  if (brightcove) {
+    block.classList = 'block embed embed-brightcove';
+    embedBrightcove(block, brightcove, autoplay);
+    block.classList.add('embed-is-loaded');
     return;
   }
 
@@ -57,12 +88,12 @@ const loadEmbed = (block, link, autoplay) => {
   const url = new URL(link);
   if (config) {
     const embedHtml = config.embed(url, autoplay);
-    block.innerHTML = (window.DOMPurify?.sanitize(embedHtml, DOMPURIFY))
+    block.innerHTML = (window.DOMPurify?.sanitize(embedHtml, IFRAME_DOMPURIFY))
       ?? embedHtml;
     block.classList = `block embed embed-${config.match[0]}`;
   } else {
     const defaultHtml = getDefaultEmbed(url);
-    block.innerHTML = (window.DOMPurify?.sanitize(defaultHtml, DOMPURIFY))
+    block.innerHTML = (window.DOMPurify?.sanitize(defaultHtml,IFRAME_DOMPURIFY))
       ?? defaultHtml;
     block.classList = 'block embed';
   }
@@ -78,7 +109,7 @@ export default function decorate(block) {
     const wrapper = document.createElement('div');
     wrapper.className = 'embed-placeholder';
     const placeholderHtml = '<div class="embed-placeholder-play"><button type="button" title="Play"></button></div>';
-    wrapper.innerHTML = (window.DOMPurify?.sanitize(placeholderHtml, DOMPURIFY))
+    wrapper.innerHTML = (window.DOMPurify?.sanitize(placeholderHtml, IFRAME_DOMPURIFY))
       ?? placeholderHtml;
     wrapper.prepend(placeholder);
     wrapper.addEventListener('click', () => {
